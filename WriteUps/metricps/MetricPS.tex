@@ -321,11 +321,44 @@ We use numerically convenient variables (for implementing the boundary condition
 \tilde h_{t \phi}&=\frac{r}{1-c^2}h_{t\phi}
 \end{align}
 
+We implement boundary conditions at asympotic infinity $r=\infty$, the Killing horizon $r=r_+$, and on the axis $c=\pm 1$. 
+
+On the axis $c\to \pm 1$, we have the boundary conditions
+\begin{align}
+\tilde Y&=\mathcal{O}(1) \nonumber \\
+\tilde h_{tt}&=\mathcal{O}(1) \nonumber \\
+\tilde h_{\phi\phi} &=\mathcal{O}(1) \nonumber \\
+\tilde h_{t\phi}&=\frac{r^3}{\Delta}\tilde Y
+\end{align}
+
+At infinity, we have 
+\begin{align}
+\tilde Y &\sim D \nonumber \\
+\tilde h_{\phi\phi}&\sim \tilde Y \nonumber \\
+\tilde h_{tt} &=\mathcal{O}(1) \nonumber \\ 
+\tilde h_{t\phi}&=\mathcal{O}(1),
+\end{align}
+where D is an unknown constant (i.e it is independent of $\theta$). The BC for Y is almost that $\tilde Y =\mathcal{O}(1)$, but it is more restrictive because it rules out the possibility that $\tilde Y$ is a $\mathcal{O}(1)$ (as $r \to \infty$) function of $\theta$. 
+
+At the Killing Horizon $r\to r_+$ we have
+\begin{align}
+\tilde h_{\phi\phi} &=\mathcal{O}(1) \nonumber \\
+\tilde h_{t\phi} &=-\Omega_H r_+^3\tilde h_{\phi\phi} \nonumber \\
+\tilde h_{tt} &=\Omega_H^2r_+^3(1-c^2)\tilde h_{\phi\phi} \nonumber \\
+\tilde Y &=\frac{1}{4\kappa^2}\frac{(r_+-r_-)}{r_+^2}\frac{d}{dr}\left[\frac{1}{r}\tilde h_{tt}+2\Omega_H\frac{(1-c^2)}{r}\tilde h_{t\phi}+\Omega_H^2r^2(1-c^2)\tilde h_{\phi\phi}\right]_{r=r_+}
+\end{align}
+where $\Omega_H$ and $\kappa$ is the horizon frequency and surface gravity of the background Kerr spacetime.
+
+Note that since the operator
+$\mathcal L_{\hat A}$ is invariant under $c\to -c$ and the source term is odd-parity under the same transformation, the metric perturbation can be taken to be odd-parity as well, so if we want to we can restrict the angular domain to $c\geq0$ (however I don't do this right now).
+
 We index the four evolution equations with barred capitol latin letters$\bar A={+,tt,pp,tp}$ and write the four evoluion equations as
 \begin{align}
 L_{\bar A}[z]=A_{\bar A \bar a AB}\partial_{A}\partial_{B}z^{\bar a}+B_{\bar A \bar a A}\partial_{A}z^{\bar a}
 +C_{\bar A \bar a }z^{\bar a}
 \end{align}
+
+Note that the ABC potentials are different depending on the coordinate system that we use (i.e. $(r,\theta)$ or $(x,c)$)
 
 \subsection{Discretization}
 We discretize $L_{\bar A}$ as 
