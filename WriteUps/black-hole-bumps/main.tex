@@ -1,0 +1,1925 @@
+\documentclass[aps,prd,amsmath,showpacs,amssymb,superscriptaddress,nofootinbib,longbibliography,eqsecnum,preprintnumbers]{revtex4-1}
+\usepackage{graphicx}
+\usepackage{bm}
+\usepackage{amssymb,amsmath}
+\usepackage{mathrsfs}
+\usepackage{braket} 
+\usepackage{latexsym}
+\usepackage{color}
+\usepackage{float}
+\usepackage[normalem]{ulem} 
+\usepackage{dcolumn}
+\usepackage[colorlinks=true,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage[usenames,dvipsnames]{xcolor}
+
+\allowdisplaybreaks
+
+\newcommand{\odd}{\Psi_{\rm odd}}
+\newcommand{\Caltech}{\affiliation{Theoretical Astrophysics 350-17, California Institute of Technology, Pasadena, CA 91125}}
+\newcommand{\CITA}{\affiliation{Canadian Institute for Theoretical Astrophysics, 60 St. George Street, Toronto, ON, M5S 3H8 Canada}}
+\newcommand{\zach}[1]{\textcolor{ForestGreen}{#1}}
+\newcommand{\acs}{\alpha_{\rm CS}}
+\newcommand{\bcs}{\beta_{\rm CS}}
+
+\begin{document}
+\title{Black Hole Bumps From a Prescribed Stress-Energy Tensor}
+\author{Zachary Mark} \Caltech
+\begin{abstract}
+We show the problem of finding black hole solutions in an arbitrary ``almost-GR'' theory of gravity is equivalent to looking for a stationary, axisymmetric solution of the linearized Einstein equation for a prescribed source of stress-energy. We illustrate the formalism by applying it to dynamical Cherns-Simons gravity. Our arguments and numerical calculations employ two similar systems of coordinates where the metric perturbation is completely described by four functions of two variables. We show how the Bianchi identity identifies four independent equations from the six non-trivial Einstein equations. We prove that the resulting system of linear PDE's is classically elliptic. We formulate the correct boundary conditions for a metric perturbation describing a black hole, allowing for an attempted numerical solution to the system of PDE's as a boundary value problem. We provide a mathematica notebook with explicit coordinate expressions for the equations. 
+\end{abstract}
+\maketitle
+\tableofcontents
+
+\section{Summary: Recipe for Modified BH}
+
+In this section we summarize how to solve for a stationary, axisymmetric metric perturbation $h_{\mu\nu}$ of a kerr black hole $k_{\mu\nu}$ with a prescribed stationary axisymmetric source of stress energy $T_{\mu \nu}^{\rm eff}$ as an elliptic boundary value problem.
+We also assume that the metric and stress energy tensor have a $(t,\phi) \to (-t,-\phi)$ reflection isometry\footnote{This must be true in most cases, such as dynamical Chern Simons theory}. We imagine that the prescribed source of stress energy encodes the desired modifications to General relativity. As the metric perturbation describes a black hole, we insist that it describes an asymptotically flat spacetime with a Killing horizon and an axis. We prove that this scheme works in the following sections and in this section ``write'' down the elliptic system, consisting of 4 PDE's for 4 functions of 2 variables and 4 BC's on each boundary.
+
+\begin{enumerate}
+\item Introduces coordinates, which we refer to asBL-like coordinates, where $x^\mu=(x^i,x^A)=(t,\phi,r,\theta)$ where $t$ and $\phi$ generate the time translation. These coordinates correspond to the Boyer-linquist coordinates for the Kerr metric. In the general case, these coordinates leave no residual gauge freedom. In these coordinates the killing horizon (of both the kerr spacetime and the new spacetime that we are solving for) is located at $r =r_+=M+\sqrt{M^2+a^2}$ where M and a are the mass and spin of the background kerr spacetime\footnote{but will not be the mass and spin of the solution}. The axis is located at $\theta =0$ and $\theta =\pi$. Asymptotic infinity is located at $r=\infty$.
+
+\item Parameterize the metric to linear order with four functions $Y(r,\theta)$, $h_{tt}(r,\theta)$, $h_{\phi\phi}(r,\theta)$, and $h_{t\phi}(r,\theta)$ of $r$ and $\theta$ as
+\begin{align}
+ds^2=(k_{ij}+h_{ij})dx^idx^j+(k_{rr}+Y)(dr^2+\Delta d\theta^2)
+\end{align}
+\item Impose boundary conditions determined by asymptotic flatness, regularity on the killing horizon, and regularity on the axis. At each boundary these requirements amount to four conditions on the four metric functions \zach{(ZM: I think this is true, but I am a bit confused by the counting)}.
+
+The conditions that need to be satisfied on the axis at $\theta =0,\pi$
+\begin{align}
+Y=\mathcal{O}(1) \nonumber \\
+h_{tt}(r,\theta)= \mathcal{O}(1) \nonumber \\
+h_{\phi\phi}=\mathcal{O}(\theta^2) \nonumber \\
+h_{t\phi}=\Delta Y \theta^2
+\end{align}
+The conditions that need to be satisfied on the Killing horizon located at $r=r_+$ are
+\begin{align}
+h_{\phi\phi}(r,\theta) \sim h_{\phi\phi}^{(0)}(\theta) +h_{\phi\phi}^{(1)}(\theta)(r-r_+) +\mathcal{O}((r-r_+)^2) \nonumber \\
+h_{t\phi}(r,\theta )\sim -\Omega_H h_{\phi \phi}^{(0)}(\theta) +h_{t\phi}^{(1)}(\theta)(r-r_+)+\mathcal{O}((r-r_+)^2) \nonumber \\
+h_{tt}\sim \Omega_H^2 h_{\phi \phi}^{(0)}(\theta)+h_{tt}^{(1)}(\theta)(r-r_+)  +\mathcal{O}((r-r_+)^2) \nonumber \\
+Y(r,\theta) \sim\frac{1}{4\kappa^2} \left[h_{tt}^{(1)}(\theta)+2\Omega_H h_{t\phi}^{(1)}(\theta) +\Omega_H^2 h_{\phi\phi}^{(1)}(\theta)\right](r-r_+)^{-1} +\mathcal{O}(1)
+\end{align}
+where $\Omega_H$ and $\kappa$ are the horizon frequency and the surface gravity of the background kerr metric\footnote{It turns out that $\Omega_H$ is also the horizon frequency of the solution. I haven't yet calculated the surface gravity of the solution.} 
+and the four functions $h_{\phi\phi}^{(0)}(\theta)$ , $h_{\phi\phi}^{(1)}(\theta)$, $h_{tt}^{(1)}(\theta)$, and $h_{t\phi}^{(1)}(\theta)$ are are not determined by the boundary conditions.
+The conditions that need to be satisfied at infinity are
+\begin{align}
+h_{tt}(r,\theta)\sim \frac{h_{tt}^{(0)}(\theta)}{r}, \nonumber \\
+h_{t\phi}(r,\theta)\sim \frac{h_{t\phi}^{(0)}(\theta)}{r}, \nonumber \\
+h_{\phi\phi}(r,\theta)\sim D r^2\sin^2\theta + h_{\phi \phi}^{(1)}(\theta)r, \nonumber \\
+Y(r,\theta)\sim D + \frac{Y^{(1)}(\theta)}{r} 
+\end{align}
+where the constant $D$ and the functions $h_{t\phi}^{(0)}(\theta)$, $h_{\phi\phi}^{(1)}(\theta)$, $h_{tt}^{(0)}(\theta)$, and $Y^{(1)}(\theta)$ are not determined by boundary conditions. We show in the body of the paper how these functions encode the mass and the spin of the new spacetime described by $h$.
+\item Solve the linearized Einstein equations 
+\begin{align}
+\Delta_G[h]_{\mu \nu}=8\pi T^{\rm eff}_{\mu\nu}, \label{eq:LE}
+\end{align}
+where $T^{\rm eff}_{\mu\nu}$ is the effective stress energy tensor, which is a set of functions determined from the particular modified theory and the Kerr metric. We present $T^{\rm eff}_{\mu\nu}$ for dynamical Cherns-Simons theory in the body of the paper.
+
+By the $(t,\phi)\to (-t,-\phi)$ reflection isometry there are six nontrivial field equations and two no-trivial Bianchi identities. Designate the three $ij$ field equations and the $\Delta (\text{rr eq.})+(\theta \theta\text{ eq.})$ as ``interior/evolutions'' equations and the two remaining field equations ``constraint'' equations. The four evolution equations form an elliptic set of equations and the two remaining equations are guaranteed (as a consequence of the two non-trival Bianchi identities) to be satisfied if two simple conditions are satisfied on the boundary. These conditions are automatically met for our choice of boundary conditions. The linearized field equations have the form
+\begin{align}
+\Delta_G[h]_{\mu\nu}= A_{\mu \nu \bar a}^{AB}\partial_A\partial_B w^{\bar a} + B_{\mu \nu \bar a}^{A}\partial_A w^{\bar a}+C_{\mu \nu \bar a}w^{\bar a} =8\pi T_{\mu\nu}^{\rm eff}
+\end{align}
+where $w^{\bar a}=(Y,h_{tt},h_{\phi\phi},h_{t\phi})$ is a vector of the four metric functions and the A, B, and C coefficients only depend on $r$ and $\theta$.
+The A, B, and C coefficients are readily available in mathematica notebooks. The principle part of the equation described by the A coefficients is very simple and is discussed in the body of this paper. Note that the equations have the same form for any linear redefinition of the field variables and we will often find it convenient to work with a vector of field variables describing the trace reversed perturbation $v^{\bar a}={\bar Y, \bar h_{tt}, \bar h_{\phi\phi}, \bar h_{t\phi}}$.
+\end{enumerate}
+%Each component of the linearized Einstein Operator $\Delta_G[h]_{\mu\nu}$ is a second order PDE depending on the functions $\bar Y$, $\bar h_{tt}$, $\bar h_{\phi\phi}$, $\bar h_{t\phi}$ describing the metric perturbation. If we use $v^{\bar a}=(\bar Y, \bar h_{tt}, \bar h_{\phi\phi}, \bar h_{t\phi})$ to denote a field of dependent variables (notice the bar on the index distinguish these indices from spacetime indices), we can schematically write these equations as 
+%\begin{align}
+%\Delta_G[h]_{\mu\nu}= A_{\mu \nu \bar a}^{AB}\partial_A\partial_B v^{\bar a} + B_{\mu \nu \bar a}^{A}\partial_A v^{\bar a}+C_{\mu \nu \bar a}v^{\bar a} 
+%\end{align}
+%where the potentials A, B, and C are matrices that depend on $r$ and $\theta$. 
+
+\section{Black Holes Bumps}
+In alternative theories to GR, we no longer have the Einstein equations $G_{\mu \nu}=8\pi T_{\mu \nu}$; However, we may still write
+\begin{align}
+G_{\mu\nu}=\frac{1}{2\kappa_g}T^{\rm eff}_{\mu\nu}, \label{eq:newEE},
+\end{align}
+where $\kappa_g=(16\pi)^{-1}$
+%where $T^{\rm eff}_{\mu \nu}$ is an effective stress energy tensor containing both the minimally coupled matter stress energy tensor and the corrections to the GR field equations. As we expect corrections to be GR to be small, to study the corrections to Kerr black holes we linearize Eq.~ \eqref{eq:newEE} about the Kerr solution. 
+
+Note that $T^{\rm eff}_{\mu\nu}$ is divergence free as a consequence of the Bianchi identity for $G_{\mu\nu}$ AND the field Equation \eqref{eq:newEE}, in contrast to normal GR, where $T_{\mu\nu}$ is divergence free independently of the field equation.
+
+As an example, throughout this note we will we consider Dynamical Cherns-Simons (DCS) Gravity. 
+\subsection{Dynamical Cherns-Simons Gravity}
+
+We follow the conventions of Kent's unpublished note (with Nicholas Yunes) on Teukolsky-like equations in DCS.
+
+The DCS action is
+\begin{align}
+S=\int d^4x\sqrt{-g}\left[\kappa_g R+\acs \theta R_{\nu \mu\rho\sigma}*R^{\mu\nu\rho\sigma}-\frac{\bcs}{2}\left(\theta_{:\mu}\theta^{;\mu}+2V(\theta)\right)+\mathcal{L}_{\rm mat}\right],
+\end{align}
+where $\kappa_{g}=(16\pi)^{-1}$ and $\acs$ and $\bcs$ are coupling constants. We will use units for $\theta$ where $[\acs]=L^2$ and $[\bcs]=[\theta]=L^0$.
+The first term is the standard Einstein Hilbert action for vacuum general relativity, the third term is a minimally coupled scalar field and the second term is a parity violating interaction.
+
+Variation of the DCS with respect to the metric yields the modified field equations
+\begin{align}
+G_{\mu \nu}+\frac{4\acs}{\kappa_g}C_{\mu \nu}=\frac{1}{2\kappa_g}\left(T_{\mu \nu}^\theta+T_{\mu \nu}^{\rm mat}\right), \label{eq:modE}
+\end{align}
+where $T_{\mu \nu} ^\theta$ and $T_{\mu \nu}^{\rm matter}$ are the normal minimally coupled stress energy tensors
+\begin{align}
+&T_{\mu \nu}^{\rm mat}=-2\frac{\partial\mathcal{L}_{\rm mat}}{\partial g^{\mu \nu}}+\mathcal{L}_{\rm mat}g_{\mu \nu} \nonumber \\
+&T_{\mu \nu}^\theta = \bcs\left[\theta_{:\mu} \theta_{;\nu}-\frac{1}{2}g_{\mu \nu}\left(\theta_{;\delta}\theta^{;\delta}+2V(\theta)\right)\right],
+\end{align}
+(\zach{Zach: Note there is a sign error in Kent's note as it should be +2V not -2V})
+and the C-tensor is defined as
+\begin{align}
+C^{\mu \nu}=\theta_{:\sigma}\epsilon^{\sigma\delta\alpha(\mu}R^{\nu)}{}_{\delta;\alpha}+\theta_{;\delta \sigma}*R^{\delta(\mu\nu)\sigma}
+\end{align}
+in terms of the dual of the Riemann tensor
+\begin{align}
+*R^{\mu\nu\rho\sigma}=\frac{1}{2}\epsilon^{\rho\sigma\alpha\beta}R^{\mu\nu}{}_{\alpha\beta}.
+\end{align}
+
+Variation of the DCS action with respect to $\theta$ yields the equation of motion
+\begin{align}
+\Box \theta= -\frac{\acs}{\bcs}R_{\nu\mu\rho\sigma}*R^{\mu\nu \rho \sigma}+\frac{dV}{d\theta}\equiv  -\frac{\acs}{\bcs}*RR+\frac{dV}{d\theta}. \label{eq:SEOM}
+\end{align}
+where in the second line we define the Pontryagin density $*RR\equiv R_{\nu\mu\rho \sigma}*R^{\mu\nu\rho\sigma}$.
+
+Hence we see that for DCS gravity, the effective stress energy tensor  is
+\begin{align}
+T_{\mu \nu} ^{\rm eff}=(T_{\mu\nu}^\theta +T_{\mu \nu}^{\rm mat})-8\acs C_{\mu \nu}
+\end{align}
+
+\subsubsection{Conservation of Effective Stress Tensor}
+We note that the DCS effective stress energy tensor is converved $\nabla^\nu T^{\rm eff}_{\mu\nu}=0$ assuming only the EOM for the scalar field Eq.~\eqref{eq:SEOM}, i.e. independently of the field equation  Eq.~\eqref{eq:modE}. 
+%We note that DCS theory obeys the strong equivalence principle, which means that (\zach{Zach: I think that it means this}) $T^{\rm mat}_{\mu\nu}{}^{;\nu}=0$ independently of the modified field equation Eq.~\eqref{eq:modE}, provided $\theta$ satisfies the EOM $\theta$, Eq.~\eqref{eq:SEOM}.
+%To see this first note that $G_{\mu \nu}{}^{;\nu}=0$ independently of the field equation Eq.~\eqref{eq:modE}. Next note that 
+To see this note that
+\begin{align}
+T_{\mu\nu}^\theta{}^{;\nu} = \bcs\theta_{;\mu}\left[\Box \theta -\frac{dV}{d\theta}\right]
+\end{align}
+and
+\begin{align}
+C_{\mu\nu}{}^{;\nu}=-\frac{1}{8}\theta_{;\mu}*RR.
+\end{align}
+Hence
+\begin{align}
+T^{\rm eff}_{\mu \nu}{}^{;\nu}=\left(T^{\theta}_{\mu\nu}-8\acs C_{\mu\nu}\right)^{;\nu} =\bcs \theta_{;\mu}\left[\Box \theta -\frac{dV}{d\theta}+\frac{\acs}{\bcs}*RR\right]=0
+\end{align}
+%\begin{align}
+%\nabla^\nu\left(\frac{1}{2\kappa_g}T^\theta_{\mu\nu}-\frac{4\acs}{\kappa_g}C_{\mu\nu}\right)=\frac{\bcs}{2\kappa_g}\theta_{;\mu}\left(\Box \theta -\frac{dV}{d\theta}\right)+\frac{\acs}{2\kappa_g}\theta_{;\mu}*RR=0,
+%\end{align}
+where we invoked the scalar EOM  Eq.~\eqref{eq:modE} in the last line.
+
+\subsection{Linearized Field Equations}
+
+Furthermore, as we know GR describes BH well in many regimes, we expect the corrections to GR to be suppressed by a small coupling parameter $\epsilon$ implicitly in $T^{\rm eff}_{\mu \nu}$, meaning that the modified black hole $g$ should be well described a small perturbation $h$ of a Kerr Black hole $k$
+\begin{align}
+g_{\mu \nu}=k_{\mu\nu}+ h_{\mu\nu}
+\end{align}
+where $h$ obeys the linearized Einstein Equations 
+\begin{align}
+\Delta_G[h]_{\mu \nu}=\frac{1}{2\kappa_g}T^{\rm eff}_{\mu\nu}, \label{eq:LE}
+\end{align}
+with
+\begin{align}
+\Delta_{G}[h]_{\mu \nu}\equiv G_{\mu \nu}[k+h]-G_{\mu \nu}[k]+\mathcal{O}(h^2).
+\end{align}
+Because of the small coupling parameter implicit in $T^{\rm eff}_{\mu}$, the source term for the linearized equation only depends on the background metric $k_{\mu\nu}$
+and additional fields, taken to be of the same size as the small coupling parameter, that have already been computed from their EOM (this will be clearer when we examine the particular case of DCS). Hence we take $T^{\rm eff}_{\mu \nu}$ to be the a prescribed source term for the metric perturbation $h_{\mu\nu}$.
+To be more explicit, first note that $\Delta_G[h]_{\mu \nu} =\overline {\Delta_R[h]_{\mu \nu}} $, where $\Delta_R$ is the linearized Ricci Tensor and the overbar indicates a trace reversal with respect to the background Kerr metric $\bar h_{\mu\nu}\equiv h_{\mu \nu}-\frac{1}{2}k_{\mu \nu}k^{\alpha\beta}h_{\alpha \beta}$. Then,
+\begin{align}
+\Delta_R[h]_{\mu \nu}=\Delta_L[h]_{\mu \nu}+\nabla_{(\mu}v_{\nu)}
+\end{align}
+where $\Delta_L$ is the Lichnerowicz operator \cite{Dias:2015nua} (on a vacuum background)
+\begin{align}
+\Delta_L[h]_{\mu \nu}=-\frac{1}{2}\Box h_{\mu \nu}-R_{\mu\kappa \nu \lambda}h^{\kappa \lambda}
+\end{align}
+and $v$ quantifies the violation of the Lorentz gauge condition
+\begin{align}
+v_{\nu}=\nabla^{\alpha}\bar h_{\alpha \nu}
+\end{align}
+Putting it altogether and using the fact (for vacuum backgrounds) $\overline{\Delta_L[h]_{\mu \nu}}=\Delta_L[\bar h]_{\mu \nu}$, we find that the linearized Einstein operator is a relatively simple function of the trace-reversed metric perturbation
+\begin{align}
+\Delta_{G}[h]_{\mu \nu}=\Delta_L[\bar h]_{\mu\nu}+\nabla_{(\mu}v_{\nu)}-\frac{1}{2}k_{\mu \nu}\nabla_\alpha v^\alpha
+\end{align}
+
+\subsection{Conditions for existence of solution}
+
+\subsection{Source Term in Dynamical Chern's Simon's Gravity}
+
+In DCS gravity, we take $\epsilon=\acs/\sqrt{\kappa_g \bcs}$ to be our small parameter. Note that this is not a dimensionless small parameter and it may be more insightful to switch to the small parameter $\zeta =\epsilon^2/M^4$ in the future like Kent.
+
+When linearize the scalar EOM and Field Equations about the kerr solution $g_{\mu\nu}=k_{\mu\nu}$ and $\theta =0$. To do this we expand the metric and the scalar field as
+\begin{align}
+&g_{\mu \nu}=k_{\mu\nu} +\sum_{n=1}^\infty h_{\mu\nu}^{(n)}\epsilon^{2n} \nonumber \\
+&\theta \sqrt{\frac{\bcs}{\kappa_g}}=\sum_{n=1}^\infty \epsilon^{2n-1}\theta^{(n)}.
+\end{align}
+Note in our discussion above $h=\epsilon^{2}h^{(1)}$.
+Substitution of this expansion into the field equation and scalar EOM yields a well defined iterative procedure for calculating the corrections $h^{(n)}$ and $\theta^{(n)}$. For instance consider the first iteration (for simplicity, we take $V=\mathcal{L}_{\rm mat}=0$)
+
+The $\mathcal{O}(\epsilon)$ part of scalar EOM is
+\begin{align}
+\Box \theta^{(1)}=-*RR,
+\end{align}
+with the RHS evaluated on the Kerr Background. The $\mathcal{O}(\epsilon^2)$ part of the Field equations is
+\begin{align}
+\epsilon^2\Delta G[h^{(1)}_{\mu\nu}]=-\frac{4\acs}{\kappa_g}C_{\mu \nu}+\frac{1}{2\kappa_g}T_{\mu\nu}^\theta, \label{eq:Source}
+\end{align}
+with $C_{\mu\nu}$ and $T^\theta_{\mu\nu}$ evaluated on the Kerr Background with $\theta=\sqrt{\frac{\kappa_g}{\bcs}}\epsilon\theta^{(1)}$. 
+
+In general, assume that we know the corrections through $h^{(n)}$ and $\theta^{(n)}$. Then we can determine $\theta^{n+1}$ by solving... (we probably don't need to write this down in general since it will get very messy.)
+
+
+
+\section{Choice of coordinates}
+\label{sec:coord}
+
+We make our coordinate choice for $g$ at the non-linear level. Since $\mathcal{T}$ and $\mathcal{R}$ commute, we can choose $t$ and $\phi$ as two of the coordinates, which will mean that all of the metric functions $g_{\alpha \beta}$ will only be functions of $x^A$, where the capital latin index $A=2,3$ runs over the remaining coordinates. As a further definition let a lower case latin index $i=0,1$ run over the first two coordinates.
+
+Because of the $(t,\phi)\to (-t,-\phi)$ reflection symmetry (which in other words means the assumptions of thm 7.1.1 are satisfied and the two-plane orthogonal to $\mathcal{T}$ and $\mathcal{R}$ is integrable), we may choose $x^A$ to span a submanifold orthogonal to $\mathcal{T}$ and $\mathcal{R}$ and write
+\begin{align}
+g_{\alpha \beta}dx^\alpha dx^\beta=g_{ij}(x^A)dx^{i}dx^j+g_{AB}(x^A)dx^{A}dx^B \label{eq:metnoc}
+\end{align}
+Since there are no iA cross terms in the metric there is no ambiguity in writing
+\begin{align}
+g^{\alpha \beta}\partial_\alpha \partial_\beta=g^{ij}(x^A)\partial_i \partial_j+g^{AB}(x^A)\partial_A\partial_B
+\end{align}
+where $g^{ij}$ and $g^{AB}$ are the inverses of $g_{ij}$ and $g_{AB}$.
+
+Note that the matrix $g_{AB}$ has a Euclidean signature (and is positive definite) and the matrix $g_{ij}$ has a Lorentzian signature. 
+
+Our BH assumptions also let us write down the stress tensor in these coordinates as
+\begin{align}
+T_{\alpha \beta}dx^\alpha dx^\beta=T_{ij}(x^A)dx^{i}dx^j+T_{AB}(x^A)dx^{A}dx^B
+\end{align}
+
+The matrix $g_{AB}$ can be thought of as a 2D metric on the $x^A$ submanifold. 
+
+The metric of Eq.~\eqref{eq:metnoc} still has residual gauge freedom. We are still allowed to choose the coordinates on the $x^A$ submanifold arbitrarily. On the $x^i$ submanifold, we are still allowed linear transformations
+\begin{align}
+&t'= a t+ b \phi,& & \phi'=c t +d \phi
+\end{align}
+We can fix the coordinates on the $x^i$ submanifold by demanding that $\phi$ parametrizes closed orbits of period $2\pi$ and that $\frac{\partial}{\partial t}$ is asymptotically normal to $\frac{\partial}{\partial \phi}$
+
+We now discuss two choices for coordinates on the $x^A$ submanifold that completely fix the coordinates and reduces the number of free metric functions from 6 to 4.. The first choice is known as conformal coordinates is useful for selecting the independent field equations and evaluating their ellipticiity. Unfortunately, the Kerr metric in conformal coordinates is even more complicated than normal Boyer-linquist (BL)coordinates. We name the second choice Boyer-linquist-like coordinates, which has the benefit of reducing to BL coordinates for the Kerr metric and is hence more useful for computational purposes. Our strategy will often be to employ conformal coordinates for theoretical arguments and then bootstrap the proof to BL-like coordinates.
+
+\subsection{Conformal coordinates}
+
+%To make progress, we choose to work in conformal coordinates, which will reduce the number of metric functions from six to four. We will then identify four independent elliptic equations and show that the Bianchi Identities, together with the appropriate boundary conditions, imply the final two Einstein equations.
+
+When working in conformal coordinates we will use $x^2=x$ and $x^3=y$
+
+The matrix $g_{AB}$ can be thought of as a 2D metric on the $x^A$ submanifold. As all 2D metrics are conformally flat, we may use ``conformal'' (alternatively ``isotropic'') coordinates \cite{Stephani:2003tm} which sets 
+\begin{align}
+g_{AB}=\Lambda\delta_{AB}
+\end{align}
+Provided that we perform the linearizion $g=k+h$ in this coordinate system, choosing isotropic coordinates, implies that we identical forms for the background $k_{AB}=\Omega \delta_{AB}$, $h_{AB}=\sigma \delta_{AB}$, and no $iA$ cross terms.
+
+Note that the trace reversed metric perturbation can also be written $\bar h_{AB}=h_{AB}-(1/2)k_{AB}(k^{CD}h_{CD}-k^{ij}h_{ij})\equiv\bar \sigma \delta_{AB}$ with $\bar\sigma=k^{ij}h_{ij}$. Later, we will find it more use the variables $\bar h_{ij}$ and $\bar \sigma$ to describe the perturbation
+
+\subsubsection{Residual Gauge Freedom}
+
+Imposing conformal coordinates does not completely fix the coordinates. 
+On the $x^A$ submanifold, we are still allowed 2D conformal transformations
+\begin{align}
+\zeta' \equiv  x'^2+ix'^3 = f(\zeta),
+\end{align}
+where $f$ is an arbitrary analytic function of $\zeta$.
+
+The residual gauge freedom can be completely fixed by fixing the boundary location, i.e., we require that the conformal transformation leaves the boundary fixed ($x'^A=x^A$, for $x\in \mathcal B$), . To see this, note that each $x'^A(x^B)$ obeys the 2D Laplace equation, as a consequence of the Cauchy-Riemann equations. Further, the identity transformation is a conformal transformation that leaves the boundary fixed and is hence a solution to the 2D Laplace equation satisfying $x'^A=x^A$, for $x\in \mathcal B$. By the uniqueness of solutions to the Laplace equation, this implies that all other conformal transformations move the boundary.
+
+\zach{ZM: The below discussion of the axis is very unclear.}
+
+Furthermore, we now show that we can always place the boundary $\mathcal{B}$, which as discussed in section \ref{sec:BC} below is the union of the killing horizon $\mathcal H$, asymptotic infinity $\mathcal I$, and the intersections of the axis with the $x^A$ submanifold $A_1$ and $A_2$, so that $\mathcal H$ is the surface $x=x_h$, $\mathcal I$ is the surface $x=\infty$, $A_1$ is the surface $y=y_1$, and $A_2$ is the surface $y=y_2$, where can choose $x_H$, $y_1$, and $y_2$ to be whatever we want.
+
+To do this, assume that our original set of conformal coordinates $(x,y)$ does not satisfy these demands. We must find a new set of conformal coordinates $x'(x,y)$ and $y'(x,y)$ such that the boundary is at the desired location. We first obtain x' by solving the laplace equation 
+\begin{align}
+\frac{\partial^2x'}{\partial x^2}+ \frac{\partial^2x'}{\partial y^2} =0
+\end{align}
+with the boundary conditions
+\begin{align}
+&\left. x' \right |_\mathcal{H}=x_H,& &\left. x' \right |_\mathcal{I}=x_I,& & \left. \nabla_{\vec n}x'\right |_{A_1}=0= \left. \nabla_{\vec n}x'\right |_{A_2},
+\end{align}
+where $\vec n$ is the normal vector to the boundary.
+This mixed boundary value problem always has a solution, so we can always determine x'. The first two conditions ensure that the boundaries $\mathcal H$ is moved to $x'=x_H$ and $\mathcal{I}$ is moved to $x_I$. The second two conditions can be converted to conditions on $y'$, by using the fact that the Cauchy-Riemann equations imply
+\begin{align}
+\nabla_{\vec n}x'=\nabla_{\vec t}y',
+\end{align}
+where $\vec t$ normal to $\vec n$. Hence the second two conditions are equivalent to setting the tangentially derivatives of $y'$ along $A_1$ and $A_2$ to zero. $y' =\hat y_1$ along $A_1$ and $y'=\hat y_2$ along $A_2$ for some constants $\hat y_1$ and $\hat y_2$.
+
+Now the following manipulations have already successfully moved $\mathcal H$ to $x=x_H$. If we choose $x_i=\infty$, the we have $\mathcal{I}$ at the desired location as well.
+To fix the change $\hat y_1$ and $\hat y_2$ to their desired values, we use an additional conformal transformation of the form
+\begin{align}
+&x'\to C_1 x'+x_H(1-C_1),& &y\to C_1 y' +C_2.&
+\end{align}
+This transformation leaves the location $x'=x_H$ invariant and, provided $C_1>0$, $x'=\infty$ invariant. The constants $C_1$ and $C_2$ can then be chosen so that $y'=y_1$ describes the surface $A_1$ and $y'=y_2$ describes the $A_2$ surface.
+
+Hence, from here forward, we will assume that $\mathcal{H}$ is located at $x=x_H$, $\mathcal{I}$ is located at $x=\infty$, $\mathcal{A}_1$ is located at $0$, and $\mathcal{A}_2$ is located at $y=\pi$ and we have completely fixed the coordinates.
+
+Note that this proof strictly doesn't apply if their is no Killing horizon, so it doesn't apply for flat space. However, we can still fix the residual gauge freedom in flat space by demanding that the conformal coordinates follow from the $M\to 0$ limit of the Kerr spacetime in conformal coordinates.
+
+%\zach{As an aside, I have not been able to show that the residual gauge freedom allows us to put the boundary at an arbitrary location. Namely, if we try to impose that one segment of the boundary is at $x^2=\text{constant}$, it is not always the case that Cauchy Riemann equations satisfy the integrability condtion $x^3_{,23}=x^3_{,32}$ necessary to find $x'^3$ such that the transformation is conformal. Note this will not affect our ability to find BH bump solutions, I just wanted to document this fact}
+%
+%\zach{Similarly, I disagree with a claim made in \cite{Stephani:2003tm}, who claims that the residual gauge freedom can be used to go to ``Weyl's Canonical'' coordinates and set $x'^2$ equal to some combination of the metric functions $g_{ij}$. I disagree since again, I find that the Cauchy Riemann equation for $x'^3$ is not integrable for an arbitrary $x'^2$.}
+%
+%As we will see later the residual gauge freedom on the $ij$ submanifold is fixed by the boundary conditions.
+
+\subsubsection{Kerr Metric In Conformal gauge}
+
+We show how conformal coordinates are related to Boyer-Linquist coordinates.
+
+%The Kerr-metric in Boyer-Linquist
+%coordinates is
+%\begin{align}
+%&k_{\mu\nu}dx^\mu dx^\nu=-\left(1-\frac{2Mr}{\Sigma}\right)dt^2 
+%-\frac{4Mar\sin^2\theta}{\Sigma}dtd\phi
+%+\frac{\sin^2\theta}{\Sigma}\left[(r^2+a^2)^2-a^2\Delta \sin^2\theta \right]d\phi^2
+%+\frac{\Sigma}{\Delta}(dr^2+\Delta d\theta^2)
+%\nonumber \\
+%%the below form sends a  to -a relative to Carroll. The above form comes from Carroll
+%%&k_{\mu\nu}dx^\mu dx^\nu=-\frac{\Delta}{\Sigma}\left(dt+a\sin^2\theta d\phi\right)^2+\frac{\sin^2\theta}{\Sigma}\left(adt +[r^2+a^2]d\phi^2\right)^2+\frac{\Sigma}{\Delta}dr^2+\Sigma d\theta^2,& \nonumber \\
+%&\Sigma=r^2+a^2\cos^2\theta, \nonumber \\
+% &\Delta =r^2-2Mr+a^2&,
+%\end{align}
+
+The Kerr metric is presented in Appendix \ref{sec:Kerr}. We would like to find a new radial coordinate $\pi(r)$ such that
+\begin{align}
+\Sigma \left(\frac{1}{\Delta}dr^2+d\theta^2 \right)=\Omega\left(d\pi^2+d\theta^2\right) =\Omega\left(\left[\frac{d\pi}{dr}\right]^2dr^2+d\theta^2\right) 
+\end{align}
+Hence, we see that if we choose
+\begin{align}
+&\frac{d\pi}{dr}=\frac{1}{\sqrt{\Delta}},& &\Omega= \Sigma& \label{eq:concond}
+\end{align}
+we achieve the desired form. Eq. \eqref{eq:concond} has a closed form solution.
+The general solution is 
+\begin{align}
+\pi(r)=\ln\left[\frac{r-M+\sqrt{\Delta}}{C}\right]\longleftrightarrow r=\frac{1}{2Ce^\pi}\left[(Ce^\pi+M)^2-a^2\right],
+\end{align}
+where C is a any constant. Note from Eq. ~\eqref{eq:concond} that conformal coordinate $\pi$ is singular on the horizon (as r is perfectly fine coordinate on the horizon.
+%We will choose $C=e^{-1}(r_+-M)$, so the horizon is located at $\pi=1$. 
+
+Note in flat space $a= M =0$, these coordinates correspond to $\pi = \ln(r) +\text{constant}$.
+
+% Placing the horizon at $\pi =0$ gives 
+%\begin{align}
+%&\pi(r)=\ln\left(\frac{r-M+\sqrt{\Delta}}{\sqrt{M^2-a^2}}\right),& \nonumber 
+%&r=M+\sqrt{M^2-a^2}\cosh(\pi)&
+%\end{align}
+
+\subsection{Boyer-Linquist-like coordinates}
+
+Conformal coordinates are useful for developing a strategy to solve the Einstein equations as an elliptic boundary value problem. However, in our case the complexity of the Kerr metric in conformal coordinates makes it easier to work in a Boyer-linquist-like coordinate system, which we can define at the nonlinear level. Namely, in terms of the conformal coordinates (which are unique, provided we fix the boundary as outlined earlier), the BL-coordinate system $(t,\phi, r,\theta)$ is defined to satisfy
+\begin{align}
+t=t \nonumber \\
+\phi =\phi \nonumber \\
+\frac{dr}{dx}=\sqrt{\Delta} \nonumber \\
+\theta =y
+\end{align}
+where $\Delta = r^2-2\hat M r+\hat a^2$, where $\hat M$ and $\hat a$ are constants (each choice of $\hat M$ and $\hat a$ will give a different BL-like coordinate system) and the constant of integration in $\frac{dr}{dx}=\sqrt{\Delta}$ is chosen so that the horizon is located at $r_+=\hat M+\sqrt{\hat M^2-\hat a^2}$. Note that the mass and spin of the BH will not usually end up being $\hat M$ and $\hat a$. 
+
+Under this transformation, the $t, \phi$ components of the metric are unchanged,
+\begin{align}
+g_{AB}dx^Adx^B=Z(dr^2+\Delta d\theta^2).
+\end{align}
+
+If we linearize the metric in BL-like coordinates AND choose the $\hat M =M$ and $\hat a =a$ to correspond with the background Kerr metric, then r and $\theta$ may be identified with the normal Kerr Boyer-linquist coordinates. We use the notation 
+\begin{align}
+K_{AB}dx^Adx^B=Z_{\rm kerr}(dr^2+\Delta d\theta^2),
+\end{align}
+with $Z_{\rm Kerr} = \Sigma/\Delta$.
+As we know the form of the metric at the non-linear level, the perturbation must have the form
+\begin{align}
+h_{AB}dx^Ad x^B =Y(dr^2+ \Delta d\theta^2) \label{eq:BLpert}
+\end{align}
+
+Note if we fix the location of the Killing horizon, axis, and asymptotic infinity, the uniqueness of BL-like coordinates follows from the uniqueness of conformal coordinates. 
+
+\subsubsection{Transformations between different BL-like coordinates}
+For a fixed $\hat M$ and $\hat a$ and the boundary locations fixed as discussed above, BL-like coordinates are unique. For our study of linearized perturbations in BL-like coordinates, it will be useful to record the transformation between two sets of BL-like coordinates $(r_1,\theta_1)$  with $\hat M_1$ and $\hat a_1$ and $(r_2,\theta_2)$ with $\hat M_2$ and $\hat a_2$. To determine the transformation, note that the AB submetric can be written in two ways (dropping the hats from the notation for brevity)
+\begin{align}
+g_{AB}dx^Adx^B=Z_1(dr_1^2+\Delta_1 d\theta_1^2)=Z_2(dr_2^2+\Delta_2 d\theta_2^2)=Z_2\frac{\Delta_2}{\Delta_1}\left(\frac{\Delta_1}{\Delta_2}dr_2^2+\Delta_1 d\theta_2^2\right)
+\end{align}
+Thus if we take $\theta_2 =\theta_1$ and $r_2$ to satisfy $(dr_2/dr_1)^2=\Delta_2/\Delta_1$ 
+with the condition that $r_2(r_{+1})=r_{+2}$
+%with the condition that $r_2=r_1$ if $(M_2,a_2))=(M_1,a_1)$
+, we achieve the desired form with $Z_1=Z_2(\Delta_2/\Delta_1)$. The radial transformation can be intergrated analytical to obtain the result
+\begin{align}
+r_2=\frac{a_2^2-(M_2+C_1(r_1-M_1+\sqrt{\Delta_1}))^2}{-2C_1(r_1-M_1+\sqrt{\Delta_1})},
+\end{align}
+\begin{align}
+C_1=\sqrt{\frac{M_2^2-a_2^2}{M_1^2-a_1^2}}
+\end{align}
+The twp corresponding infinitesimal transformation can be found by taking $(M_2,a_2) =(M_1+\Delta M, a_1)$, giving
+\begin{align}
+r_2=r_1+\delta M\left(\frac{a_1^2-M_1r_1}{a_1^2-M_1^2}\right) +\mathcal{O}(\delta M^2) \label{eq:infM}
+\end{align}
+ and $(M_2,a_2)=(M_1,a_1 +\delta a)$ giving
+ \begin{align}
+ r_2=r_1+\delta a\left(\frac{a_1(r_1-M_1)}{a_1^2-M_1^2}\right) +\mathcal{O}(\delta a^2)  \label{eq:infa}
+ \end{align}
+
+\subsubsection{Flat space in BL-like coordinates}
+
+If we take $\hat M =0=\hat a$, then BL-like coordinates for flat space correspond simply to spherical polar coordinates. What do BL-like coordinates for flat space look like if we don't take $\hat M = 0 =\hat a$? If we let $r$ be the spherical polar radius and define $r_2$ to satisfy the equation
+\begin{align}
+\left(\frac{dr_2}{dr}\right)^2 =\frac{\Delta_2}{r^2}, \label{eq:r2} \to r= C\left(r_2-\hat M +\sqrt{\Delta_2}\right)
+\end{align}
+where C is a constant of integration and $\Delta_2=r_2^2-2\hat M r +\hat a^2.$
+Then find the metric is in the form of BL-like coordinates with 
+\begin{align}
+&g_{tt}= -1 \nonumber \\
+&g_{t\phi}=0 \nonumber \\
+&g_{\phi\phi}=C^2(r_2-\hat M +\sqrt{\Delta_2})^2\sin^2\theta \nonumber \\
+&Z=\frac{C^2(r_2-\hat M +\sqrt{\Delta_2})^2}{\Delta_2}, \label{eq:flatBL}
+\end{align}
+
+Note that since flat space-time doesn't have a horizon, our argument that BL-like coordinates are unique does not apply. We see that BL-like coordinates are not unique and parameterized by the constant C. Note that this is consistent with the form of a kerr metric of mass $M_1$ and spin $a_1$ written in BL like coordinates with $\hat M=M_2$ and $\hat a=a_2$ (i.e., we that to leading order as $r\to \infty$, we recover 2.24 but with different values of C. If $\hat M =M$, the mass of the kerr spacetime and $\hat a = a$, the specific angular momentum of the Kerr spacetime, at large r, we recover Eq.~\eqref{eq:flatBL} with $C=\frac{1}{2}$
+
+%To fix the constant C, we demand that the Kerr metric (with mass $M=\hat M$ and spin $a =\hat a$) approach the flat space metric as $r_2\to \infty$ (if we call the Kerr radial coordinate $r_2$ as well). This gives $C=\frac{1}{2}$. 
+
+%\section{Boundary conditions}
+%\label{sec:BC}
+  
+
+\section{Black hole solutions}
+%
+An important class of solutions Eq.~\eqref{eq:newEE} are the black hole solutions. 
+
+We will take this to mean that 
+\begin{enumerate}
+\item The spacetime is asymptotically flat and has a killing vector filed $\mathcal{T}=\frac{\partial}{\partial t}$ that is asymptotically time-like. 
+\item The spacetime has a rotational Killing vector field $\mathcal{R=\frac{\partial}{\partial \phi}}$ with closed orbits $\phi \sim \phi +2\pi$. Further the spacetime has an axis consisting of the fixed points of the rotational isometry where $\mathcal{R}\cdot\mathcal{R}=0$.
+ %\zach{I believe this comes from Hawking's Rigidity thms}
+\item The spacetime has a Killing horizon, that coincides with the event horizon. where the Killing vector $\mathcal{K}=\mathcal{T}+\Omega_H \mathcal{R}$ becomes null.
+\end{enumerate}
+%
+We will try to solve for black hole solutions with the topology $R^2\times S^2$. Stationary axisymmetric metrics of the form discussed in \ref{sec:coord} only depend on the $x^A$ coordinates which parameterize a sub-manifold with topology $R \times [0,\pi]$, much like the submanifold parameterized by $r$ and $\theta$ in flat space. \zach{I need to explain the topology of the $x^A$ submanifold better.} This boundary of this manifold is the Killing horizon, asymptotic infinity, and the axis. 
+%
+%
+%%As the metric only depends on the $x^A$ coordinates, we can restrict the calculation to the $x^A$ submanifold. \zach{Check this: the fixed points of the rotational isomoetry constitute an axis where the norm of the rotational Killing vector $\mathcal{R}$ vanishes. The intersection of this axis with the $x^A$ submanifold splits the submanfold into two halves with topology $R\times [0,\pi]$, which are isometric by the rotational isomotery. Hence, we will solve for the metric on a single half of the $x^A$ submanifold, bounded by the Killing horizon, asymptotic infinity and axis.}
+%
+%%We will look for solutions that are asymptotically flat, possess a Killing horizon where the vector $\partial/\partial_t +\Omega_H \partial/\partial_\phi$ vanishes, and have an axis where $\partial/\partial_\phi$ vanishes. Hence we will look for solutions on the $x^A$ submanifold bounded by conformal infinity $\mathcal{I}$, the Killing horizon $\mathcal{H}$, and the two intersections of the axis the $x^A$ plane $\mathcal{A}_1$ and $\mathcal{A}_2$ (\zach{I haven't proved this, but I believe there are always two intersections})
+%
+%\subsection{Precision of boundary conditions}
+%\label{sec:prec}
+%
+%We seek to solve the linearized Einstein equation as a boundary value problem, where one piece of information about each metric function is specified on the boundary.
+%
+%We now discuss ``how precisely'' a boundary condition must be provided near any boundary. I.e., sometimes it is not sufficient
+%
+%As is explained in \cite{Dias:2015nua}, given N second order, partial differential equation for the vector of N variables $\vec v$ we expect that the general solution near any boundary $\mathcal{B}$ will depend on 2N free constants. This is explicitly clear for a single ordinary differential equation, where the constants explicitly appear in the Frobenius construction of the solutions. For the boundary value problem to be well-posed, the boundary condition needs to constrain one of these constants. For example if Frobenius theory reveals $y(x)$ scales as either $x^2$ or $x^{5/2}$ as $x\to 0$ imposing that BC that $y(0)=0$ does not constrain either constant. An appropriate boundary condition would be theat $x^{-2}y(x)\to0$ as $x\to 0$. In general, for coupled PDE's, one needs to establish (without using Frobenius theory) that the solution near the boundary $\mathcal{B}$ only depends N constants rather than the 2N constants parametrizing the general solution.
+%
+%We now show how this boils down to a knowledge of the general solution to N coupled ODE's and the boundary conditions on the other boundary. To be explicit, we develop the general theory at the asymptotic boundary, and work in coordinates $x^A={r,\theta}$ where the asymptotic boundary is located at $r\to \infty$. We will use barred indices $\bar a, \bar b, etc...$ to label the N fields and the N equations. Then assuming that we have identified N
+%
+%\subsection{Defining boundary conditions}
+%Following Dias et. al. \cite{Dias:2015nua}, we define a ``defining'' boundary condition as being the condition that we impose on the dependent variables on the boundary and a ``derived'' boundary condition a condition derived from a ``defining'' boundary condition by substituting the ``defining'' boundary condition into the field equations. 
+%
+%Note that the boundary condition used to find the solution must be given to the level of precision discussed in section \ref{sec:prec}. In some cases the defining BC or one of the derived conditions will be precise enough; in other cases, these conditions will not be precise enough (in other words, you may have to change your defining BC if you want to actually use it to uniquely identify a soltution).
+%
+%%Following Dias et. al. \cite{Dias:2015nua}, we define an asymptotic boundary as a boundary that is locate an infinite proper distance from all other points and a fictitious boundary as boundary that is located a finite proper distance away from other points. In our case the killing horizon and the axis are fictitious boundaries and asymptotic infinity is an asymptotic boundary. 
+%
+%\subsubsection{Axis}
+%
+%The axis is defined as fixed points of the rotational isometry. Hence it consists of the points where the norm of $\mathcal{R}=0$, e.g. $g_{\phi\phi}=0$. We have fixed our coordinates so that the axis is located at $\theta =0$ or $\theta =\pi$. We also require that the metric is regular on the axis, meaning that there exists a coordinate system $x^{\hat \mu}$ where the metric $g_{\hat \mu \hat \nu}$ is invertible and each component is a smooth function of $x^{\hat \mu}$.  However, in many cases if we use a coordinate basis with $\phi$ as one of the coordinates, the metric becomes singular since $\mathcal{R}$ is the zero vector on the axis, making the coordinate basis incomplete. This is true for BL coordinates for Kerr. 
+%
+%In principle, the field equations restrict the possible behaviors of the metric functions near any boundary, independently of any condition that we impose. The possible behaviors are parameterized by two constants for each metric function \cite{Dias:2015nua}. In general it will be not be possible to find a coordinate transformation where the metric is regular for arbitrary values of these constants. The defining boundary condition should therefore set the values of the constants so that such a coordinate transformation can be found.
+%
+%Here we take an alternate approach, similar to \cite{Dias:2015nua} (who despite claiming such an expansion is possible also do not expand the field equations and explicitly write down all of the constants). We note that the transformation from BL coordinates $(t,r,\theta, \phi)$ to the coordinates $x^{\hat \mu}=(t, r, X = \theta \cos\phi, Y=\theta \sin\phi)$ makes the Kerr metric regular on the axis. We then posit that our desired solution, $ g = k+\epsilon  h$ is also regular in the coordinates $x^{\hat \mu}$. This (together with the condition that $g_{\phi\phi}\to 0$ on the axis) becomes the defining boundary condition.  
+%
+%Before we explore what this implies we show that the Kerr metric is regular in the $x^{\hat \mu}$ coordinates. Note that the Kerr metric in BL coordinates has the form
+%\begin{align}
+%k_{\mu\nu}dx^\nu dx^\mu = \tilde k_{\theta \theta}d\theta^2+\tilde k_{\phi\phi} \theta ^2 d\phi^2+2\tilde k_{\phi t}\theta^2 d\phi dt +\tilde k_{tt}dt^2+\tilde k_{rr}dr^2,
+%\end{align}
+%with $\tilde k_{\theta \theta} \sim \tilde k_{\phi\phi}$ as $\theta \to 0, \pi$ and
+%where the tilde indicates that the function is $\mathcal{O}(1)$ and smooth as $\theta \to 0, \pi$. Then performing the coordinate transformation, using
+%\begin{align}
+%&dX = \cos \phi d\theta -\theta\sin\phi d\phi, & &dY=\sin \phi d\theta+\theta\cos \phi d\phi \nonumber \\
+%&\to \theta d\theta =XdX+YdY,& &\theta^2 d\phi^2 =XdY-YdX
+%\end{align}
+%we have
+%\begin{align}
+%k_{\mu\nu}dx^\nu dx^\mu=& \tilde k_{\theta \theta}\frac{1}{\theta^2}\left(X^2dX^2+Y^2dY^2+2XYdXdY+\frac{\tilde k_{\phi\phi}}{\tilde k_{\theta\theta}}\left[X^2dY^2+Y^2dY^2-2XYdXdY\right]\right) \nonumber \\
+%&+2\tilde k_{\phi t}(XdY-YdX)dt+\tilde k_{tt}dt^2+\tilde k_{rr}dr^2 \nonumber \\
+%&\sim \tilde k_{\theta\theta}(dX^2+dY^2)+\tilde k_{tt}dt^2 +\tilde k_{rr}dr^2
+%\end{align} 
+%where to get the asymptotic equality I used $\tilde k_{\phi\phi}/\tilde k_{\theta \theta}\sim 1$ as $\theta \to 0, \pi$, $X =0$, and $Y = 0$ at $\theta =0,\pi$. Thus $k_{\hat \mu \hat \nu}$ is invertible on the axis and it's components are smooth functions.
+%
+%We now impose that the desired solution $g$ is also smooth in the $x^{\hat \mu}$ coordinates. We have, starting with the metric BL-like coordinates parametrized by $g_{tt}, g_{t\phi}, g_{\phi\phi},$ and $Z$
+%\begin{align}
+%g_{\mu \nu}dx^\mu dx^{\nu} &=g_{tt}dt^2+2g_{t\phi}dtd\phi +g_{\phi\phi}d\phi^2+Z(dr^2+\Delta d\theta^2) \nonumber \\
+%&=g_{tt}dt^2+Zdr^2+2g_{t\phi}\frac{1}{\theta^2}(XdtdY-YdtdX)
+%\nonumber \\
+%&+\frac{1}{\theta^2}\left[\left(\Delta Z X^2+\frac{g_{\phi\phi}Y^2}{\theta^2}\right)dX^2
+%+\left(\Delta Z Y^2+\frac{g_{\phi\phi}X^2}{\theta^2}\right)dY^2+2XY\left(\Delta Z -\frac{g_{\phi\phi}}{\theta^2}\right)dXdY\right]
+%\end{align}
+%
+%Note that $X/\theta=\cos \phi$ and $Y/\theta =\sin \phi$ are not continuous functions of X and Y at $X=Y=0$ since the limit is direction dependent. Thus the smoothness of the tX and tY components requires
+%\begin{align}
+%&\frac{g_{t\phi}}{\theta} \to 0,& &\theta \to 0, \pi&,
+%\end{align}
+%e.g. $g_{t\phi} =\mathcal{O}(\theta^2)$ if we do an polynomial series expansion in $\theta$.
+%
+%Likewise the $XY/\theta^2=\cos\phi\sin\phi$ has a direction dependent limit as $\theta \to 0$ and the smoothness of the XY component requires that $\Delta Z \sim g_{\phi\phi}\theta^{-2}$ as $\theta \to 0, \pi$.
+%
+%With these restrictions at $\theta = 0, \pi$, we have (using $X^2+Y^2=\theta^2$)
+%\begin{align}
+%\text{det} (g_{\hat \mu \hat \nu}) =g_{tt} Z^3\Delta^2
+%\end{align}
+%Smoothness of tt and rr components and invertibility then give the condition that $g_{tt}$ and $Z$ are smooth $\mathcal{O}(1)$ functions as $\theta \to 0,\pi$.
+%Note that we have shown that imposing regularity in the $x^{\hat \mu}$ coordinates requires
+%\begin{align}
+%&g_{\phi\phi} \sim Z\Delta \theta^2 =\mathcal{O}(\theta^2),& &\theta \to 0, \pi&
+%\end{align}
+%which means that we don't have to seperately assume $g_{\phi \phi}$ vanishes.
+%
+%We have formulated the regularity condition at the non-linear level. To determine the regularity condition at the linearized level, we substitute 
+%$g_{tt}=k_{tt}+\epsilon h_{tt}$,  $g_{t\phi}=k_{t\phi}+\epsilon h_{t\phi}$,  $g_{\phi\phi}=k_{\phi\phi}+\epsilon h_{\phi\phi}$, and 
+%$Z= Z_{\rm kerr}+\epsilon Y$ into each condition and equate order by order in $\epsilon$ (note that we can only do this because we have completely fixed our coordinate freedom when we use BL coordinates) the defining boundary conditions for the perturbation as $\theta \to 0, \pi$
+%\begin{align}
+%&h_{t\phi} =\mathcal{O}(\theta^2) \nonumber \\
+%&h_{\phi\phi} \sim \Delta Y \theta^2 =\mathcal{O}(\theta^2) \nonumber \\
+%&h_{tt} =\mathcal{O}(1) \label{eq: axisBC}
+%\end{align}
+%
+%Later, once we have calculated the principal symbol for the linearized Einstein operator, we will determined derived boundary condtions that follow from substituting Eq.~\eqref{eq: axisBC} into the field equations.
+%
+%
+%%$g_{\mu \nu}=k_{\mu\nu}+\epsilon h_{\mu \nu}+\mathcal{O}(\epsilon^2)$ 
+%%We can write the regularity condition on the metric in BL-like coordinates $x^\mu=(t,\phi,r, \theta)$ by transforming the components of the metric via
+%%\begin{align}
+%%g_{\hat \mu \hat \nu}=\frac{\partial x^\mu}{\partial x^{\hat \mu}}\frac{x^{\partial \nu}}{\partial x^{\hat \nu}}g_{\mu\nu}. \label{eq:reg}
+%%\end{align}
+%%In practice we must posit (perhaps motivated by similar solutions to the one that we intend to find) that the metric is regular in a particular coordinate system $x^{\hat \mu}(x^\mu)$ and then look for solutions. If we posit something silly, then we will find that there is no solution to the boundary value problem that we have set-up.
+%%
+%%For linearized (completely gauge fixed) perturbations, we write $g_{\mu\nu}=k_{\mu\nu}+\epsilon h_{\mu\nu}$ and posit that we can find a nonsingular coordinate system $x^{\hat \mu(x^{\mu})}$ that does not depend on $\epsilon$. Equating order by order in Eq.~\eqref{eq:reg} gives the regularity condition that each component of
+%%\begin{align}
+%%h_{\hat \mu \hat \nu}=\frac{\partial x^\mu}{\partial x^{\hat \mu}}\frac{x^{\partial \nu}}{\partial x^{\hat \nu}}h_{\mu\nu}. \label{eq:reg}
+%%\end{align}
+%%must be regular (since $\text{det } \tilde g= \text{det } \tilde k + \epsilon \text{tr }\tilde h +\mathcal{O}(\epsilon)$ and $\text{det } \tilde k \neq 0 $ in the hatted coordinates, we don't have to worry about the determinant condition.). Note if we trace reverse each side Eq.~\eqref{eq:reg}, we get the same equation with $\bar h_{\mu\nu}$ replacing $\bar h_{\mu\nu}$.
+%%
+%%As we will encounter a similar scenario for the horizon BC, we will phrase our regularity condition using Kerr-Schild coordinates $(t',x,y,z)$ in which the metric is regular on the axis and on the horizon. Kerr-Schild coordinate defined via
+%%\begin{align}
+%%&x+iy=(r+ia)\sin\theta e^{i\phi},& &z=r \cos\theta,& &dt'=dt+(1-\frac{r^2 +a^2}{\Delta})dr&
+%%\end{align}
+%%Since our solutions are axisymmetric to impose the regularity at $\phi =0$. Parametrizing the perturbation in BL coordinates using $\bar Y$, $\bar h_{tt}$, $\bar h_{\phi\phi}$, and $\bar h_{t\phi}$ as in Eq.~ \eqref{eq:BLpert}, the 10 regularity conditions in Eq.~\eqref{eq:reg} become
+%%\begin{align}
+%%&\bar h_{t't'}= \bar h_{tt} \\
+%%&\bar h_{t'x}=-\bar{h}_{\text{t$\phi $}} \sin (\theta ) (a \cos (\phi )+r \sin (\phi ))-\frac{2 M r \bar{h}_{\text{tt}}}{\Delta }\\
+%%&\bar h_{t'y}= \bar{h}_{\text{t$\phi $}} \sin (\theta ) \cos (\phi )\\ 
+%%&\bar h_{t'z}=\bar{h}_{\text{t$\phi $}} \cos (\theta ) (r \cos (\phi )-a \sin (\phi ))\\ 
+%%&\bar h_{xx}=\frac{2 M r (\Delta  \bar{h}_{\text{t$\phi $}} \sin (\theta ) (a \cos (\phi )+r \sin (\phi ))+2 M r \bar{h}_{\text{tt}})}{\Delta ^2} 
+%%\nonumber \\
+%%&+\sin (\theta ) (-a \cos (\phi )-r \sin (\phi )) \left(-\bar{h}_{\phi \phi } \sin (\theta ) (a \cos (\phi )+r \sin (\phi ))-\frac{2 M r \bar{h}_{\text{t$\phi $}}}{\Delta }\right)+\bar{Y} \sin ^2(\theta ) (r \cos (\phi )-a \sin (\phi ))^2\\
+%%&\bar h_{xy}=\sin (\theta ) \left(-\sin (\theta ) (\bar{Y} \sin (\phi ) (a \sin (\phi )-r \cos (\phi ))+\bar{h}_{\phi \phi } \cos (\phi ) (a \cos (\phi )+r \sin (\phi )))-\frac{2 M r \bar{h}_{\text{t$\phi $}} \cos (\phi )}{\Delta }\right) \\
+%%&\bar h_{xz}=\cos (\theta ) (r \cos (\phi )-a \sin (\phi )) \left(-\sin (\theta ) (\bar{h}_{\phi \phi }-\bar{Y}) (a \cos (\phi )+r \sin (\phi ))-\frac{2 M r \bar{h}_{\text{t$\phi $}}}{\Delta }\right) \\
+%%&\bar h_{yy}= \bar{Y} \left(\cos ^2(\theta ) \left(\text{aa}^2-2 \text{M} r+r^2\right)+\sin ^2(\theta ) \sin ^2(\phi )\right)+\bar{h}_{\phi \phi } \sin ^2(\theta ) \cos ^2(\phi ) \\
+%%&\bar h_{yz}= \sin (\theta ) \cos (\theta ) \left(\bar{Y} \left(\sin (\phi ) (a \cos (\phi )+r \sin (\phi ))-r \left(\text{aa}^2+r (r-2 \text{M})\right)\right)+\bar{h}_{\phi \phi } \cos (\phi ) (r \cos (\phi )-a \sin (\phi ))\right)\\
+%%&\bar h_{zz}=\bar{Y} \left(\cos ^2(\theta ) (a \cos (\phi )+r \sin (\phi ))^2+r^2 \sin ^2(\theta ) \left(\text{aa}^2+r (r-2 \text{M})\right)\right)+\bar{h}_{\phi \phi } \cos ^2(\theta ) (r \cos (\phi )-a \sin (\phi ))^2
+%%\end{align}
+%%Regularity means that $\bar h_{\hat \mu \hat \nu}$ and its derivatives with respect to $t',x,y,,z$ have direction independent limits on the axis, which means we must ensure that the terms with $\phi$ go to zero on the axis.
+%%%Hence the regularity condition on the axis ($\theta =0,\pi$) is that the LHS of the above equations are $\mathcal{O}(1)$ or smaller as $\theta\to 0,\pi$. As mentioned above, we also must impose that the defining condition for the axis, $g_{\phi\phi} \to 0$, which becomes $h_{\phi\phi}\to 0$ when examined order by order in $\epsilon$. 
+%%%
+%%%Note that $\bar h_{tt}$ apears in the $t't'$, $t'x$, $xx$, and regularity conditions $xy$. However the tt equation is the most restrictive condition and informs us that $\bar h_{tt}=\mathcal{O}(1)$ as $\theta \to 0,\pi$. Similarly, $\bar h_{t\phi}$ appears in the $t'x$, $t'x$, $t'y$, $t'z$, $xx$, and $xz$ equations, but the $t'z$ equation is the most restrictive condition, informing us that $h_{t \phi}=\mathcal{O}(1)$ as well. Finally, $\bar Y$ appears in the $xx$, $xz$, $yy$, $yz$, and $zz$ equations and , given that $\bar h_{\phi\phi}=\mathcal{O}(1)$, the yy equation is the most restrictive condition, informing us that $\bar Y =\mathcal{O}(1)$. We see that if $h_{\phi\phi}\to 0$ as is required for an axis, then the metric perturbation in KS coordinates is regular on the axis. Hence the defining BC on the axis $\theta =0,\pi$ is
+%%\begin{align}
+%%\bar Y =\mathcal{O}(1) \nonumber \\
+%%\bar h_{tt} =\mathcal{O}(1) \nonumber \\
+%%\bar h_{t\phi} =\mathcal{O}(1) \nonumber \\
+%%\bar h_{\phi\phi} \to 0 \nonumber \\
+%%\end{align}
+%
+%%\subsubsection{Killing Horizon}
+%%
+%%The defining conditions for a Killing horizon are that the norm of $\mathcal{K}=\mathcal{T}+\Omega_H \mathcal{R}=0$ on the horizon and that the normal vector to the surface is null. The first condition is equivalent to 
+%%\begin{align}
+%%g_{tt}+2\Omega_H g_{t\phi}+\Omega_H^2 g_{\phi\phi} =0.
+%%\end{align}
+%%Since we have fixed the BL-like coordinates so the horizon specified by $r=r_H$, the normal vector to the surface is $dr$ and the second condition is equivalent to
+%%\begin{align}
+%%0=g^{rr}=Z^{-1}
+%%\end{align}
+%%At the linearized level $\tilde g=\tilde k +\epsilon \tilde h$ (and hence $Z=\sigma/\Delta+\epsilon Y$), these conditions become
+%%\begin{align}
+%%h_{tt}+2\Omega_H h_{t\phi}+\Omega_H^2 h_{\phi\phi} =0.
+%%\end{align}
+%%and
+%%\begin{align}
+%%&\frac{Y\Delta}{\Sigma}\to0,& & \text{as } r \to r_H&
+%%\end{align}
+%
+%\subsubsection{Asymptotic Infinity}
+%
+%We have argued that employing either conformal or BL-like coordinates completely fixes the coordinates. Hence to impose asymptotic flatness in BL-like coordinates, we simply impose that the metric approaches the flat metric written in BL coordinates, given in Eq.~\eqref{eq:flatBL}, asymptotically as $r\to \infty$. Asymptotically the flat metric in BL-like coordinates (with nonzero $\hat M$ and $\hat a$) reads
+%\begin{align}
+%&g_{tt}^{\rm flat}\sim -1,& &g_{t\phi}^{\rm flat}=0,& &g_{\phi\phi}^{\rm flat}\sim r^2\sin^2\theta,& &Z^{\rm flat}\sim 1&.
+%\end{align}
+%We demand the desired solution $g_{\mu\nu}$ have the same behavior, meaning that a large r expansion of the $g_{\mu \nu}$ takes the form
+%\begin{align}
+%&g_{tt}\sim -1 +\frac{g_{tt}^{(1)}(\theta)}{r},& &g_{t\phi}\sim \frac{g_{t\phi}^{(1)}(\theta)}{r},& &g_{\phi\phi}\sim r^2\sin\theta +g_{\phi \phi}^{(1)}(\theta)r,& &Z\sim 1+\frac{Z^{(1)}(\theta)}{r}&
+%\end{align}
+%Writing $g=k+\epsilon h$, this implies that in order to guarantee asymptotic flatness, the large r expansions for h must start at the same powers
+%\begin{align}
+%&h_{tt}\sim \frac{h_{tt}^{(1)}(\theta)}{r},& &h_{t\phi}\sim \frac{h_{t\phi}^{(1)}(\theta)}{r},& &h_{\phi\phi}\sim h_{\phi \phi}^{(1)}(\theta)r,& &Y\sim \frac{Y^{(1)}(\theta)}{r}&
+%\end{align}
+%These imply the following scalings for the trace-reversed metric perturbation.
+%\begin{align}
+%h&\sim \frac{1}{r}\left(-h_{tt}^{(1)}+\frac{1}{\sin^2\theta}h_{\phi\phi}^{(1)}+2Y^{(1)}\right) \nonumber \\
+%\bar h_{tt} &=h_{tt}-\frac{1}{2}hk_{t\phi}
+%%=h_{tt}-\frac{1}{2}\left[k^{tt}h_{tt}+k^{t\phi}h_{t\phi}+k^{\phi\phi}h_{\phi\phi}+2\frac{Y}{Z_{\rm kerr}}\right]k_{t\phi}
+%\sim \frac{1}{2r}\left[h_{tt}^{(1)}+\frac{1}{\sin^2\theta}h_{\phi\phi}^{(1)}+2Y^{(1)}\right] +\mathcal{O}\left(\frac{1}{r^2}\right) \nonumber \\
+%\bar h_{t\phi} &=h_{t\phi}-\frac{1}{2}hk_{t\phi}
+%%=h_{t\phi}-\frac{1}{2}\left[k^{tt}h_{tt}+k^{t\phi}h_{t\phi}+k^{\phi\phi}h_{\phi\phi}+2\frac{Y}{Z_{\rm kerr}}\right]k_{t\phi}
+%\sim \frac{h_{t\phi}^{(1)}}{r}+\mathcal{O}\left(\frac{1}{r^2}\right) \nonumber \\
+%\bar h_{\phi\phi}&=h_{\phi \phi}-\frac{1}{2}h k_{\phi \phi} \sim \frac{r}{2}\left[h_{\phi\phi}^{(1)}+h_{tt}^{(1)}\sin^2\theta-2Y^{(1)}\sin^2\theta \right]+\mathcal{O}\left(1\right) \nonumber \\
+%\bar Y&=Y-\frac{1}{2}jk_{rr}\sim \frac{1}{2r}\left[h_{tt}^{(1)}-\frac{1}{\sin^2\theta}h_{\phi\phi}^{(1)}\right]
+%\end{align}
+%
+%%The boundary condition at a fictitious boundary is there exists a coordinate system $x^{\hat \mu}$ where the metric $g_{\mu \nu}=k_{\mu\nu}+\epsilon h_{\mu \nu}+\mathcal{O}(\epsilon^2)$ is regular and invertible AND that the metric reflects the intended solution; e.g. the norm of the rotational killing vector $\mathcal R$ vanishes on the axis and the norm of the killing vector $\mathcal{K}$ vanishes on the killing horizon. If we are working would like to phrase the boundary condition in a different coordinate system $x^\mu$, we demand that
+%%\begin{align}
+%%g_{\hat \mu \hat \nu}=\frac{\partial x^\mu}{\partial x^{\hat \mu}}\frac{x^{\partial \nu}}{\partial x^{\hat \nu}}g_{\mu\nu}
+%%\end{align}
+%%is regular and invertible. In practice we must posit (perhaps motivated by similar solutions to the one that we intend to find) that the metric is regular in a particular coordinate system $x^{\hat \mu}(x^\mu)$ and then look for solutions. If we posit something silly, then we will find that there is no solution to the boundary value problem that we have set-up.
+%%
+%%Now say that we are working in BL-like coordinates $x^\mu=(t,\phi,r \theta)$ with $\hat M=M$ and $\hat a$ corresponding to the background Kerr metric. If we define define Kerr-Schild coordinates $(t',x,y,z)$ via
+%%\begin{align}
+%%&x+iy=(r+ia)\sin\theta e^{i\phi},& &z=r \cos\theta,& &dt'=dt+(1-\frac{r^2 +a^2}{\Delta})dr&
+%%\end{align}
+
+\section{Ellipticity}
+
+Our goal is to find the black hole bumps by solving the linearized Einstein Equations as a boundary value problem with boundary data imposed on a boundary $\mathcal B$ . This means that we must identify N elliptic equations and N pieces of boundary data for N variables that ensure the solution is an asymptotically flat black hole. 
+
+\subsection{Definition of Ellipticity}
+
+We use the notion of ellipticity defined in Dias. et. al. \cite{Dias:2015nua}, which for N equations and N unknowns is the same as the notion of classical ellipticity defined in Dain \cite{Dain:2004nt}.
+
+Consider the a system of N linear differential equations for M unknown functions $u(x)$ of n variables x given by 
+\begin{align}
+ O[u]= f, 
+\end{align}
+where $O$ is a linear differential operator from M unknown functions to N equations and f is an N dimensional source term that only depends on x. The principal part of O, which we denote $P(O)$ consists of only the terms with highest differential operators in the system. The principal symbol, which we denote by $P(O,\zeta)$, is exactly the principal symbol with the n dimensional ``vector'' $\partial$ replaced by the n dimensional vector $\zeta$. Note that for each value of $\zeta$ the principal symbol $P(O,\zeta)$ is a M by N matrix multiplying the N dimensional vector of fields (this matrix depends on the location x).
+
+The operator O is elliptic over domain $\mathcal{D}$ if $P(O,\zeta)\neq 0$ for any $x\in \mathcal D$, any nonzero $\zeta$, and any vector of fields and any $u$.
+
+\subsection{Ellipticity of Linearized Einstein Equation}
+For example, consider the operators that make up the linearized Einstein operator $\Delta_G[h]_{\mu\nu}$ acting on a stationary, axisymmetric perturbation $h$ with the $(t,\phi) \to (-t,-\phi)$
+of the form
+%(more general than our restriction to  BL coordinates in eq.~ \eqref{eq:h})
+\begin{align}
+h_{\alpha \beta}dx^\alpha dx^\beta=h_{ij}(x^A)dx^{i}dx^j+h_{AB}(x^A)dx^{A}dx^B \label{eq:hform},
+\end{align}
+so $n=2$, $M =6$ (since there are six non-trivial Einstein equations given by the $AB$ and $ij$ equations, momentarily forgetting about the Bianchi Identitiy, and six unknowns). The relevant principal symbols are
+\begin{align}
+&P(\Box \bar h_{CD},\zeta_A)=\zeta^A\zeta_A \bar h_{CD} \nonumber \\
+&P(\Box \bar h_{ij},\zeta_A)=\zeta^A\zeta_A \bar h_{ij} \nonumber \\
+&P(\nabla_{(A}v_{B)},\zeta_A)=\zeta_{(A}\zeta^C \bar h_{B)C} \nonumber \\
+&P(\nabla_Av^A)=\zeta^A\zeta^B\bar h_{AB}
+\end{align}
+where we are raising and lowering indices with the kerr metric $k_{AB}$ on the $x^A$ submanifold. Hence the principal symbol of the linearized Einstein operator is 
+\begin{align}
+&P(\Delta_G[h]_{AB},\zeta)=\frac{1}{2}\left(-\zeta^D\zeta_D\bar h_{AB}+\zeta_A\zeta^C\bar h_{BC}+\zeta_B\zeta^C\bar h_{AC}-k_{AB}\zeta^D\zeta^C\bar h_{CD}\right) \nonumber \\
+& P(\Delta_G[h]_{ij},\zeta)=\frac{-1}{2}\left(\zeta^A\zeta_A \bar h_{ij}-k_{ij}\zeta^C\zeta^D\bar h_{CD}\right) \label{eq:GPrinc}
+\end{align}
+
+To show that $\Delta_G[h]$ is elliptic, we must show that $P(\Delta_G[h]_{\mu \nu},\zeta)\neq 0$ for all nonzero $h_{\mu\nu}$ and $\zeta$ at ALL locations in the computational domain.
+
+\subsection{General obstacle to Ellipticity: Gauge Freedom}
+
+Note that without imposing further coordinate restrictions, the linearized Einstein operator is not elliptic. This can be understood as a consequence of gauge invariance and is tied to the existence of pure gauge perturbations $h_{\mu \nu}=\nabla_{(\mu}\epsilon_{\nu)}$, where $\epsilon$ is any vector, that lie in the Kernel of $\Delta_G$. Substitution of the pure gauge perturbation into operator $\Delta_G[h]$ yields a terms that contain one, two, and three derivatives acting on $\epsilon$. Since $\epsilon$ can be any vector that preserves the form of Eq.~\eqref{eq:hform}, each of these terms must vanish independently. Further more the term that depends on three derivatives is exactly the principal part of $\Delta_G$ acting on the highest derivatives in the pure gauge perturbation, i.e.
+\begin{align}
+& h_{AB}=\partial_{(A}\epsilon_{B)},& &h_{ij}=0& &\to \bar h_{AB}=\partial_{(A}\epsilon_{B)}-\frac{1}{2}k_{AB}k^{CD}\partial_{C}\epsilon_{D},&  &\bar h_{ij}=-\frac{1}{2}k_{ij}k^{CD}\partial_{C}\epsilon_{D}&. \label{eq:puregauge}
+\end{align}
+This implies that if we act the principal symbol $P(\Delta_G[h]_{\mu\nu},\zeta)$ on a perturbation of the form
+\begin{align}
+& \bar h_{AB}=\zeta_{(A}\epsilon_{B)}-\frac{1}{2}k_{AB}k^{CD}\zeta_{C}\epsilon_{D},&  &\bar h_{ij}=-\frac{1}{2}k_{ij}k^{CD}\zeta_{C}\epsilon_{D}&, \label{eq:pg}
+\end{align}
+then $P(\Delta_G[h]_{AB},\zeta)=P(\Delta_G[h]_{ij},\zeta)=0$. This is easily verified to be true.
+
+
+\subsection{Ellipticity in Conformal Gauge}
+Notice that if we work in the conformal gauge, the problematic pure gauge perturbations are eliminated since a perturbation of the form of Eq. \eqref{eq:puregauge} has $\bar h_{xy}=(1/2)(\zeta_{x}\epsilon_y-\zeta_y\epsilon_x)$ is not diagonal. Hence it is possible that the linearized Einstein equations in this gauge are elliptic.
+
+In conformal gauge, the principal symbol (given in Eq. \eqref{eq:GPrinc}) reduces to
+\begin{align}
+&P(\Delta_G[h]_{ij},\zeta)=-\frac{1}{2}\zeta^A\zeta_A\left(\bar h_{ij}-k_{ij}\frac{\bar \sigma}{\Omega}\right)& \nonumber \\
+&P(\Delta_G[h]_{AB},\zeta)=\frac{\bar\sigma}{\Omega}\left(\zeta_A\zeta_B-\zeta_C\zeta_D\delta^{CD}\delta_{AB}\right)& \nonumber \\
+\to &P(\Delta_G[h]_{xx},\zeta)=-\frac{\bar\sigma}{\Omega}\zeta_y\zeta_y& \nonumber \\
+&P(\Delta_G[h]_{yy},\zeta)=-\frac{\bar\sigma}{\Omega}\zeta_x\zeta_x& \nonumber \\
+&P(\Delta_G[h]_{xu},\zeta)=\frac{\bar\sigma}{\Omega}\zeta_x\zeta_y& \label{eq:Pconf}
+\end{align}
+
+The six equations listed in Eq.\eqref{eq:Pconf} are not all linearly independent as a consequence of the Bianchi identity. 
+We seek to identify four independent equations that make $\Delta_G$ elliptic AND which imply the final two equations as a consequence of the Bianchi identity. As a first step we identify, four equations that that make $\Delta_G$ elliptic. 
+
+As a preliminary observation that the above principal symbol tells us that the $\Delta_G[h]_{ij}$ equations second derivatives in the manifestly elliptic combination $\partial_{xx}+\partial_{yy}$ combination  whereas the  $\Delta_G[h]_{xx}$,  $\Delta_G[h]_{yy}$, and $\Delta_G[h]_{xy}$ only contain  $\partial_{yy}, \partial_{xx},$ and $\partial_{xy}$ derivatives respectively. This invites us to investigate choosing the three $\Delta_G[h]_{ij}$ equations and the  $\Delta_G[h]_{xx+yy}$ equation, which has the principal symbol
+\begin{align}
+&P(\Delta_G[h]_{xx+yy},\zeta)=-\frac{\bar\sigma}{\Omega}(\zeta_x\zeta_x+\zeta_y\zeta_y)=-\bar \sigma \zeta^A\zeta_A& \label{eq:plus}
+\end{align}
+as the set of four independent equations. 
+
+This set of four equations satisfies the formal definition of ellipticity. To prove this, we must show that if $\zeta\neq0$ and the four selected equations are zero, then $\bar \sigma$ and $\bar h_{ij}$ are zero. This is indeed the case for $x \neq x_H$ or $x \neq \infty$. Since at these locations,  the Kerr metric  $k_{AB}$ on the AB sub-manifold is positive definite, $\zeta^A\zeta_A>0$ for nonzero $\zeta$ and $P(\Delta_G[h]_{xx+yy}=0$ implies $\bar \sigma =0$. Then, using that  $\bar \sigma =0$ and  $\zeta^A\zeta_A>0$ , $P(\Delta_G[h]_{ij}=0$ implies $\bar h_{ij}=0$. As $x\to \infty$, we see from Eq.~\eqref{eq:plus} that $\zeta^A\zeta_A \to 0$ since $\Omega =\Sigma \to 0$ as $x\to \infty$. \zach{ZM: I don't think that this is an issue since strictly speaking the $x =\infty$ is not in our computational domain.}. From  Eq.~\eqref{eq:plus}, in conformal coordinates $\zeta^A\zeta_A $ is regular on the horizon, but so perhaps everything is okay here.
+Note that if we define rescaled variables $\bar \sigma \to \bar sigma / x^2$, etc., the principal symbol gets correspondingly rescaled $P(\Delta_G[h]_{\mu\nu},\zeta) \to x^2P(\Delta_G[h]_{\mu\nu},\zeta)$. Hence by doing such a rescaling we can obtain a system of equations that is elliptic at every point including $\infty$.
+
+\subsubsection{Constraint equations}
+We now proceed to showing that if we solve the $ij$ and $xx+yy$ Einstein equations as an elliptic boundary values problem, we can guarantee that the remaining two equations, the $xy$ and the $xx - yy$ equations, which contain the non-elliptic combinations of derivatives $\partial_{xy}$ and $\partial_{xx}-\partial_{yy}$ respectively, are automatically satisfied with the correct choice of boundary data.  We will refer to the $xy$ and the $xx - yy$ equations as the constraint equations.
+
+To do this, we need to establish that $T_{\mu\nu}^{\rm eff}{}^{;\nu}=0$ independently of the Einstein field equation, only assuming the equations of motion for the additional fields in the problem. We noted earlier that this is the case for DCS gravity. We now prove that this is true for theories that come from a diffeomorphism invariant action 
+\begin{align}
+S[g_{\mu\nu},\phi_i]=S_G[g_{\mu\nu}]+S_C[g_{\mu \nu} ,\phi_i],
+\end{align}
+where $\phi_i$ is the set of additional fields in the theory, $S_G$ is the gravitational action, which includes the EH Hilbert term and the boundary term, and $S_C$ is the correction to standard gravitational action. The Einstein field equation comes varying the action with respect to $g^{\mu \nu}$ and setting the result equal to zero
+\begin{align}
+&\delta S =\int d^4x\left(\frac{\delta S_G}{\delta g^{\mu \nu}}\delta g^{\mu\nu}+\frac{\delta S_G}{\delta g^{\mu \nu}}\delta g^{\mu\nu}\right) =0 \nonumber \\
+&\to 0= \frac{\delta S_G}{\delta g^{\mu \nu}}+ \frac{\delta S_C}{\delta g^{\mu \nu}}.
+\end{align}
+Using the fact that $G_{\mu \nu}=\frac{1}{\kappa_g \sqrt{-g}}\frac{\delta S_G}{\delta g^{\mu\nu}}$, we can identify
+\begin{align}
+T_{\mu \nu}^{\rm eff}=\frac{-2}{\sqrt{-g}}\frac{\delta S_C}{\delta g^{\mu \nu}}
+\end{align}
+
+Now suppose that $S$ is diffeomorphism invariant meaning that $\delta S =0$ under an arbitrary diffeomorphism
+\begin{align}
+&g^{\mu \nu}\to g^{\mu \nu} +\mathcal {L}_{V}g^{\mu \nu},& &\phi_i \to \phi_i +\mathcal{L}_V \phi_i&,
+\end{align}
+where $V$ is any vector field which vanishes on the boundary of the integration region. For a diffeomorphism invariant action we have
+\begin{align}
+0=\delta S=\int d^4 x\left[\frac{\delta S_G}{\delta g^{\mu \nu}}\delta g^{\mu \nu}+\frac{\delta S_C}{\delta g^{\mu \nu}}\delta g^{\mu \nu}+\frac{\delta S_C}{\delta \phi_i}\delta \phi_i\right],
+\end{align}
+where $\delta g^{\mu \nu}=\mathcal{L}_V g^{\mu \nu}=-2V^{(\mu;\nu)}$ and $\delta \phi_i =\mathcal{L}_V \phi_i$.
+The gravitational action is independently diffeomorphism invariant, so the first integral vanishes independently and we have 
+\begin{align}
+0=\int d^4 x\left[\frac{\delta S_C}{\delta g^{\mu \nu}}\delta g^{\mu \nu}+\frac{\delta S_C}{\delta \phi_i}\delta \phi_i\right].
+\end{align}
+The final integral vanishes as a consequence of the $\phi_i$ equations of motion obtained from varying the action with respect to $\phi_i$ (note that this step uses the fact the the gravitational action does not depend on the additional fields $\phi_i$). Thus we have
+\begin{align}
+0=\int d^4 x\left[\frac{\delta S_C}{\delta g^{\mu \nu}}\delta g^{\mu \nu}\right].
+\end{align}
+Subsituting  $\delta g^{\mu \nu}=-2V^{(\mu;\nu)}$ gives
+\begin{align}
+0=\int d^4 x \frac{\delta S_C}{\delta g^{\mu \nu}}V^{(\mu;\nu)}=\int d^4 x\sqrt{-g}\left(\frac{1}{\sqrt{-g}}\frac{\delta S_C}{\delta g^{\mu \nu}}\right) V^{\mu;\nu}=-\int d^4 x\sqrt{-g}\left(\frac{1}{\sqrt{-g}}\frac{\delta S_C}{\delta g^{\mu \nu}}\right)^{;\nu} V^{\mu},
+\end{align}
+where in the final line we have integrated by parts and discarded to boundary term since $V$ vanishes on the boundary. Hence since V is otherwise arbitrary 
+\begin{align}
+0= \left(\frac{1}{\sqrt{-g}}\frac{\delta S_C}{\delta g^{\mu \nu}}\right)^{;\nu}  \to T_{\mu \nu}^{\rm eff}{}^{;\nu}=0
+\end{align}
+
+We now proceed to show that the constraint equations are automatically satisfied if we choose the correct boundary data.
+
+As both $G_{\mu \nu}{}^{:\nu}=0$ and $T_{\mu\nu}^{\rm eff}{}^{\nu}=0$ independently of the field equation, the divergence of the field equation vanishes independently of the field equation, i.e. $Q_{\mu\nu}{}^{;\nu}=0$, where  $Q_{\mu\nu} =G_{\mu\nu}-8\pi T^{\rm eff}_{\mu\nu}$.
+
+
+%We will do this under the assumption that the divergence of the field equation vanishes $Q_{\mu\nu}{}^{;\nu}=0$, where  $Q_{\mu\nu} =G_{\mu\nu}-8\pi T^{\rm eff}_{\mu\nu}$, regardless of whether the field equation is satisfied $Q_{\mu\nu}=0$. We saw that this is the case for DCS gravity. We also note that Eq.~\eqref{eq:LE} doesn't have a solution unless this is true at the linearized level.
+
+We now show that the constraint equations obey the Cauchy Riemann equations as a consequence of the divergence free condition $0=B_{\mu}=\nabla_\nu Q^{\nu}{}_{\mu}$
+%where we have defined $Q_{\mu\nu} =\Delta_G[h]_{\mu\nu}-8\pi T^{eff}_{\mu\nu}$ to be the $\mu\nu$ th component of the Einstein equation. The $t$ and $\phi$ components of the $0=B_{\mu}$ are automatically zero by symmetry and in conformal gauge, the x and y components of $B_{\mu}$ are (when $Q_{ij}=0$ and $Q_{xx+yy}=0$)
+\begin{align}
+&0=B_x=\frac{1}{\sqrt{-g}}
+\left((\sqrt{-g} Q^x{}_{y})_{,y}+(\sqrt{-g}\frac{1}{2}[Q^x{}_x-Q^y{}_y]),_x\right)
+& \nonumber \\
+&0=B_y=\frac{1}{\sqrt{-g}}
+\left(-(\sqrt{-g} \frac{1}{2}[Q^x{}_x-Q^y{}_y])_{,y}+(\sqrt{-g}Q^x{}_y),_x\right),
+& \label{eq:CR}
+\end{align}
+i.e $c_1=\sqrt{-g} Q^x{}_{y}$ and $c_2=\sqrt{-g}\frac{1}{2}[Q^x{}_x-Q^y{}_y]$ obey the Cauchy Riemann equations, and hence the 2D laplace equation $\left(\partial_{xx}+\partial_{yy}\right)c_1=\left(\partial_{xx}+\partial_{yy}\right)c_2=0$.
+
+This means that if we can choose boundary conditions that ensure $c_1$ and $c_2$ are satisfied at the boundary of the computational domain $c_1$ and $c_2$ will also be satsified in the interior. Furthermore, if we can ensure one of the constraints is satisfied, the Cauchy-Riemann equations 
+\begin{align}
+&c_{1,y}+c_{2,x}=0,& &-c_{2,y}+c_{1,x}=0,&
+\end{align}
+tell us that the other constraint is a constant and hence is zero if it is zero at a single point on the boundary.
+
+In summary, if we choose the boundary conditions so that  $c_1$ or $c_2$ is satisfied everywhere on the boundary and the other constraint is zero at a single point, then both constraints will be satisfied on the entire computational domain.
+
+\subsection{Elllipticity in BL-like coordinates}
+
+In BL-like coordinates the principal symbol is 
+\begin{align}
+&P(\Delta_G[h]_{rr},\zeta)=-\frac{1}{\Sigma}\zeta_\theta\zeta_\theta \bar Y \nonumber \\
+&P(\Delta_G[h]_{\theta \theta},\zeta)=-\frac{\Delta ^2}{\Sigma} \zeta_r \zeta_r \bar Y \nonumber \\
+&P(\Delta_G[h]_{r \theta},\zeta)=\frac{\Delta }{\Sigma} \zeta_r \zeta_\theta \bar Y \nonumber \\
+&P(\Delta_G[h]_{ij},\zeta)=-\frac{1}{2}\left[\frac{\Delta}{\Sigma}\left(\zeta_r \zeta_r +\Delta^{-1}\zeta_\theta \zeta_\theta\right)\bar h_{ij}-k_{ij}\frac{\Delta ^2}{\Sigma^2}\left(\zeta_r\zeta_r+\Delta ^{-1}\zeta_\theta \zeta_\theta \right)\bar Y\right]
+\end{align}
+
+Suppose we select the four equations $\Delta_G[h]_{ij}$ and $\Delta \Delta_G[h]_{rr}+\Delta_G[h]_{\theta \theta}$ as the main equations and identify $\Delta_G[h]_{r\theta}$ and $\Delta \Delta_G[h]_{rr}-\Delta_G[h]_{\theta\theta}$ as constraint equations. For points not on the horizon or $\infty$, essentially identical reasoning as in the conformal case shows that the principal symbol for this set is never zero for nonzero $\zeta$, $Y$, and $h_{ij}$.
+Again however we have potential issues at the horizon, where $\Delta \to 0$, and infinity where $1/\Sigma\to 1/r^2$. Furthermore, the system cannot be made elliptic sole by defining rescaled variables.
+
+If the linearized version of the constraints $c_1$ and $c_2$, defined below Eq.~ \eqref{eq:CR} are vanish, then the constraint equations identified here vanish as well. Hence if we establish that either $c_1$ or $c_2$ vanish on all of the boundaries and the other constraint vanishes at a single point on the boundary (at linear order), then the constraint equations are satisfied everywhere. For later purposes, it is useful to record the form of the linearized form of the constraints written in BL-like coordinates as functions of the components of $Q_{\mu\nu} \Delta_G[h]_{\mu \nu}-8\pi T_{\mu \nu}^{\rm eff}+\mathcal{O}(h^2)$ in BL-like coordinates. Using relation ship between BL-like and conformal coordinates $y=\theta$ and $dr/dx=\sqrt{\Delta}$ as well as $Q=\mathcal{O}(h)$ and $\sqrt{-g_{\rm conformal}}=\sqrt{-k_{\rm conformal}}+\mathcal{O}(h)=-\Delta \Sigma^2 \sin^2\theta$
+\begin{align}
+c_1= \Delta \sin\theta Q_{r\theta} \nonumber \\
+c_2 =\frac{\sqrt{\Delta}\sin\theta}{2}(\Delta Q_{rr}-Q_{\theta\theta})
+\end{align}
+
+\section{Boundary Conditions}
+\label{sec:BC}
+
+%\subsection{Black hole solutions}
+%
+%An important class of solutions Eq.~\eqref{eq:newEE} are the black hole solutions. 
+%
+%We will take this to mean that 
+%\begin{enumerate}
+%\item The spacetime is asymptotically flat and has a killing vector filed $\mathcal{T}=\frac{\partial}{\partial t}$ that is asymptotically time-like. 
+%\item The spacetime has a rotational Killing vector field $\mathcal{R=\frac{\partial}{\partial \phi}}$ with closed orbits $\phi \sim \phi +2\pi$. Further the spacetime has an axis consisting of the fixed points of the rotational isometry where $\mathcal{R}\cdot\mathcal{R}=0$.
+% %\zach{I believe this comes from Hawking's Rigidity thms}
+%\item The spacetime has a Killing horizon, that coincides with the event horizon. where the Killing vector $\mathcal{K}=\mathcal{T}+\Omega_H \mathcal{R}$ becomes null.
+%\end{enumerate}
+%
+%We will try to solve for black hole solutions with the topology $R^2\times S^2$. Stationary axisymmetric metrics of the form discussed in \ref{sec:coord} only depend on the $x^A$ coordinates which parameterize a sub-manifold with topology $R \times [0,\pi]$, much like the submanifold parameterized by $r$ and $\theta$ in flat space. \zach{I need to explain the topology of the $x^A$ submanifold better.} This boundary of this manifold is the Killing horizon, asymptotic infinity, and the axis. 
+
+
+%As the metric only depends on the $x^A$ coordinates, we can restrict the calculation to the $x^A$ submanifold. \zach{Check this: the fixed points of the rotational isomoetry constitute an axis where the norm of the rotational Killing vector $\mathcal{R}$ vanishes. The intersection of this axis with the $x^A$ submanifold splits the submanfold into two halves with topology $R\times [0,\pi]$, which are isometric by the rotational isomotery. Hence, we will solve for the metric on a single half of the $x^A$ submanifold, bounded by the Killing horizon, asymptotic infinity and axis.}
+
+%We will look for solutions that are asymptotically flat, possess a Killing horizon where the vector $\partial/\partial_t +\Omega_H \partial/\partial_\phi$ vanishes, and have an axis where $\partial/\partial_\phi$ vanishes. Hence we will look for solutions on the $x^A$ submanifold bounded by conformal infinity $\mathcal{I}$, the Killing horizon $\mathcal{H}$, and the two intersections of the axis the $x^A$ plane $\mathcal{A}_1$ and $\mathcal{A}_2$ (\zach{I haven't proved this, but I believe there are always two intersections})
+
+We seek to solve the linearized Einstein equation as a boundary value problem, where one piece of information about each of the four metric functions is specified on the boundary. In particular, at each boundary $\mathcal{B}$, we will write the boundary condition as a Dirchlet, Neuman, or mixed boundary condition on the metric function and it's normal derivative.
+
+\subsection{Precision of boundary conditions}
+
+\label{sec:prec}
+
+We now discuss ``how precisely'' a boundary condition must be provided near any boundary. i. e., it is possible that four boundary conditions may be chosen that do not constrain the solution.
+
+As is explained in \cite{Dias:2015nua}, given N second order, linear partial differential equations for the vector of N variables $\vec v$ we expect that the general solution near any boundary $\mathcal{B}$ will depend on 2N free constants. This is explicitly clear for a single ordinary differential equation, where the constants explicitly appear in the Frobenius construction of the solutions. For the boundary value problem to be well-posed, the boundary condition needs to constrain one of these constants. For example if Frobenius theory reveals $y(x)$ scales as either $x^2$ or $x^{5/2}$ as $x\to 0$ imposing that BC that $y(0)=0$ does not constrain either constant. An appropriate boundary condition would be theat $x^{-2}y(x)\to0$ as $x\to 0$. In general, for coupled PDE's, one needs to establish (without using Frobenius theory) that the solution near the boundary $\mathcal{B}$ only depends N constants rather than the 2N constants parametrizing the general solution.
+
+\zach{The below argument is unfinished... I'm not quite sure how the counting works}
+
+\zach{We now show how this boils down to a knowledge of the general solution to N coupled ODE's and the boundary conditions on the other boundary. To be explicit, we develop the general theory at the asymptotic boundary, and work in BL-like coordinates $x^A=(r,\theta)$, although the formalism will be easily adapted to the other boundaries. We will use barred indices $\bar a, \bar b, etc...$ to label the N fields and the N equations, which we will schematically write the N ``evolution'' equations that we have chosen to solve as 
+\begin{align}
+O^{\bar a}[v^{\bar b}]=T^{\bar a} \label{eq:OT}
+\end{align}
+Now suppose we impose that the leading nonzero order for $v^{\bar a}=O(r^{-n_{\bar a}})$, with the leading power $n_{\bar a}$, which depends on which field is considered.. Then $v^{\bar a}$ has the expansion
+\begin{align}
+v^{\bar a}(r,\theta) \sim r^{-n_{\bar a}}\sum_{m=0}^\infty v^{\bar a}_{(m)}(\theta)r^{-m} \label{eq:vexp}
+\end{align}
+Define the leading order part $O^{\bar a}_L$ of the operator $O^{\bar a}$ by
+\begin{align}
+O^{\bar a}[r^{-n_{\bar b}}p^{\bar b}(\theta)]=r^{-v_{\bar a}}O^{\bar a}_L[p^{\bar b}] +o(r^{-v_{\bar a}})
+\end{align}
+and note that
+\begin{align}
+O^{\bar a}[r^{-m} r^{-n_{\bar b}}p^{\bar b}(\theta)]=r^{-m}r^{-v_{\bar a}}O^{\bar a}_L[p^{\bar b}] +o(r^{-m}r^{-v_{\bar a}})
+\end{align}
+since the derivatives in $O^{\bar a}$ acting on $r^{-m}$ creates terms of lower order than the other terms.} 
+
+\zach{Note that in order for \eqref{eq:OT} to have an expansion of the form of Eq.~\eqref{eq:vexp}, $T^{\bar a}$ must go to zero no slower than $r^{-n_{\bar b}}$.
+Expanding  Eq. \eqref{eq:OT} order by order, and examining the equation at order $\mathcal{O}(r^{-m})$ relative to the leading order equation at $r^{-v_{\bar a}}$, we get 
+\begin{align}
+O^{\bar a}_L[v_{(m)}^{\bar a}]= \text{source}
+\end{align}
+where the source term depends on the large r expansion of $T^{\bar a}$ and $v_{(l)}^{\bar a}$ for $l<m$. Thus the homogenous solutions to the equations at each order are the same. This means that if the boundary conditions on the axis restrict the}
+
+\subsection{Defining boundary conditions}
+Following Dias et. al. \cite{Dias:2015nua}, we define a ``defining'' boundary condition as being the condition that we impose on the dependent variables on the boundary and a ``derived'' boundary condition a condition derived from a ``defining'' boundary condition by substituting the ``defining'' boundary condition into the field equations. 
+
+Note that the boundary condition used to find the solution must be given to the level of precision discussed in section \ref{sec:prec}. In some cases the defining BC or one of the derived conditions will be precise enough; in other cases, these conditions will not be precise enough (in other words, you may have to change your defining BC if you want to actually use it to uniquely identify a soltution).
+
+%Following Dias et. al. \cite{Dias:2015nua}, we define an asymptotic boundary as a boundary that is locate an infinite proper distance from all other points and a fictitious boundary as boundary that is located a finite proper distance away from other points. In our case the killing horizon and the axis are fictitious boundaries and asymptotic infinity is an asymptotic boundary. 
+
+\subsubsection{Axis}
+
+The axis is defined as fixed points of the rotational isometry. Hence it consists of the points where the norm of $\mathcal{R}=0$, e.g. $g_{\phi\phi}=0$. We have fixed our coordinates so that the axis is located at $\theta =0$ or $\theta =\pi$. We also require that the metric is regular on the axis, meaning that there exists a coordinate system $x^{\hat \mu}$ where the metric $g_{\hat \mu \hat \nu}$ is invertible and each component is a smooth function of $x^{\hat \mu}$.  However, in many cases if we use a coordinate basis with $\phi$ as one of the coordinates, the metric becomes singular since $\mathcal{R}$ is the zero vector on the axis, making the coordinate basis incomplete. This is true for BL coordinates for Kerr. 
+
+In principle, the field equations restrict the possible behaviors of the metric functions near any boundary, independently of any condition that we impose. The possible behaviors are parameterized by two constants for each metric function \cite{Dias:2015nua}. In general it will be not be possible to find a coordinate transformation where the metric is regular for arbitrary values of these constants. The defining boundary condition should therefore set the values of the constants so that such a coordinate transformation can be found.
+
+Here we take an alternate approach, similar to \cite{Dias:2015nua} (who despite claiming such an expansion is possible also do not expand the field equations and explicitly write down all of the constants). We note that the transformation from BL coordinates $(t,r,\theta, \phi)$ to the coordinates $x^{\hat \mu}=(t, r, X = \theta \cos\phi, Y=\theta \sin\phi)$ makes the Kerr metric regular on the axis. We then posit that our desired solution, $ g = k+\epsilon  h$ is also regular in the coordinates $x^{\hat \mu}$. This (together with the condition that $g_{\phi\phi}\to 0$ on the axis) becomes the defining boundary condition.  
+
+Before we explore what this implies we show that the Kerr metric is regular in the $x^{\hat \mu}$ coordinates. Note that the Kerr metric in BL coordinates has the form
+\begin{align}
+k_{\mu\nu}dx^\nu dx^\mu = \tilde k_{\theta \theta}d\theta^2+\tilde k_{\phi\phi} \theta ^2 d\phi^2+2\tilde k_{\phi t}\theta^2 d\phi dt +\tilde k_{tt}dt^2+\tilde k_{rr}dr^2,
+\end{align}
+with $\tilde k_{\theta \theta} \sim \tilde k_{\phi\phi}$ as $\theta \to 0, \pi$ and
+where the tilde indicates that the function is $\mathcal{O}(1)$ and smooth as $\theta \to 0, \pi$. Then performing the coordinate transformation, using
+\begin{align}
+&dX = \cos \phi d\theta -\theta\sin\phi d\phi, & &dY=\sin \phi d\theta+\theta\cos \phi d\phi \nonumber \\
+&\to \theta d\theta =XdX+YdY,& &\theta^2 d\phi^2 =XdY-YdX
+\end{align}
+we have
+\begin{align}
+k_{\mu\nu}dx^\nu dx^\mu=& \tilde k_{\theta \theta}\frac{1}{\theta^2}\left(X^2dX^2+Y^2dY^2+2XYdXdY+\frac{\tilde k_{\phi\phi}}{\tilde k_{\theta\theta}}\left[X^2dY^2+Y^2dY^2-2XYdXdY\right]\right) \nonumber \\
+&+2\tilde k_{\phi t}(XdY-YdX)dt+\tilde k_{tt}dt^2+\tilde k_{rr}dr^2 \nonumber \\
+&\sim \tilde k_{\theta\theta}(dX^2+dY^2)+\tilde k_{tt}dt^2 +\tilde k_{rr}dr^2
+\end{align} 
+where to get the asymptotic equality I used $\tilde k_{\phi\phi}/\tilde k_{\theta \theta}\sim 1$ as $\theta \to 0, \pi$, $X =0$, and $Y = 0$ at $\theta =0,\pi$. Thus $k_{\hat \mu \hat \nu}$ is invertible on the axis and it's components are smooth functions.
+
+We now impose that the desired solution $g$ is also smooth in the $x^{\hat \mu}$ coordinates. We have, starting with the metric BL-like coordinates parametrized by $g_{tt}, g_{t\phi}, g_{\phi\phi},$ and $Z$
+\begin{align}
+g_{\mu \nu}dx^\mu dx^{\nu} &=g_{tt}dt^2+2g_{t\phi}dtd\phi +g_{\phi\phi}d\phi^2+Z(dr^2+\Delta d\theta^2) \nonumber \\
+&=g_{tt}dt^2+Zdr^2+2g_{t\phi}\frac{1}{\theta^2}(XdtdY-YdtdX)
+\nonumber \\
+&+\frac{1}{\theta^2}\left[\left(\Delta Z X^2+\frac{g_{\phi\phi}Y^2}{\theta^2}\right)dX^2
++\left(\Delta Z Y^2+\frac{g_{\phi\phi}X^2}{\theta^2}\right)dY^2+2XY\left(\Delta Z -\frac{g_{\phi\phi}}{\theta^2}\right)dXdY\right]
+\end{align}
+
+Note that $X/\theta=\cos \phi$ and $Y/\theta =\sin \phi$ are not continuous functions of X and Y at $X=Y=0$ since the limit is direction dependent. Thus the smoothness of the tX and tY components requires
+\begin{align}
+&\frac{g_{t\phi}}{\theta} \to 0,& &\theta \to 0, \pi&,
+\end{align}
+e.g. $g_{t\phi} =\mathcal{O}(\theta^2)$ if we do an polynomial series expansion in $\theta$.
+
+Likewise the $XY/\theta^2=\cos\phi\sin\phi$ has a direction dependent limit as $\theta \to 0$ and the smoothness of the XY component requires that $\Delta Z \sim g_{\phi\phi}\theta^{-2}$ as $\theta \to 0, \pi$.
+
+With these restrictions at $\theta = 0, \pi$, we have (using $X^2+Y^2=\theta^2$)
+\begin{align}
+\text{det} (g_{\hat \mu \hat \nu}) =g_{tt} Z^3\Delta^2
+\end{align}
+Smoothness of tt and rr components and invertibility then give the condition that $g_{tt}$ and $Z$ are smooth $\mathcal{O}(1)$ functions as $\theta \to 0,\pi$.
+Note that we have shown that imposing regularity in the $x^{\hat \mu}$ coordinates requires
+\begin{align}
+&g_{\phi\phi} \sim Z\Delta \theta^2 =\mathcal{O}(\theta^2),& &\theta \to 0, \pi&
+\end{align}
+which means that we don't have to seperately assume $g_{\phi \phi}$ vanishes.
+
+We have formulated the regularity condition at the non-linear level. To determine the regularity condition at the linearized level, we substitute 
+$g_{tt}=k_{tt}+\epsilon h_{tt}$,  $g_{t\phi}=k_{t\phi}+\epsilon h_{t\phi}$,  $g_{\phi\phi}=k_{\phi\phi}+\epsilon h_{\phi\phi}$, and 
+$Z= Z_{\rm kerr}+\epsilon Y$ into each condition and equate order by order in $\epsilon$ (note that we can only do this because we have completely fixed our coordinate freedom when we use BL coordinates) the defining boundary conditions for the perturbation as $\theta \to 0, \pi$
+\begin{align}
+&h_{t\phi} =\mathcal{O}(\theta^2) \nonumber \\
+&h_{\phi\phi} \sim \Delta Y \theta^2 =\mathcal{O}(\theta^2) \nonumber \\
+&h_{tt} =\mathcal{O}(1) \label{eq: axisBC}
+\end{align}
+or equivalently in terms of the trace reversed perturbation,
+\begin{align}
+&\bar h_{t\phi} =\mathcal{O}(\theta^2) \nonumber \\
+&\bar h_{\phi\phi} \sim \Delta \bar Y \theta^2 =\mathcal{O}(\theta^2) \nonumber \\
+&\bar h_{tt} =\mathcal{O}(1) \label{eq: axisBC}
+\end{align}
+
+%Later, once we have calculated the principal symbol for the linearized Einstein operator, we will determined derived boundary condtions that follow from substituting Eq.~\eqref{eq: axisBC} into the field equations.
+
+
+%$g_{\mu \nu}=k_{\mu\nu}+\epsilon h_{\mu \nu}+\mathcal{O}(\epsilon^2)$ 
+%We can write the regularity condition on the metric in BL-like coordinates $x^\mu=(t,\phi,r, \theta)$ by transforming the components of the metric via
+%\begin{align}
+%g_{\hat \mu \hat \nu}=\frac{\partial x^\mu}{\partial x^{\hat \mu}}\frac{x^{\partial \nu}}{\partial x^{\hat \nu}}g_{\mu\nu}. \label{eq:reg}
+%\end{align}
+%In practice we must posit (perhaps motivated by similar solutions to the one that we intend to find) that the metric is regular in a particular coordinate system $x^{\hat \mu}(x^\mu)$ and then look for solutions. If we posit something silly, then we will find that there is no solution to the boundary value problem that we have set-up.
+%
+%For linearized (completely gauge fixed) perturbations, we write $g_{\mu\nu}=k_{\mu\nu}+\epsilon h_{\mu\nu}$ and posit that we can find a nonsingular coordinate system $x^{\hat \mu(x^{\mu})}$ that does not depend on $\epsilon$. Equating order by order in Eq.~\eqref{eq:reg} gives the regularity condition that each component of
+%\begin{align}
+%h_{\hat \mu \hat \nu}=\frac{\partial x^\mu}{\partial x^{\hat \mu}}\frac{x^{\partial \nu}}{\partial x^{\hat \nu}}h_{\mu\nu}. \label{eq:reg}
+%\end{align}
+%must be regular (since $\text{det } \tilde g= \text{det } \tilde k + \epsilon \text{tr }\tilde h +\mathcal{O}(\epsilon)$ and $\text{det } \tilde k \neq 0 $ in the hatted coordinates, we don't have to worry about the determinant condition.). Note if we trace reverse each side Eq.~\eqref{eq:reg}, we get the same equation with $\bar h_{\mu\nu}$ replacing $\bar h_{\mu\nu}$.
+%
+%As we will encounter a similar scenario for the horizon BC, we will phrase our regularity condition using Kerr-Schild coordinates $(t',x,y,z)$ in which the metric is regular on the axis and on the horizon. Kerr-Schild coordinate defined via
+%\begin{align}
+%&x+iy=(r+ia)\sin\theta e^{i\phi},& &z=r \cos\theta,& &dt'=dt+(1-\frac{r^2 +a^2}{\Delta})dr&
+%\end{align}
+%Since our solutions are axisymmetric to impose the regularity at $\phi =0$. Parametrizing the perturbation in BL coordinates using $\bar Y$, $\bar h_{tt}$, $\bar h_{\phi\phi}$, and $\bar h_{t\phi}$ as in Eq.~ \eqref{eq:BLpert}, the 10 regularity conditions in Eq.~\eqref{eq:reg} become
+%\begin{align}
+%&\bar h_{t't'}= \bar h_{tt} \\
+%&\bar h_{t'x}=-\bar{h}_{\text{t$\phi $}} \sin (\theta ) (a \cos (\phi )+r \sin (\phi ))-\frac{2 M r \bar{h}_{\text{tt}}}{\Delta }\\
+%&\bar h_{t'y}= \bar{h}_{\text{t$\phi $}} \sin (\theta ) \cos (\phi )\\ 
+%&\bar h_{t'z}=\bar{h}_{\text{t$\phi $}} \cos (\theta ) (r \cos (\phi )-a \sin (\phi ))\\ 
+%&\bar h_{xx}=\frac{2 M r (\Delta  \bar{h}_{\text{t$\phi $}} \sin (\theta ) (a \cos (\phi )+r \sin (\phi ))+2 M r \bar{h}_{\text{tt}})}{\Delta ^2} 
+%\nonumber \\
+%&+\sin (\theta ) (-a \cos (\phi )-r \sin (\phi )) \left(-\bar{h}_{\phi \phi } \sin (\theta ) (a \cos (\phi )+r \sin (\phi ))-\frac{2 M r \bar{h}_{\text{t$\phi $}}}{\Delta }\right)+\bar{Y} \sin ^2(\theta ) (r \cos (\phi )-a \sin (\phi ))^2\\
+%&\bar h_{xy}=\sin (\theta ) \left(-\sin (\theta ) (\bar{Y} \sin (\phi ) (a \sin (\phi )-r \cos (\phi ))+\bar{h}_{\phi \phi } \cos (\phi ) (a \cos (\phi )+r \sin (\phi )))-\frac{2 M r \bar{h}_{\text{t$\phi $}} \cos (\phi )}{\Delta }\right) \\
+%&\bar h_{xz}=\cos (\theta ) (r \cos (\phi )-a \sin (\phi )) \left(-\sin (\theta ) (\bar{h}_{\phi \phi }-\bar{Y}) (a \cos (\phi )+r \sin (\phi ))-\frac{2 M r \bar{h}_{\text{t$\phi $}}}{\Delta }\right) \\
+%&\bar h_{yy}= \bar{Y} \left(\cos ^2(\theta ) \left(\text{aa}^2-2 \text{M} r+r^2\right)+\sin ^2(\theta ) \sin ^2(\phi )\right)+\bar{h}_{\phi \phi } \sin ^2(\theta ) \cos ^2(\phi ) \\
+%&\bar h_{yz}= \sin (\theta ) \cos (\theta ) \left(\bar{Y} \left(\sin (\phi ) (a \cos (\phi )+r \sin (\phi ))-r \left(\text{aa}^2+r (r-2 \text{M})\right)\right)+\bar{h}_{\phi \phi } \cos (\phi ) (r \cos (\phi )-a \sin (\phi ))\right)\\
+%&\bar h_{zz}=\bar{Y} \left(\cos ^2(\theta ) (a \cos (\phi )+r \sin (\phi ))^2+r^2 \sin ^2(\theta ) \left(\text{aa}^2+r (r-2 \text{M})\right)\right)+\bar{h}_{\phi \phi } \cos ^2(\theta ) (r \cos (\phi )-a \sin (\phi ))^2
+%\end{align}
+%Regularity means that $\bar h_{\hat \mu \hat \nu}$ and its derivatives with respect to $t',x,y,,z$ have direction independent limits on the axis, which means we must ensure that the terms with $\phi$ go to zero on the axis.
+%%Hence the regularity condition on the axis ($\theta =0,\pi$) is that the LHS of the above equations are $\mathcal{O}(1)$ or smaller as $\theta\to 0,\pi$. As mentioned above, we also must impose that the defining condition for the axis, $g_{\phi\phi} \to 0$, which becomes $h_{\phi\phi}\to 0$ when examined order by order in $\epsilon$. 
+%%
+%%Note that $\bar h_{tt}$ apears in the $t't'$, $t'x$, $xx$, and regularity conditions $xy$. However the tt equation is the most restrictive condition and informs us that $\bar h_{tt}=\mathcal{O}(1)$ as $\theta \to 0,\pi$. Similarly, $\bar h_{t\phi}$ appears in the $t'x$, $t'x$, $t'y$, $t'z$, $xx$, and $xz$ equations, but the $t'z$ equation is the most restrictive condition, informing us that $h_{t \phi}=\mathcal{O}(1)$ as well. Finally, $\bar Y$ appears in the $xx$, $xz$, $yy$, $yz$, and $zz$ equations and , given that $\bar h_{\phi\phi}=\mathcal{O}(1)$, the yy equation is the most restrictive condition, informing us that $\bar Y =\mathcal{O}(1)$. We see that if $h_{\phi\phi}\to 0$ as is required for an axis, then the metric perturbation in KS coordinates is regular on the axis. Hence the defining BC on the axis $\theta =0,\pi$ is
+%\begin{align}
+%\bar Y =\mathcal{O}(1) \nonumber \\
+%\bar h_{tt} =\mathcal{O}(1) \nonumber \\
+%\bar h_{t\phi} =\mathcal{O}(1) \nonumber \\
+%\bar h_{\phi\phi} \to 0 \nonumber \\
+%\end{align}
+
+%\subsubsection{Killing Horizon}
+%
+%The defining conditions for a Killing horizon are that the norm of $\mathcal{K}=\mathcal{T}+\Omega_H \mathcal{R}=0$ on the horizon and that the normal vector to the surface is null. The first condition is equivalent to 
+%\begin{align}
+%g_{tt}+2\Omega_H g_{t\phi}+\Omega_H^2 g_{\phi\phi} =0.
+%\end{align}
+%Since we have fixed the BL-like coordinates so the horizon specified by $r=r_H$, the normal vector to the surface is $dr$ and the second condition is equivalent to
+%\begin{align}
+%0=g^{rr}=Z^{-1}
+%\end{align}
+%At the linearized level $\tilde g=\tilde k +\epsilon \tilde h$ (and hence $Z=\sigma/\Delta+\epsilon Y$), these conditions become
+%\begin{align}
+%h_{tt}+2\Omega_H h_{t\phi}+\Omega_H^2 h_{\phi\phi} =0.
+%\end{align}
+%and
+%\begin{align}
+%&\frac{Y\Delta}{\Sigma}\to0,& & \text{as } r \to r_H&
+%\end{align}
+
+\subsubsection{Killing Horizon}
+We will handle the bifurcate Killing horizon, located at $r=r_+$ using the same method as the axis. Namely we will impose  that the metric is regular on the bifurcation two sphere (a 2D surface) in special coordinate system $x^{\hat \mu}$, where again regular means that each component $g_{\hat \mu \hat \nu}$ is a smooth function of $x^{\hat \mu}$ and $g_{\hat \mu \hat \nu}$ is invertible. We will choose relationship of the coordinates $x^{\hat \mu}(x^{\mu})$ to BL-like coordinates $x^{\mu}$ by choosing $x^{\hat \mu}$ so that the Kerr metric is regular. In Kerr, in BL coordinates, one reaches the bifurcation two-sphere by fixing $t$ and following $r\to2M$. For our desired solution, we will need to make sure that the limit as the metric approaches the bifurcation two sphere doesn't depend on the time slice. 
+
+We will discover that imposing regularity automatically gives the conditions the surface $r=r_+$ is null and that the Killing vector $K= \partial_t +\Omega_H \partial_\phi$  is null on the surface $r=r_+$, where  $\Omega_H$ is the horizon frequency. In other, words imposing regularity in this way makes the surface $r=r_+$ a Killing horizon with the same horizon frequency as the kerr metric.
+
+We will follow a similar, although not identical approach to \cite{Dias:2015nua}. We begin by putting the kerr metric in the form of their eq. V.5, except without Euclideanizing time. To do this note that the nonzero components of the Kerr metric are $k_{tt}$, $k_{\phi\phi}$, $k_{t\phi}$, $k_{\theta\theta}$, and $k_{rr}$ are all $\mathcal{O}(1)$ as $r\to r_+$ except for $k_{rr}=\mathcal{O}\left((r-r_+)^{-1}\right)$ (since the normal vector to the horizon is $dr$ and is null on the horizion) and the combinations
+%Kerr metric has the form  
+%\begin{align}
+%ds^2=\tilde k_{tt}dt^+2 k_{t\phi}dt d\phi +k_{\phi\phi}d\phi^2+\tilde k_{rr}(r-r_+)^{-1} +k_{\theta \theta}d\theta^2
+%\end{align}
+\begin{align}
+&k_{tt}+\Omega_H k_{t\phi}+\Omega_H^2 k_{\phi\phi}=\mathcal{O}((r-r_+))\nonumber \\
+&k_{t\phi}+\Omega_Hk_{\phi\phi}=\mathcal{O}((r-r_+))
+\end{align}
+(The first condition tells us that  the killing vector $K= \partial_t +\Omega_H \partial_\phi$ is null on the killing horizon and the second occurs because the determinant of the $t-\phi$ submanifold is 0 as it contains the killing vector). 
+Now introduce an angular coordinate taylored to the horizon generators (i.e. the integral curves of $\left .\partial_t \right|_{\Phi}$ are the the integral curves of K)
+\begin{align}
+\Phi=\phi -\Omega_H t,
+\end{align}
+and perform the following rescalings (to achieve the form of eq. V.5)
+\begin{align}
+&T=\kappa t \nonumber \\
+&\rho^2=(r-r_+)&
+\end{align}
+where the $\kappa$ is the surface gravity satisfies
+\begin{align}
+(k_{tt}+2\Omega_H k_{t\phi}+\Omega_H^2 k_{\phi\phi)}\sim 4\kappa^2(r-r_+)^2k_{rr}
+\end{align}
+%\zach{ZM:check that there is no typo in the above equation.}
+The metric then has the form (note:I have not matched the A, B,C... below to the defs in eq. V.5)
+\begin{align}
+ds^2=-A\rho^2dT^2+Ad\rho^2+2B\rho^2dTd\Phi+C d\Phi^2 +Dd\theta^2
+\end{align}
+where $A, B,C,$ and $D$ are $\mathcal{O}(1)$ as $r\to r_+$ or equivalently $\rho\to 0$.
+
+The above metric is not invertible at $\rho \to 0$, but this can be fixed by going to a lorentizian version of cartesian coordinates
+\begin{align}
+&X=\rho \cosh(T) \nonumber \\
+&Y =\rho\sinh(T)
+\end{align}
+from which one can show
+\begin{align}
+&X^2-Y^2=\rho^2 \nonumber \\
+&\rho d\rho =XdX -YdY \nonumber \\
+&\rho^2dT=XdY-YdX
+\end{align}
+which lets us write the Kerr metric in the manifestly regular form at the bifurcation two-sphere $X=Y=0$.
+\begin{align}
+A(dX^2-dY^2)+2Bd\Phi(XdY-YdX)+Cd\Phi^2+Dd\theta^2
+\end{align}
+
+Now we impose that the desired solution $g$ is also regular in the coordinates X, Y, $\rho$, and $\theta$. Making the coordinate transformation
+\begin{align}
+ds^2&=g_{tt} dt^2 +2g_{t\phi}dtd\phi +g_{\phi\phi}d\phi^2 +Z(dr^2 +\Delta d\theta^2) \nonumber \\
+&=dX^2\left[\rho^{-4}\kappa^{-2}Y^2(g_{tt}+2\Omega_H g_{t\phi}+\Omega_H^2g_{\phi\phi})+4ZX^2\right]+dY^2\left[\rho^{-4}\kappa^{-2}X^2(g_{tt}+2\Omega_H g_{t\phi}+\Omega_H^2g_{\phi\phi})+4ZY^2\right] \nonumber \\
+&+2dXdY\left[-\rho^4XY(g_{tt}+2\Omega_H g_{t\phi}+\Omega_H^2g_{\phi\phi})-XY4Z\right]
++2\rho^{-2}\kappa^{-1}(g_{t\phi}+\Omega_H g_{\phi\phi})(XdYd\Phi-YdXd\Phi)+g_{\phi\phi}d\Phi^2+Z\Delta d\theta^2
+\end{align}
+
+From the $\theta\theta$ component, using that $\Delta =\mathcal{O}(\rho^2)$, we deduce $Z \sim Z^{(0)}\rho^{-2}$ and in order for the metric to be invertible $Z^{(1)}\neq 0$.
+
+From the $X\Phi$ and $Y\Phi$ components, in order to have $T$ independent limits, $(g_{t\phi}+\Omega_H g_{\phi\phi})=\mathcal{O}(\rho^2)$. Note that this scaling forces $g_{X\Phi}$ and $g_{Y\Phi}$ to vanish on the horizon.
+
+From the $\Phi\Phi$ component, $g_{\phi\phi}\sim g_{\phi\phi}^{(0)}(\theta)$ and $g_{\phi\phi}^{(0)}\neq 0$ or else the metric is not invertible on the horizon.
+
+From the XY component, we must have (in order to avoid a T dependent limit
+\begin{align}
+XY\left[\rho^{-4}\kappa^{-2}(g_{tt}+2\Omega_H g_{t\phi}+\Omega_H^2g_{\phi\phi})+4Z\right]\to 0
+\end{align}
+which means that
+\begin{align}
+g_{tt}+2\Omega_H g_{t\phi}+\Omega_H^2g_{\phi\phi}\sim -\kappa^2\rho^44Z=\mathcal{O}(\rho^2) \label{eq:HFsol}
+\end{align}
+These scalings then imply that $g_{XX}\sim 4Z^{(0)}\sim -g_{YY}$, which is makes the metric regular on the horizon.
+
+Note that the condition Eq. ~\eqref{eq:HFsol} implies that the horizon frequency of the solution is the same the Kerr spacetime and the fact that $Z=\mathcal{O}(\rho^{-2})$ implies that $r=r_+$ is a null surface.
+
+Alternatively one could impose that that the metric is regular on the future horizon in ingoing Kerr-coordinates. \zach{ZM: does this give the same condition, since I think above I am actually imposing that there is a bifurcate Killing horizon, while the proposed method would only imply that there is a potentially, geodescially incomplete Killing horizon}
+
+Upon linearization these conditions reduce to
+\begin{align}
+h_{\phi\phi}(r,\theta) \sim h_{\phi\phi}^{(0)}(\theta) +h_{\phi\phi}^{(1)}(\theta)(r-r_+) +\mathcal{O}((r-r_+)^2) \nonumber \\
+h_{t\phi}(r,\theta )\sim -\Omega_H h_{\phi \phi}^{(0)}(\theta) +h_{t\phi}^{(1)}(\theta)(r-r_+)+\mathcal{O}((r-r_+)^2) \nonumber \\
+h_{tt}\sim \Omega_H^2 h_{\phi \phi}^{(0)}(\theta)+h_{tt}^{(1)}(\theta)(r-r_+)  +\mathcal{O}((r-r_+)^2) \nonumber \\
+Y(r,\theta) \sim\frac{1}{4\kappa^2} \left[h_{tt}^{(1)}(\theta)+2\Omega_H h_{t\phi}^{(1)}(\theta) +\Omega_H^2 h_{\phi\phi}^{(1)}(\theta)\right](r-r_+)^{-1} +\mathcal{O}(1)
+\end{align}
+with no restrictions about any of the undetermined functions being zero.
+
+\subsubsection{Asymptotic Infinity}
+\label{sec:infyB}
+
+We have argued that employing either conformal or BL-like coordinates completely fixes the coordinates. Hence to impose asymptotic flatness in BL-like coordinates, we simply impose that the metric approaches the flat metric written in BL coordinates, given in Eq.~\eqref{eq:flatBL}, asymptotically as $r\to \infty$. Asymptotically the flat metric in BL-like coordinates reads
+\begin{align}
+&g_{tt}^{\rm flat}\sim -1,& &g_{t\phi}^{\rm flat}=0,& &g_{\phi\phi}^{\rm flat}\sim 4C^2r^2\sin^2\theta,& &Z^{\rm flat}\sim 4C^2&.
+\end{align}
+We demand the desired solution $g_{\mu\nu}$ have the same behavior, meaning that a large r expansion of the $g_{\mu \nu}$ takes the form
+\begin{align}
+&g_{tt}\sim -1 +\frac{g_{tt}^{(1)}(\theta)}{r},& &g_{t\phi}\sim \frac{g_{t\phi}^{(1)}(\theta)}{r},& &g_{\phi\phi}\sim 4C^2r^2\sin^2\theta +g_{\phi \phi}^{(1)}(\theta)r,& &Z\sim 4C^2+\frac{Z^{(1)}(\theta)}{r}& \label{eq:nlaf}
+\end{align}
+Note that this expansion implies that in general BL-like coordinates are not asymptotically cartesian unless $C=\frac{1}{2}$. For a kerr black hole, we have seen that $C=\frac{1}{2}$ if we use BL-like coordinates with $\hat M= M$ and $\hat a =a$, but otherwise $C\neq \frac{1}{2}$. This observation will have implications for extracting the komar mass and angular momentum of the spacetime.
+We now linearize the metic $g=k+\epsilon h$ and fix the BL-like coordinates to correspond to the background Kerr spacetime. At large r, the background Kerr spacetime approaches the flat metric with $C=\frac{1}{2}$. Since the metric will be asymptotically flat for any value of C, we cannot restrict beforehand that $C=\frac{1}{2}$. This means that the expansions for h go like
+\begin{align}
+&h_{tt}\sim \frac{h_{tt}^{(0)}(\theta)}{r},& &h_{t\phi}\sim \frac{h_{t\phi}^{(0)}(\theta)}{r},& &h_{\phi\phi}\sim D r^2\sin^2\theta + h_{\phi \phi}^{(1)}(\theta)r,& &Y\sim D + \frac{Y^{(1)}(\theta)}{r}& \label{eq:afcond}
+\end{align}
+where $D$ is an arbitrary constant (which can be related to the difference in C for the background kerr metric and the solution).
+
+\subsection{Komar Mass and Spin}
+In section \ref{sec:larger} we perform a large $r$ expansion of the field equations in BL-like coordinates. If we enforce the asymptotic flatness condition Eq.~\eqref{eq:afcond}, we obtain ``derived''' boundary conditions on the subleading terms in the large r expansion. In particular we find out that if the metric obeys the asymptotic flatness condition described in sec \ref{sec:infyB}, then it has the following expansion at large r (restoring the background kerr mass $M_{\rm kerr}$ in the expression)
+\begin{align}
+&\bar Y \sim E +2\frac{EM_{\rm kerr}}{r}+\mathcal{O}(r^{-2}) \nonumber \\
+&\bar h_{tt} \sim -3E +\frac{FM_{\rm kerr}}{r}+\mathcal{O}(r^{-2}) \nonumber \\
+&\bar h_{\phi\phi}\sim Er^2\sin^2\theta  +\mathcal{O}(1) \nonumber \\
+&\bar h_{t\phi}\sim \frac{ M_{\rm kerr}^2 E_{t\phi}}{r}\sin^2\theta+\frac{1}{r^2} \left( \frac{3}{2}aM_{\rm kerr}^2F-9aM_{\rm kerr}^2E+M_{\rm kerr}^3F_2 \cos\theta \right)\sin^2\theta
+\label{eq:largersum}
+\end{align}
+where E, $E_{t\phi}$, $F$ and $F_2$ are undetermined dimensionless constants. 
+%Note $E$, $F$, and $F_2$ are dimensionless and $E_{t\phi}$ as dimensions of mass squared (\zach{ZM:this might be a bad convention}).
+
+%\zach{ZM:need to update below here}
+
+We now explain how these constants are related to the mass and angular momentum by calculating the Komar mass and angular momentum in BL-like coordinates.
+Using the notation of Eric Poisson's a relativist's toolkit, the Komar mass is defined for any stationary, axisymmetric spacetime as 
+\begin{align}
+M =-\frac{1}{8\pi} \lim_{S_{t}\to \infty} \oint_{S_t}\nabla^\alpha T^\beta dS_{\alpha\beta}
+\end{align}
+where $T$ is the asymptotic time-like killing vector, $S_{t}$ is the 2D boundary of a 3D domain within a constant t slice (and the notation $\lim S_{t}\to \infty$ indicates we should take the 3D domain to be the entire constant t slice). In our BL-like coordinates, we will take $S_{t}$ to be the surface defined by $t$ and $r$ equal constants. The surface element is
+\begin{align}
+dS_{\alpha \beta} =-n_{[\alpha}r_{\beta]}\sqrt{\sigma}d^2\theta
+\end{align}
+where $n_{\alpha}dx^\alpha=-\frac{1}{\sqrt{-g^{tt}}}dt$ is the time-like normal, $r_{\alpha}dx^\alpha=\sqrt{Z}dr$ is the normal to $S_{t}$, and $\sigma=Z\Delta g_{\phi\phi}$ is the determinant of the induced metric on $S_{t}$.
+Using the defining conditions for asymptotic flatness on the nonlinear metric from Eq~\eqref{eq:nlaf} (and letting $A=4C^2$), we see that at large r, the surface element scales as 
+\begin{align}
+dS_{\alpha\beta}dx^\alpha dx^\beta \sim (dt \otimes dr -dr \otimes dt)r^2\sin\theta A^{3/2}d\theta d\phi
+\end{align}
+Thus we see that only $\nabla^\alpha T^\beta$ up to $\mathcal{O}(r^{-2})$ contributes to the komar mass. Using the large form for $dS_{\alpha \beta}$, and invoking the fact that $\nabla^\alpha T^\beta$ is antisymmetric due to Killing's equation, we obtain
+\begin{align}
+M =\frac{1}{4\pi}\lim _{r\to \infty}\int_{0}^\pi d\theta \int_{0}^{2\pi}d\phi \nabla^rT^t r^2\sin^2\theta A^{3/2}
+\end{align}
+We then calculate
+\begin{align}
+\nabla^r T^t =g^{rr} \Gamma^t {}_{rt} \sim -\frac{1}{2A}g_{tt,r} =\mathcal{O}(r^{-2})
+\end{align}
+where we used the asymptotic flatness condition in the final equality. Hence, for any non-linear metric in BL-like coordinates
+\begin{align}
+M=\lim_{r\to \infty} \frac{-1}{4}\int_{0}^\pi d\theta g_{tt,r}r^2 \sin\theta\sqrt{A}
+\end{align}
+
+We now linearize this expression in small $\epsilon$, the coupling parameter for the modified theory of gravity, and write $g_{\mu \nu}=k_{\mu \nu}+ \epsilon h_{\mu \nu}$, $M= M_{\rm kerr} +\epsilon \delta M$. To obtain the Komar mass, we only need $g_{tt} \sim (2M_{\rm kerr}+h_{tt(0)})/r+\mathcal{O}(r^{-2})$ accurate to $\mathcal{O}(r^{-1})$. Note that to leading order in $\epsilon$, $A=1$ (i.e, $A=1$ fir kerr spacetime written in $\hat M =M_{\rm kerr}$ BL-like coordinates). The subleading correction to A (using Eqs.~ \eqref{eq:afcond} and \eqref{eq:nlaf} and the large -r trace-reversal relations in appendix \ref{sec:trrel})  $A=1-2E$. Hence we obtain the following expression for $\delta M$
+\begin{align}
+\delta M &=-E M_{\rm kerr}+\frac{1}{4}\int_{0}^\pi d\theta \sin\theta h_{tt(0)}(\theta) \nonumber \\
+&=-E M_{\rm kerr}+\frac{1}{4}\int_{0}^\pi d\theta\left[\frac{1}{2}\bar h_{tt(1)}-5EM_{\rm kerr}+\bar Y_{(1)}+\frac{1}{2\sin^2\theta}\bar h_{\phi\phi(1)}\right] \nonumber \\
+&=\left(-\frac{5}{2}E+\frac{F}{4}\right)M_{\rm kerr} \label{eq:KM}
+\end{align}
+where in the second line we used the large-r trace reversal relations from appendix \ref{sec:trrel} and in the fourth line we used Eq.~\eqref{eq:largersum}. Eq. ~\eqref{eq:KM} is a key result as it explains how to extract the Komar mass from a metric perturbation in BL-like coordinates. As a sanity check, I have checked that the pure mass perturbation gives $\delta M =1$ and the pure spin perturbation gives $\delta M=0$ using Eq.~\eqref{eq:KM}. 
+
+We proceed along similar lines for the Komar angular momentum, which is defined as
+\begin{align}
+H =\frac{1}{18\pi} \lim_{S_{t}\to \infty} \oint_{S_t}\nabla^\alpha \mathcal{R}^\beta dS_{\alpha\beta}
+\end{align}
+where $\mathcal{R}^\beta =\left(\frac{\partial}{\partial \phi}\right)^\beta$ is the rotational killing vector. Again using the leading large r expression for $dS_{\alpha \beta}\sim (dt \otimes dr -dr \otimes dt)r^2\sin\theta A^{3/2}d\theta d\phi$ and Killing's equation gives
+\begin{align}
+J&=\frac{1}{16\pi}\lim_{r\to \infty}\int_{0}^\pi\int_{0^{2\pi}}(-2\nabla^r \mathcal{R}^t)r^2\sin\theta A^{3/2} \nonumber \\
+&=\frac{1}{16\pi}\lim_{r\to \infty}\int_{0}^\pi\int_0^{2\pi}(-2g^{rr}\Gamma^t{}_{r\phi})r^2\sin\theta A^{3/2}
+\end{align}
+Since at large r $g^{rr}\sim A^{-1}$, we need to calculate $\Gamma^{t}_{r\phi}$ to $\mathcal{O}(r^{-2})$. By considering the asymptotic flatness condition, at large r,
+\begin{align}
+\Gamma^{t}{}_{r\phi}\sim \frac{1}{2}g^{tt}g_{t\phi,r}+\frac{1}{2}g^{t\phi}g_{\phi\phi,r}
+\end{align}
+giving
+\begin{align}
+J=-\frac{1}{16\pi}\lim_{r\to \infty}\int_{0}^\pi d\theta \int_{0}^{2\pi}d\phi r^2\sin\theta \sqrt{A}\left(g^{tt}g_{t\phi,r}+g^{t\phi}g_{\phi\phi,r}\right)
+\end{align}
+It is easy to verify that the Kerr spacetime in BL-like coordinates with $\hat M = M_{\rm kerr}$  and $\hat a =a_{\rm kerr}$ this expression reduces to $J=M_{\rm kerr}a_{\rm kerr}$. Next we linearize $J=J_{\rm kerr}+\epsilon \delta J$, using $g_{\mu \nu}=k_{\mu\nu}+\epsilon h_{\mu \nu}$, $g^{\mu \nu }=k^{\mu \nu }-h^{\mu\nu}$, and $A=1-2E$, obtaining
+\begin{align}
+\delta J =-E J_{\rm kerr}-\frac{1}{16\pi}\lim_{r\to \infty}\int_{0}^{\pi}d\theta \int_{0}^{2\pi}d\phi r^2\sin\theta\left[k^{tt}h_{t\phi,r}-h^{tt}k_{t\phi,r}-h^{t\phi}k_{\phi\phi,r}+k^{t\phi}h_{\phi\phi,r}\right]
+\end{align}
+Next we determine the relevant scalings of the raised metric perturbation $h^{\mu\nu}$. We find
+\begin{align}
+&h^{tt}\sim h_{tt}=\mathcal{O}(1/r) \nonumber \\
+&h^{t\phi}\sim -\frac{1}{r^2\sin^2\theta}h_{t\phi}-\frac{2M_{\rm kerr}a_{\rm kerr}}{r^5}h_{\phi \phi} =\mathcal{O}(r^{-3})
+\end{align}
+Using these results and as well as $h_{t\phi}\sim h_{t\phi(0)}/r$ and $h_{\phi\phi}\sim h_{\phi\phi(0)}r^2\sin^2\theta$, we find that the contribution to $\delta J$ from $h_{\phi \phi}$ cancels giving
+\begin{align}
+\delta J &= -E J_{\rm kerr} -\frac{3}{8}\int_{0}^\pi d\theta  h_{t\phi}\sin\theta \nonumber \\
+&=  -E J_{\rm kerr} -\frac{3}{8}\int_{0}^\pi d\theta  (\bar h_{t\phi}+6aM_{\rm kerr}E\sin^2\theta)\sin\theta \nonumber \\
+&=  -E J_{\rm kerr} -\frac{3}{8}\int_{0}^\pi d\theta  (E_{t\phi}M_{\rm kerr}^2 +6aM_{\rm kerr}E)\sin^3\theta \nonumber \\
+&=-4E J_{\rm kerr}-\frac{1}{2}M_{\rm kerr}^2E_{t\phi} \label{eq:KJ}
+\end{align}
+Eq. ~\eqref{eq:KJ} is a key result as it explains how to extract the Komar angular momentum from a metric perturbation in BL-like coordinates.
+
+As a sanity check, I have checked that the pure mass perturbation gives $\delta M =a$ and the pure spin perturbation gives $\delta J =M$ using Eq.~\eqref{eq:KM}. 
+ 
+%zach:Redundant now
+%These imply the following scalings for the trace-reversed metric perturbation.
+%\begin{align}
+%&h\sim 3D+\mathcal{O}(1/r),& 
+%&\bar h_{tt} \sim +\frac{3D}{2}+\mathcal{O}(1/r)&
+%&\bar h_{t\phi}=\mathcal{O}(1/r)&
+%&\bar h_{\phi\phi}=-\frac{D}{2}r^2\sin^2\theta +\mathcal{O}(r)&
+%&\bar Y\sim -\frac{D}{2}+\mathcal{O}(1/r)&
+%\end{align}
+%
+%\zach{ZM:old}
+%
+%\begin{align}
+%h&\sim \frac{1}{r}\left(-h_{tt}^{(1)}+\frac{1}{\sin^2\theta}h_{\phi\phi}^{(1)}+2Y^{(1)}\right) \nonumber \\
+%\bar h_{tt} &=h_{tt}-\frac{1}{2}hk_{t\phi}
+%%=h_{tt}-\frac{1}{2}\left[k^{tt}h_{tt}+k^{t\phi}h_{t\phi}+k^{\phi\phi}h_{\phi\phi}+2\frac{Y}{Z_{\rm kerr}}\right]k_{t\phi}
+%\sim \frac{1}{2r}\left[h_{tt}^{(1)}+\frac{1}{\sin^2\theta}h_{\phi\phi}^{(1)}+2Y^{(1)}\right] +\mathcal{O}\left(\frac{1}{r^2}\right) \nonumber \\
+%\bar h_{t\phi} &=h_{t\phi}-\frac{1}{2}hk_{t\phi}
+%%=h_{t\phi}-\frac{1}{2}\left[k^{tt}h_{tt}+k^{t\phi}h_{t\phi}+k^{\phi\phi}h_{\phi\phi}+2\frac{Y}{Z_{\rm kerr}}\right]k_{t\phi}
+%\sim \frac{h_{t\phi}^{(1)}}{r}+\mathcal{O}\left(\frac{1}{r^2}\right) \nonumber \\
+%\bar h_{\phi\phi}&=h_{\phi \phi}-\frac{1}{2}h k_{\phi \phi} \sim \frac{r}{2}\left[h_{\phi\phi}^{(1)}+h_{tt}^{(1)}\sin^2\theta-2Y^{(1)}\sin^2\theta \right]+\mathcal{O}\left(1\right) \nonumber \\
+%\bar Y&=Y-\frac{1}{2}jk_{rr}\sim \frac{1}{2r}\left[h_{tt}^{(1)}-\frac{1}{\sin^2\theta}h_{\phi\phi}^{(1)}\right]
+%\end{align}
+
+%The boundary condition at a fictitious boundary is there exists a coordinate system $x^{\hat \mu}$ where the metric $g_{\mu \nu}=k_{\mu\nu}+\epsilon h_{\mu \nu}+\mathcal{O}(\epsilon^2)$ is regular and invertible AND that the metric reflects the intended solution; e.g. the norm of the rotational killing vector $\mathcal R$ vanishes on the axis and the norm of the killing vector $\mathcal{K}$ vanishes on the killing horizon. If we are working would like to phrase the boundary condition in a different coordinate system $x^\mu$, we demand that
+%\begin{align}
+%g_{\hat \mu \hat \nu}=\frac{\partial x^\mu}{\partial x^{\hat \mu}}\frac{x^{\partial \nu}}{\partial x^{\hat \nu}}g_{\mu\nu}
+%\end{align}
+%is regular and invertible. In practice we must posit (perhaps motivated by similar solutions to the one that we intend to find) that the metric is regular in a particular coordinate system $x^{\hat \mu}(x^\mu)$ and then look for solutions. If we posit something silly, then we will find that there is no solution to the boundary value problem that we have set-up.
+%
+%Now say that we are working in BL-like coordinates $x^\mu=(t,\phi,r \theta)$ with $\hat M=M$ and $\hat a$ corresponding to the background Kerr metric. If we define define Kerr-Schild coordinates $(t',x,y,z)$ via
+%\begin{align}
+%&x+iy=(r+ia)\sin\theta e^{i\phi},& &z=r \cos\theta,& &dt'=dt+(1-\frac{r^2 +a^2}{\Delta})dr&
+%\end{align}
+
+
+\section{System of Equations for DCS Gravity}
+
+\subsection{Scalar EOM}
+We present the equations to determine $\theta^{(1)}$ and for brevity neglect the superscript $(1)$ in the following section. A clear derivation of these equations is presented in Leo's unpublished note.
+In BL coordinates, when acting on a stationary, axisymmetric field $\theta =\theta(r, c)$, where $c \equiv \cos\theta$.
+\begin{align}
+\Sigma \Box \theta= \frac{\partial}{\partial r}\left(\Delta \frac{\partial }{\partial r}\theta\right) + \frac{\partial}{\partial c}\left((1-c^2) \frac{\partial }{\partial c}\theta\right)
+\end{align}
+In BL coordinates the Pontryagin density is
+\begin{align}
+*RR=\frac{96M^2 ar c }{\Sigma^6}(3r^2-a^2c^2)(r^2-3a^2c^2),
+\end{align}
+so the Scalar EOM Eq.~ \eqref{eq:SEOM} with $V=0$ is (dropping the $(1)$ superscript)
+\begin{align}
+ \frac{\partial}{\partial r}\left(\Delta \frac{\partial }{\partial r}\theta\right) + \frac{\partial}{\partial c}\left((1-c^2) \frac{\partial }{\partial c}\theta\right)=-\frac{96M^2 ar c }{\Sigma^5}(3r^2-a^2c^2)(r^2-3a^2c^2),
+\end{align}
+
+This can be written in more symmetric form if we define a dimensionless radial coordinate $\eta$, which maps the region $r\in [r_+,\infty)$ to $\eta \in [1,\infty)$
+\begin{align}
+\eta=\frac{r-M}{M\sqrt{1-a^2/M^2}}.
+\end{align}
+Then 
+\begin{align}
+\Sigma \Box \theta= \frac{\partial}{\partial \eta}\left((\eta^2-1)\frac{\partial }{\partial \eta}\theta\right) + \frac{\partial}{\partial c}\left((1-c^2) \frac{\partial }{\partial c}\theta\right)
+\end{align}
+%In BL coordinates the Pontryagin density is
+%\begin{align}
+%*RR=\frac{96M^2 ar c }{\Sigma^6}(3r^2-a^2c^2)(r^2-3a^2c^2),
+%\end{align}
+\subsubsection{Solution for scalar near Horizon and axis}
+Later, I will derive the possible behaviors for the scalar near the killing horizon and the axis. Now I simply note that whatever the behaviors are, the physical BC will be that the scalar is regular at these locations, meaning that it can be expanded in a Taylor series about $r= r_+$, $\theta =0$, or $\theta = \pi$.
+\subsubsection{Asymptotic Solution for Scalar}
+We derive the asymptotic behavior of the scalar field in two ways.  We use M=1 units in this section.
+
+First we perform separation of variables on the scalar EOM, decomposing the scalar as $\theta = \sum_{\ell}R_\ell(\eta)P_{\ell}(c)$ and source term as
+\begin{align}
+-\Sigma *RR=\sum_{\ell}s_{\ell}(r)P_\ell(c),
+\end{align}
+with 
+\begin{align}
+s_{\ell}(\eta)=\frac{2\ell+1}{2}\int_{-1}^1dc\left(-\Sigma *RR\right)P_{\ell}(c)
+\end{align}
+
+The radial function obeys the sourced wave equation
+\begin{align}
+\left(\partial_\eta(1-\eta^2)\partial_\eta+\ell(\ell+1)\right)R_\ell=-s_{\ell}(\eta) \label{eq:Rad}
+\end{align}
+
+By expanding the source term in powers of c, integrating against $P_{\ell}(c)$ and then further expanding in powers of $1/r$, Leo obtains the result that 
+\begin{align}
+s_{\ell}(r)=\frac{-96(-1)^{(\ell-1)/2}}{24}\frac{(2\ell +1)\sqrt{\pi}}{2^{\ell+1}}\frac{a^\ell}{r^{\ell+4}}\sum_{n=0}^\infty \bar s_{\ell ,n}\left(\frac{a}{r}\right)^{2n},
+\end{align}
+with
+\begin{align}
+\bar s_{\ell ,n}=\frac{(-1)^n(\ell+2n+2)\Gamma(\ell +2n+4)}{2^{2n}\Gamma(n+1)\Gamma(\ell +n +\frac{3}{2})}.
+\end{align}
+To leading order we have,
+\begin{align}
+s_{\ell}\sim C_s \eta^{-(\ell +4)},
+\end{align}
+with \begin{align}
+C^\ell_{s}=-4(1-a^2)^{-(\ell+4)/2}(-1)^{(\ell-1)/2}\frac{(2\ell+1)\sqrt{\pi}}{2^{\ell+1}}a^\ell\frac{(\ell +2)\Gamma(\ell+4)}{\Gamma(\ell +3/2)}
+\end{align}
+
+The general solution to the radial Eq.~\eqref{eq:Rad} is the sum of a particular solution $R^P_\ell$ and homogenous solutions, which in this case are legendre functions of the first kind $P_{\ell}(\eta)$ and second kind $Q_{\ell}(\eta)$
+\begin{align} 
+R_{\ell}(\eta)=R_{\ell}^P(\eta)+ B_P^\ell P_{\ell}(\eta)+B^\ell_Q Q_{\ell}(\eta),
+\end{align}
+where the B's are constants that parametrize the solutions. 
+
+Note that the solution's behavior as $\eta \to \infty$ depends critically on the constants $B_P^\ell$ and $B_Q$. Namely, at large $\eta$, $P_{\ell}(\eta) \propto \eta^\ell$ and $Q_{\ell}(\eta)\propto \eta^{-(\ell+1)}$. The particular solution is not uniquely defined, but we will see that there is one choice so that $R^P_\ell \propto \eta^{-(\ell+4)}$. We then have that if $B_P^\ell\neq 0$, $R_{\ell} \propto \eta^\ell$, if $B_P^\ell = 0$ but $B_{Q}\neq 0$, $R_{\ell}\propto \eta^{-(\ell+1)}$ and if both $B_P^\ell=B_Q =0$, then $R_{\ell}\sim \eta^{-(\ell+4)}$. 
+
+Following Yunes et al. (the slow rotation paper), we require that the scalar field have finite total energy, which sets $B_P^\ell =0$ (unless $\ell =0$.  Note $P_0(\eta)=\text{constant}$ so $B_p^\ell$ is just a constant shift for $\ell =0$.). The constant $B_Q$ is determined by examining $R_\ell$ near the horizon where $Q_{\ell}$ diverges. Note that we cannot necessarily set $B_Q=0$ because there could be a corresponding divergence in $R^P_\ell$.
+
+We now derive the asymptotic scaling of the particular solution $R^p$ using the method of dominant balance. Namely the method of dominant balance determines an asymptotic expansion for $R_\ell$ and consists of the following steps (which can be generalized)
+\begin{enumerate}
+\item Make an ansatz for the form of the leading order asymptotic expansion for $R_\ell$. In this case we will suppose $R_\ell \sim D^\ell \eta^p$, where $D^\ell\neq 0$ and $p$ are to-be-determined constants
+\item Substitute the ansatz into the differential equation and discard subleading terms. For us this results in
+\begin{align}
+-D^\ell\left(p(p+1)-\ell(\ell+1)\right)\eta^p=-C^\ell_s \eta^{-(\ell+4)} \label{eq:lead}
+\end{align}
+\item If the ansatz was completely fixed, we would be able to simply solve for $D$ by equation like powers of $\eta$. However, since we do not yet know what $p$ is we try all possibilities, solve for $C$ and then check the solution for consistency. Namely, in this case there are two possibilities. First, $p> -(\ell+4)$, in which case the RHS of Eq.~\eqref{eq:lead} drops out. Then since $D^\ell \neq 0$ we get an equation for $p$
+\begin{align}
+p(p+1)-\ell(\ell+1)=0.
+\end{align}
+with the solutions $p= \ell$ or $p=-(\ell +1)$. To check this case for consistency note that $\eta^p\gg \eta^{-(\ell +4)}$ for both choices of $p$ so we were justified in dropping the RHS of Eq.~\eqref{eq:lead}. Recalling that adding a homogenous solution to $R^P$ gives another particular solution, this case corresponds to when there is a ``nonzero'' amount of homogenous solution in the particular solution.
+
+If $p< -(\ell+4)$ we get an inconsistent approximation since then the LHS of  Eq.~\eqref{eq:lead} drops out and the leading order equation gives $C_s=0$, which is a contradiction. 
+
+The final case then is when $p=-(\ell+4)$. In this case no terms drop out equation and we obtain the following equation for $D^\ell$
+\begin{align}
+&-D^\ell\left(p(p+1)-\ell(\ell+1)\right)\eta^p=-C^\ell_s \eta^p \nonumber \\
+&\to D^\ell =\frac{C_s^\ell}{6(2\ell +1)}
+\end{align}
+Hence, we will choose the particular solution so that $R_{\ell} \sim D_{\ell}\eta^{-(\ell+4)}$ with $D_{\ell}$ given above.
+\end{enumerate}
+
+In summary, the complete solutions consistent with a finite total energy is 
+\begin{align}
+R_\ell(\eta)=R_\ell^P(\eta) +B_Q^\ell Q_\ell(\eta),
+\end{align} 
+where $B_Q^\ell$ is a constant chosen so that the scalar field is regular on the horizon. This constant will depend on the DCS coupling if $R_\ell^P(\eta) $ is not regular on the horizon. If we choose $R_\ell^P$ to correspond to the final asymptotic balance above, then for each value of $\ell$, $R_\ell^P$ is suppressed by a factor of $1/\eta^3\sim 1/r^3$ relative to $Q_\ell$, since $Q_\ell\sim \eta^{-(\ell +1)}$.
+
+%The above form for $R_\ell(\eta)$ means that the scalar has the asymptotic expansion as $r\to \infty$
+%\begin{align}
+%\theta \sim \sum_{\ell =0}^\infty (F^\ell r^{-(\ell +4)}+C_\theta ^\ell r^{(-\ell+1)})P_\ell(\cos\theta),
+%\end{align}
+%where the constants $F^\ell$ can be obtained from $D^\ell$ and the constants $C_\theta ^\ell$ can be obtained from $B_Q^\ell$ and we have used the fact that $Q_\ell (r)\propto r^{-(\ell+1)}$ asymptotically. Note that for a fixed value of $\ell$, the above formula neglects subleadin
+
+\subsubsection{Effective Stress Tensor Near the horizon}
+Later I will show how the behavior of the DCS scalar field near the horizon implies a particular scaling for the effective stress energy tensor near the horizon. Now, I note that the effective stress tensor is built from quantities that are regular on the horizon in a good coordinate system on the horizon. This means that they scale in a particular way in a bad coordinate system on the horizon such as BL-like coordinates.
+
+\subsubsection{Asymptotic Effective Stress Tensor}
+
+\zach{ZM: For the behavior near the horizon, I should work in a coordinate system where the metric is regular on the horizon and work out how the component of the effective stress energy tensor scale in BL coordinates in order to be regular }
+
+We use M=1 units in this section. 
+
+To analyze the asymptotic behavior of the metric perturbation, we need to know the asymptotic behavior of the effective stress energy tensor. To compute the effective stress energy tensor, we keep enough terms in the expansion to be able to compute the second derivatives of $\theta$ (which enter the $T_{\mu\nu}^{\rm eff}$ to leading order, i.e.
+\begin{align}
+\theta \sim C_\theta^0r^{-1}+C_\theta^1r^{-2}\cos\theta +C_\theta^2r^{-3}\frac{1}{2}(3\cos^2\theta -1) +\mathcal{O}(r^{-4}),
+\end{align}
+where the $C^\ell_\theta$ are constants that can be determined from the $B_Q^\ell$ constants above. Alternately they can be related to the scalar charge. Substituting this expansion into the C-Tensor and rexpanding the result in powers of 1/r using xCoba, we obtain the asymptotic result as $x\to \infty$ 
+\begin{align}
+\frac{1}{\epsilon}\sqrt{\frac{\bcs}{\kappa_g}}C_{\mu\nu}dx^\mu dx^\nu \sim &-\frac{18 a C_\theta^0  \cos (\theta )}{r^7}dt^2
++\frac{9 C_\theta^1  \sin ^2(\theta )}{r^6}(dtd\phi +d\phi dt) 
+-\frac{12 a C_\theta^0  \sin ^2(\theta ) \cos (\theta )}{r^5}d\phi^2 \nonumber \\
+&+\frac{6a C_\theta^0\cos\theta}{r^7}dr^2 
++\frac{3 a C_\theta^0  \sin (\theta )}{r^6} (drd\theta+d\theta dr)
+-\frac{-12aC_\theta^0  \cos\theta}{r^5}d\theta^2
+\end{align}
+Note that we have evaluated the C-tensor with (in accord with Eq.~\eqref{eq:Source}) $\sqrt{\frac{\kappa_g }{\bcs}}\epsilon\theta$.
+
+%With the asymptotic scalar solution in hand, we can compute the Asymptotic form for the C-tensor. Namely, from the previous section, $\theta \sim C_\theta/r$ where $C_\theta$ is a constant determined by the near horizon boundary condition for the scalar field (equivalently, it is related to the energy of the scalar field). Note that $C_\theta$ will in general depend on the CS coupling. Using XCoba, we compute the $*R^{\alpha\beta\gamma\delta}$ for the Kerr background and construct the C-tensor using the asymptotic solution for the scalar. The leading (as $r\to\infty$) order part of the non-zero components of the the C-tensor are presented below
+%\begin{align}
+%\frac{1}{C_\theta}C_{\mu\nu}dx^\mu dx^\nu\sim&-\frac{18 a  \cos ( \theta )}{r^7 }dt^2 +\frac{12 a^2  \sin\theta \sin (2 \theta )}{r^7}(dtd\phi+d\phi dt)
+%-\frac{6 a  \sin\theta \sin (2 \theta )}{r^5}d\phi^2 \nonumber \\
+%&+\frac{6 a  \cos ( \theta )}{r^7 } dr^2+\frac{3 a  \sin\theta}{r^6}(drd\theta+d\theta dr)-\frac{12 a \cos (\theta )}{r^5}d\theta^2
+%\end{align}
+
+Similarly we can compute the leading order part of the scalar stress tensor evaluated with $\sqrt{\frac{\kappa_g }{\bcs}}\epsilon\theta$,
+\begin{align}
+\frac{1}{\kappa_g \epsilon^2}T^\theta_{\mu\nu}dx^\mu dx^\nu\sim &\frac{(C_\theta^0)^2}{2r^4}dt^2
+-\frac{a(C_\theta^0)^2\sin^2\theta }{r^5}(dt d\phi +d\phi dt) -\frac{(C_\theta^0)^2\sin^2\theta}{2r^2}d\phi^2 \nonumber \\
+&+\frac{(C_\theta^0)^2}{2r^4}dr^2
++\frac{C_\theta^0 C_\theta^1 \sin\theta}{r^4}(dr d\theta +d\theta dr) -\frac{(C_\theta^0)^2}{2r^2}d\theta^2 \label{eq:Tlarge}
+\end{align}
+
+From the above results, we see that the scalar stress tensor $T^\theta_{\mu\nu}$ dominates the effective stress energy tensor $T_{\mu \nu}^{\rm eff} =T_{\mu \nu}^\theta -8\acs C_{\mu\nu}$ at large r.
+
+%As the homogeneous scalar EOM Eq.~ \eqref{eq:SEOM} is seperabl
+
+\subsection{Linearized Einstein Operator}
+
+We provide the components of the linearized Einstein operator in BL-like coordinates. The expressions are more complicated in conformal coordinates, because the Kerr metric is more complicated in conformal coordinates.
+
+Each component of the linearized Einstein Operator $\Delta_G[h]_{\mu\nu}$ is a second order PDE depending on the functions $\bar Y$, $\bar h_{tt}$, $\bar h_{\phi\phi}$, $\bar h_{t\phi}$ describing the metric perturbation. If we use $v^{\bar a}=(\bar Y, \bar h_{tt}, \bar h_{\phi\phi}, \bar h_{t\phi})$ to denote a field of dependent variables (notice the bar on the index distinguish these indices from spacetime indices), we can schematically write these equations as 
+\begin{align}
+\Delta_G[h]_{\mu\nu}= A_{\mu \nu \bar a}^{AB}\partial_A\partial_B v^{\bar a} + B_{\mu \nu \bar a}^{A}\partial_A v^{\bar a}+C_{\mu \nu \bar a}v^{\bar a} \label{eq:fieldBL}
+\end{align}
+where the potentials A, B, and C are matrices that depend on $r$ and $\theta$. When A, B, and C are not sparsely filled, these equations can appear very complicated. However, in BL like coordinates, we have a RELATIVELY simple form. The expressions are easily accessible from my mathematica notebook. 
+
+As checks on my implementation, I have checked the the pure mass and pure spin perturbations are solutions of $\Delta_G[h]=0$.
+%I've reproduced them below, but they are still a bit sore on the eyes.
+%
+%First, for the elliptic equations:
+%
+%First the tt equation.
+%
+%\begin{align}
+%\Delta_G[h]_{tt} =\frac{\Delta^2(2\Sigma-4r)}{4\Sigma^3}\left(\Delta \partial_{r}\partial_{r} +\partial_\theta\partial_\theta \right)Y-\frac{1}{2\Sigma}\left(\Delta \partial_{r}\partial_{r} +\partial_\theta\partial_\theta \right)h_{tt}-\frac{1}{2\Sigma}\left(\Delta \partial_{r}\partial_{r} +\partial_\theta\partial_\theta \right)h_{t\phi} 
+%+ B_{tt \bar a}^{A}\partial_A v^{\bar a}+C_{tt \bar a}v^{\bar a}
+%\end{align}
+%with
+%
+%\begin{align}
+%&B_{tt\bar a}^{r}= \nonumber \\
+%&\left(
+%\begin{array}{c}
+% \frac{\Delta  \left(7 a^4 (r-1) \cos (4 \theta )+5 a^4 r-13 a^4+8 a^2 r^3+4 a^2 \left(a^2 (3 r-5)+2 r \left(5 r^2-9 r+5\right)\right) \cos (2 \theta )-24 a^2 r^2+40 a^2
+%   r+24 r^5-56 r^4+16 r^3\right)}{16 \Sigma ^4} \\ \scalebox{.45}{$
+% -\frac{-a^8 \cos (6 \theta )+a^8 r \cos (6 \theta )+10 a^8 r+20 a^8+a^6 r^3 \cos (6 \theta )+46 a^6 r^3-3 a^6 r^2 \cos (6 \theta )-6 a^6 r^2+2 a^6 r \cos (6 \theta )-44
+%   a^6 r+84 a^4 r^5-206 a^4 r^4+32 a^4 r^3+80 a^2 r^7-336 a^2 r^6+304 a^2 r^5-64 a^2 r^4+2 a^4 \left(a^4 (3 r+2)+a^2 r \left(9 r^2-5 r-2\right)+r^4 (6 r-13)\right) \cos
+%   (4 \theta )+a^2 \left(5 a^6 (3 r+5)+a^4 r \left(63 r^2-13 r-50\right)+8 a^2 r^4 (12 r-19)+16 r^4 \left(3 r^3-9 r^2+3 r+4\right)\right) \cos (2 \theta )+32 r^9-176
+%   r^8+224 r^7}{32 \Delta  \Sigma ^4}$} \\
+% -\frac{\csc ^2(\theta ) (2 \Sigma -4 r) \left(a^4 (r-1) \cos (4 \theta )+3 a^4 r+a^4+8 a^2 r^3-20 a^2 r^2+4 a^2 r \left(a^2+r (2 r-3)\right) \cos (2 \theta )+8 r^5-32
+%   r^4+32 r^3\right)}{32 \Delta  \Sigma ^4} \\ \scalebox{.45}{$
+% -\frac{-a^8 \cos (6 \theta )+a^8 r \cos (6 \theta )+10 a^8 r+20 a^8+a^6 r^3 \cos (6 \theta )+46 a^6 r^3-3 a^6 r^2 \cos (6 \theta )-6 a^6 r^2+2 a^6 r \cos (6 \theta )-44
+%   a^6 r+84 a^4 r^5-206 a^4 r^4+32 a^4 r^3+80 a^2 r^7-336 a^2 r^6+304 a^2 r^5-64 a^2 r^4+2 a^4 \left(a^4 (3 r+2)+a^2 r \left(9 r^2-5 r-2\right)+r^4 (6 r-13)\right) \cos
+%   (4 \theta )+a^2 \left(5 a^6 (3 r+5)+a^4 r \left(63 r^2-13 r-50\right)+8 a^2 r^4 (12 r-19)+16 r^4 \left(3 r^3-9 r^2+3 r+4\right)\right) \cos (2 \theta )+32 r^9-176
+%   r^8+224 r^7}{32 \Delta  \Sigma ^4}$} \\
+%\end{array}
+%\right)
+%\end{align}
+%
+%\begin{align}
+%&B_{tt\bar a}^{\theta}= \nonumber \\
+%&\left(
+%\begin{array}{c}
+% \frac{\Delta  \cot (\theta ) \left(4 a^4 \cos (2 \theta )-a^4 \cos (4 \theta )+5 a^4+16 a^2 r^2-16 a^2 r+8 r^4-16 r^3\right)}{8 \Sigma ^4} \\
+% \scalebox{.55}{$ -\frac{\cot (\theta ) \left(a^8 \cos (6 \theta )+10 a^8+a^6 r^2 \cos (6 \theta )+46 a^6 r^2-2 a^6 r \cos (6 \theta )+20 a^6 r+84 a^4 r^4+128 a^4 r^3-128 a^4 r^2+80 a^2
+%   r^6+64 a^2 r^5-320 a^2 r^4+2 a^4 \left(3 a^4+a^2 r (9 r-26)+2 r^2 \left(3 r^2-16 r+16\right)\right) \cos (4 \theta )+a^2 \left(15 a^6+3 a^4 r (21 r-10)+32 a^2 r^2
+%   \left(3 r^2-8 r+2\right)+16 r^4 \left(3 r^2-16 r+20\right)\right) \cos (2 \theta )+32 r^8-64 r^7\right)}{64 \Delta  \Sigma ^4} $}\\
+% -\frac{\cot (\theta ) \csc ^2(\theta ) (2 \Sigma -4 r) \left(a^4 \cos (4 \theta )+3 a^4+8 a^2 r^2+4 a^2 \left(a^2+2 (r-2) r\right) \cos (2 \theta )+8 r^4-16
+%   r^3\right)}{32 \Delta  \Sigma ^4} \\
+%   \scalebox{.55}{$
+% -\frac{\cot (\theta ) \left(a^8 \cos (6 \theta )+10 a^8+a^6 r^2 \cos (6 \theta )+46 a^6 r^2-2 a^6 r \cos (6 \theta )+20 a^6 r+84 a^4 r^4+128 a^4 r^3-128 a^4 r^2+80 a^2
+%   r^6+64 a^2 r^5-320 a^2 r^4+2 a^4 \left(3 a^4+a^2 r (9 r-26)+2 r^2 \left(3 r^2-16 r+16\right)\right) \cos (4 \theta )+a^2 \left(15 a^6+3 a^4 r (21 r-10)+32 a^2 r^2
+%   \left(3 r^2-8 r+2\right)+16 r^4 \left(3 r^2-16 r+20\right)\right) \cos (2 \theta )+32 r^8-64 r^7\right)}{64 \Delta  \Sigma ^4}$} \\
+%\end{array}
+%\right)
+%\end{align}
+%
+%\begin{align}
+%&C_{tt\bar a}= \nonumber \\
+%&\left(
+%\begin{array}{c}
+%\scalebox{.4}{$ \frac{\left(a^8 \cos (6 \theta )+34 a^8+3 a^6 \cos (6 \theta )+4 a^6 r^2 \cos (6 \theta )+116 a^6 r^2-8 a^6 r \cos (6 \theta )-28 a^6 r+6 a^6+144 a^4 r^4-100 a^4
+%   r^3-388 a^4 r^2-24 a^4 r+32 a^2 r^6-96 a^2 r^5-272 a^2 r^4+640 a^2 r^3+2 a^4 \left(7 a^4+a^2 \left(14 r^2-10 r+5\right)+2 r \left(8 r^3-11 r^2-3 r-2\right)\right)
+%   \cos (4 \theta )+a^2 \left(47 a^6+a^4 \left(140 r^2-40 r+13\right)+16 a^2 r \left(7 r^3-5 r^2-25 r-2\right)+16 r^3 \left(4 r^3-4 r^2-25 r+40\right)\right) \cos (2
+%   \theta )-32 r^7+160 r^6-192 r^5\right) \left(a^4+a^2 \Delta  \cos (2 \theta )+a^2 r (3 r+2)+2 r^4\right)^3}{256 \Sigma ^5 \left(\left(a^2+r^2\right)^2-a^2 \Delta 
+%   \sin ^2(\theta )\right)^3} $}\\
+% -\frac{5 a^6-12 a^4 r+a^2 (16-3 r) r^3+a^2 \left(a^4-6 a^2 r^2+(8-3 r) r^3\right) \cos (2 \theta )+6 (r-2) r^5}{2 \Delta ^2 \Sigma ^3} \\ \scalebox{.6}{$
+% \frac{\csc ^4(\theta ) \left(a^6 \cos (6 \theta )+10 a^6-a^4 \cos (6 \theta )+36 a^4 r^2-72 a^4 r-26 a^4+48 a^2 r^4-192 a^2 r^3+156 a^2 r^2+72 a^2 r+3 a^2 \left(5
+%   a^4+a^2 \left(16 r^2-32 r+11\right)+16 (r-2) (r-1)^2 r\right) \cos (2 \theta )+6 a^2 \left(a^4+a^2 \left(2 r^2-4 r-1\right)-2 (r-2) r\right) \cos (4 \theta )+32
+%   r^6-192 r^5+384 r^4-256 r^3\right)}{32 \Delta ^2 \Sigma ^3}$} \\
+% -\frac{5 a^6-12 a^4 r+a^2 (16-3 r) r^3+a^2 \left(a^4-6 a^2 r^2+(8-3 r) r^3\right) \cos (2 \theta )+6 (r-2) r^5}{2 \Delta ^2 \Sigma ^3} \\
+%\end{array}
+%\right)
+%\end{align}
+%
+%Next the $\phi\phi$ equation.
+%
+%\begin{align}
+%\Delta_G[h]_{\phi\phi} =\frac{\Delta  \sin ^2(\theta ) \left(a^2 \Delta  \sin ^2(\theta )-\left(a^2+r^2\right)^2\right)}{2 \Sigma ^3}\left(\Delta \partial_{r}\partial_{r} +\partial_\theta\partial_\theta \right)Y -\frac{1}{2 \Sigma }\left(\Delta \partial_{r}\partial_{r} +\partial_\theta\partial_\theta \right)h_{\phi\phi}
+%+ B_{\phi\phi \bar a}^{A}\partial_A v^{\bar a}+C_{\phi\phi \bar a}v^{\bar a}
+%\end{align}
+%with
+%\begin{align}
+%&C_{\phi\phi \bar a}= \nonumber \\
+%&\left(
+%\begin{array}{c}
+% \scalebox{.4}{$-\frac{\sin ^2(\theta ) \left(a^{10} (-\cos (6 \theta ))+14 a^{10}+a^8 \cos (6 \theta )-a^8 r^2 \cos (6 \theta )+66 a^8 r^2+2 a^8 r \cos (6 \theta )+112 a^8 r+34
+%   a^8+132 a^6 r^4+312 a^6 r^3+a^6 r^2 \cos (6 \theta )-178 a^6 r^2-2 a^6 r \cos (6 \theta )+4 a^6 r+112 a^4 r^6+84 a^4 r^5-580 a^4 r^4-160 a^4 r^3+32 a^2 r^8-192 a^2
+%   r^7-80 a^2 r^6+96 a^2 r^5+2 a^4 \left(a^6+a^4 \left(-r^2+16 r+7\right)-a^2 r \left(2 r^3-52 r^2+87 r+2\right)+2 r^3 \left(15 r^2-47 r+40\right)\right) \cos (4 \theta
+%   )+a^2 \left(17 a^8+a^6 \left(65 r^2+142 r+47\right)+a^4 r \left(64 r^3+352 r^2-353 r+2\right)+16 a^2 r^4 \left(r^2+27 r-40\right)+48 r^5 \left(4 r^2-5
+%   r-2\right)\right) \cos (2 \theta )-96 r^9+288 r^8\right)}{32 \Sigma ^5}$} \\
+% -\frac{\sin ^2(\theta ) \left(a^8 (6 r+1)+a^6 r \left(14 r^2-3 r-6\right)+3 a^4 r^3 \left(2 r^2+3 r-4\right)+a^2 r^5 \left(-6 r^2+19 r-30\right)+3 a^2 \left(a^6 (2
+%   r-1)+a^4 r \left(6 r^2-7 r+2\right)+a^2 r^3 \left(6 r^2-15 r+4\right)+r^5 \left(2 r^2-9 r+10\right)\right) \cos (2 \theta )+2 (3-2 r) r^8\right)}{2 \Delta ^2 \Sigma
+%   ^3} \\\scalebox{.5}{$
+% -\frac{\csc ^2(\theta ) \left(2 a^2 \left(9 a^6+a^4 \left(27 r^2-66 r+7\right)+3 a^2 r \left(6 r^3-40 r^2+55 r-6\right)-2 r^3 \left(18 r^2-63 r+56\right)\right) \cos (4
+%   \theta )+\left(45 a^8+a^6 \left(189 r^2-186 r-29\right)+3 a^4 r \left(96 r^3-160 r^2+17 r+30\right)+16 a^2 r^3 \left(9 r^3-18 r^2-3 r+8\right)+96 (r-2)^2 r^5\right)
+%   \cos (2 \theta )+3 \left(a^4 \left(a^4+a^2 \left(r^2-2 r-1\right)-(r-2) r\right) \cos (6 \theta )+2 \left(5 a^8+a^6 \left(23 r^2-10 r+3\right)+a^4 r \left(42 r^3-72
+%   r^2+r-10\right)+2 a^2 r^3 \left(20 r^3-66 r^2+47 r+8\right)+16 (r-2)^2 (r-1) r^5\right)\right)\right)}{32 \Delta ^2 \Sigma ^3} $}\\
+% -\frac{\sin ^2(\theta ) \left(a^8 (6 r+1)+a^6 r \left(14 r^2-3 r-6\right)+3 a^4 r^3 \left(2 r^2+3 r-4\right)+a^2 r^5 \left(-6 r^2+19 r-30\right)+3 a^2 \left(a^6 (2
+%   r-1)+a^4 r \left(6 r^2-7 r+2\right)+a^2 r^3 \left(6 r^2-15 r+4\right)+r^5 \left(2 r^2-9 r+10\right)\right) \cos (2 \theta )+2 (3-2 r) r^8\right)}{2 \Delta ^2 \Sigma
+%   ^3} \\
+%\end{array}
+%\right)
+%\end{align}
+
+
+%\begin{align}
+%\scalebox{.5}{$\mu$} \\
+%\mu
+%\end{align}
+%
+%Finally for the constraint equations (with hyperbolic and parabolic derivatives)
+
+\subsubsection{Kernel}
+
+In this section we explicitly construct two elements of the kernel of linearized Einstein operator Eq.~\eqref{eq:fieldBL}, namely perturbations that correspond to shifts in mass and spin of the background Kerr metric.
+
+Consider first a perturbation $p_{\mu\nu}^{\rm mass}$ corresponding to a shift in the mass of the background Kerr metric. If we let $M=M_1+\Delta M$ in the kerr metric, we get
+\begin{align}
+k_{\mu \nu}(M+\Delta M)=k_{\mu \nu}(M)+\delta M\frac{d}{dM}k_{\mu\nu}(M) +\mathcal{O}(\delta M^2)
+\end{align}
+
+However note that $p_{\mu\nu}^{\rm mass}\neq\frac{d}{dM}k_{\mu\nu}(M)$ since $k_{\mu\nu}(M+\delta M)$ and $k_{\mu\nu}(M)$ are in different BL-like gauges (recall that each $\hat a$ and $\hat M$ are different BL like gauges). This is clear from the form of $\frac{d}{dM}k_{\mu\nu}(M)$ which does not have a $\theta \theta$ component equal to $\Delta$ times the rr component. To obtain $p_{\mu\nu}^{\rm mass}$ we have to perform the infinitesimal gauge transformation given by Eq.~\eqref{eq:infM} to put both the LHS and the RHS in BL coordinates with $M$. From Eq. ~\eqref{eq:infM}, the generator for such a gauge transformation is
+\begin{align}
+\epsilon^\mu\partial_\mu =\frac{a^2-Mr}{a^2-M^2}\partial_r.
+\end{align}
+Hence
+\begin{align}
+p_{\mu\nu}^{\rm mass}=\frac{d}{dM}k_{\mu\nu}+2\nabla_{(\mu}\epsilon_{\nu)}.
+\end{align}
+Using Xcoba, this is easily found to be
+\begin{align}
+p_{\mu\nu}^{\rm mass}dx^\mu dx^\nu=
+&\frac{2 a^2 \left(\cos ^2(\theta ) \left(a^2 M+a^2 r-2 M^2 r\right)+r^2 (r-M)\right)}{\Sigma ^2 \left(a^2-M^2\right)}dt^2 \nonumber \\
+&-\frac{2 a^3 \sin ^2(\theta ) \left(\cos ^2(\theta ) \left(a^2 M+a^2 r-2 M^2 r\right)+r^2 (r-M)\right)}{\Sigma ^2 \left(a^2-M^2\right)}(dtd\phi+d\phi dt) \nonumber \\
+&+\left(\frac{2 \sin ^2(\theta ) \left(a^2-M r\right) \left(\frac{a^2 M \sin ^2(\theta ) \left(a^2 \cos ^2(\theta )-r^2\right)}{\Sigma ^2}+r\right)}{a^2-M^2}+\frac{2 a^2 r \sin ^4(\theta )}{\Sigma } \right)d\phi^2 \nonumber \\
+& +\frac{2 r \left(a^2-M r\right)}{a^2-M^2}d\theta^2+ \frac{1}{\Delta}\left(\frac{2 r \left(a^2-M r\right)}{a^2-M^2}\right) dr^2
+\end{align}
+
+Notice that $p_{\mu\nu}^{\rm mass}$ has no $r-\theta$ cross terms and the expected ratio of $\Delta$ between the rr component and the $\theta-\theta$ component. It is useful to write this result in terms of the variables $\bar Y$ and $\bar h_{ij}$  which describe the trace-reversed perturbation. Using xCoba
+\begin{align}
+&\bar Y=-\frac{2M\Sigma}{2 \left(M^2-a^2\right)\Delta} \nonumber \\
+&\bar h_{tt}=\frac{1}{8 (-a^2 + M^2) \Sigma^2}(-5 a^4 M - 16 a^4 r + 8 a^2 M^2 r + 64 a^2 M r^2 - 32 a^2 r^3 - 
+ 48 M^2 r^3 + 24 M r^4 \nonumber \\
+ & - 4 a^2 (4 a^2 r - 2 M^2 r + M (a^2 - 4 r^2)) \cos[2 \theta] + 
+ a^4 M \cos[4 \theta]) \nonumber \\
+ &
+\bar h_{t\phi}= -\frac{a \sin ^2(\theta ) \left(M^2 \left(6 r^3-a^2 r\right)+a^2 r \left(a^2+2 r^2\right)+\cos (2 \theta ) \left(a^4 M+a^4 r-a^2 M^2 r\right)+M \left(a^4-6 a^2 r^2\right)\right)}{\Sigma ^2 \left(a^2-M^2\right)} \nonumber \\
+& \bar h_{\phi\phi}=\frac{-1}{8(M^2-a^2)}(M \sin ^2(\theta ) (5 a^6-2 a^4 M r-11 a^4 r^2+24 a^2 M r^3+24 a^2 r^4
+\nonumber \\ 
+&-a^4 \cos (4 \theta ) \left(a^2-2 M r+r^2\right)+4 a^2 \cos (2 \theta ) \left(a^4+9 a^2 r^2-6 M r^3\right)+8 r^6))
+\end{align}
+
+Now consider a perturbation corresponding to a shift in the spin of the background kerr metric $p_{\mu\nu}^{\rm spin}$. An almost identical argument as above shows that 
+\begin{align}
+p_{\mu\nu}^{\rm spin}=\frac{d}{da}k_{\mu\nu}+2\nabla_{(\mu}\epsilon_{\nu)}.
+\end{align}
+where this time 
+\begin{align}
+\epsilon^\mu\partial_\mu=\left(\frac{a(r-M)}{a^2-M^2}\right)\partial_r
+\end{align}
+is the gauge generator for infinitesimal transformation between BL gauges with different $\hat a$ given by Eq.~\eqref{eq:infa}. Again using xCoba, we determine
+\begin{align}
+p_{\mu\nu}^{\rm spin}= 
+&-\frac{2 a M \left(\cos ^2(\theta ) \left(-a^2 M+a^2 (-r)+2 M^2 r\right)+r^2 (M-r)\right)}{\Sigma ^2 \left(M^2-a^2\right)} dt^2 \nonumber \\
+&+\frac{2 M^2 \sin ^2(\theta ) \left(M r-a^2\right) \left(a^2 \cos ^2(\theta )-r^2\right)}{\Sigma ^2 \left(M^2-a^2\right)}(dt d\phi+d\phi dt) \nonumber \\
+&+2 a \sin ^2(\theta ) \left(\frac{(r-M) \left(\frac{a^2 M \sin ^2(\theta ) \left(a^2 \cos ^2(\theta )-r^2\right)}{\Sigma ^2}+r\right)}{a^2-M^2}+\frac{a^4 \cos ^4(\theta )+2 a^2 r^2 \cos ^2(\theta )+r^3 \left(2 M \sin ^2(\theta )+r\right)}{\Sigma ^2}\right) d\phi^2 \nonumber \\
+&\frac{1}{\Delta}2 a \left(\frac{r (M-r)}{M^2-a^2}+\cos ^2(\theta )\right)dr^2+ 2 a \left(\frac{r (M-r)}{M^2-a^2}+\cos ^2(\theta )\right)d\theta^2.
+\end{align}
+Again note that the AB components of the perturbation are in the expected form. This perturbation is described in terms of the trace reversed variables $\bar Y$, and $\bar h_{ij}$ as
+\begin{align}
+&\bar Y =\frac{a\Sigma}{\Delta(M^2-a^2)} \nonumber \\
+&\bar h_{tt}=\frac{1}{8 (a^2 - M^2)\Sigma^2}(a (9 a^4-14 a^2 M^2+4 \cos (2 \theta ) \left(-2 M^2 \left(2 a^2+r^2\right)-10 a^2 M r+3 a^2 \left(a^2+2 r^2\right)+8 M^3 r\right)
+\nonumber \\
+&-40 a^2 M r+24 a^2 r^2+\left(3 a^4-2 a^2 M^2\right) \cos (4 \theta )+32 M^3 r+40 M^2 r^2-80 M r^3+24 r^4)) \nonumber \\
+&\bar h_{t\phi}=\frac{M \sin ^2(\theta ) \left(M^2 \left(3 a^2 r-2 r^3\right)-a^2 \cos (2 \theta ) \left(a^2 M+3 a^2 r-3 M^2 r\right)-3 a^2 r \left(a^2+2 r^2\right)-M \left(a^4-6 a^2 r^2\right)\right)}{\Sigma ^2 \left(M^2-a^2\right)} \nonumber \\
+& \bar h_{\phi\phi} =-\frac{1}{8 \Sigma ^2 \left(a^2-M^2\right)}
+a \sin ^2(\theta ) (3 a^6+2 a^4 M^2+2 a^4 M r+11 a^4 r^2-4 a^2 M^3 r
++a^2 \Delta  \left(a^2-2 M^2\right) \cos (4 \theta )-22 a^2 M^2 r^2
+\nonumber \\
+&+8 a^2 M r^3+16 a^2 r^4
++4 \cos (2 \theta ) \left(a^6+3 a^4 r^2+2 a^2 r^2 \left(3 M^2-M r+r^2\right)-2 M^2 r^3 (2 M+r)\right)+16 M^3 r^3+8 M^2 r^4+8 r^6)
+\end{align}
+
+\subsubsection{Structure of Expansion of field equations off boundary}
+
+We now describe how to iteratively expand the field equations off of a boundary $\mathcal{B}$. To be explicit, we will work in BL-like coordinates and use the boundary $\mathcal{B}$ at asymptotic infinity to develop the formalism, which is easily adapted to other examples.
+
+ We will use barred indices $\bar a, \bar b, etc...$ to label the N fields and the N equations, which we will schematically write the N ``evolution'' equations that we have chosen to solve as 
+\begin{align}
+O^{\bar a}[v^{\bar b}]=T^{\bar a} \label{eq:OT1}
+\end{align}
+Now suppose we impose that the leading nonzero order for $v^{\bar a}=O(r^{-n_{\bar a}})$, with the leading power $n_{\bar a}$, which depends on which field is considered.. Then $v^{\bar a}$ has the expansion
+\begin{align}
+v^{\bar a}(r,\theta) \sim r^{-n_{\bar a}}\sum_{m=0}^\infty v^{\bar a}_{(m)}(\theta)r^{-m} \label{eq:vexp1}
+\end{align}
+Define the leading order part $O^{\bar a}_L$ of the operator $O^{\bar a}$ by
+\begin{align}
+O^{\bar a}[r^{-n_{\bar b}}p^{\bar b}(\theta)]=r^{-v_{\bar a}}O^{\bar a}_L[p^{\bar b}] +o(r^{-v_{\bar a}})
+\end{align}
+and note that
+\begin{align}
+O^{\bar a}[r^{-m} r^{-n_{\bar b}}p^{\bar b}(\theta)]=r^{-m}r^{-v_{\bar a}}O^{\bar a}_L[p^{\bar b}] +o(r^{-m}r^{-v_{\bar a}})
+\end{align}
+since the derivatives in $O^{\bar a}$ acting on $r^{-m}$ creates terms of lower order than the other terms. \zach{ZM:This doesn't seem to be true... This may be because for the values of $n_{\bar b}$ that I am using, the terms that would be leading order cancel?}
+
+Note that in order for \eqref{eq:OT1} to have an expansion of the form of Eq.~\eqref{eq:vexp1}, $T^{\bar a}$ must go to zero no slower than $r^{-n_{\bar b}}$.
+Expanding  Eq. \eqref{eq:OT1} order by order, and examining the equation at order $\mathcal{O}(r^{-m})$ relative to the leading order equation at $r^{-v_{\bar a}}$, we get 
+\begin{align}
+O^{\bar a}_L[v_{(m)}^{\bar a}]= \text{source} \label{eq:seq}
+\end{align}
+where the source term depends on the large r expansion of $T^{\bar a}$ and $v_{(l)}^{\bar a}$ for $l<m$. Thus the homogenous solutions to the equations at each order are the same. 
+
+Further the boundary conditions on the axis constrain the homogenous solutions the same way at each order. The leading order equation (assuming the stress-energy tensor goes to zero sufficiently quickly) is simply
+\begin{align}
+O_L^{\bar a}[v_{(0)}^{\bar b}(\theta)]=0
+\end{align}
+Since we are assuming that Eq.~\eqref{eq:vexp1} is the leading non-zero expansion for the fields, it must be the case that at least one of the two homogenous solutions is allowed at each order.
+
+%A subtlety can occur when the 4 equations
+%\begin{align}
+%O_L^{\bar a}[v_{(0)}^{\bar b}(\theta)]=0
+%\end{align}
+%are degenerate.
+%\zach{ZM:this seems to occur for the boundary at infinity.... In principle the sourced equation Eq.~\eqref{eq:seq} giving the higher order powers in the expansion may not have a solution. Further the solution to the homogoneous system will contain one completely undetermined function of $\theta$ rather than undetermined constants. I believe that the undetermined function may be determined by the higher order equations by demanding that the source lie in the image of the the operater $O_L^{\bar a}$, but I'm not sure this works.}
+
+\subsubsection{Expansion of the field equations at large r}
+\label{sec:larger}
+
+In this section we establish that if the metric obeys the asymptotic flatness condition described in sec \ref{sec:infyB}, then it has the following expansion at large r
+\begin{align}
+&\bar Y \sim E+2\frac{E}{r}+\mathcal{O}(r^{-2}) \nonumber \\
+&\bar h_{tt} \sim -3E +\frac{F}{r}+\mathcal{O}(r^{-2}) \nonumber \\
+&\bar h_{\phi\phi}\sim Er^2\sin^2\theta  +\mathcal{O}(1) \nonumber \\
+&\bar h_{t\phi}\sim \frac{E_{t\phi}}{r}\sin^2\theta+ \frac{1}{r}\left( \frac{3}{2}aF-9aE+F_2 \cos\theta \right)\sin^2\theta\end{align}
+where E, $E_{t\phi}$, $F$ and $F_2$ are undetermined constants. As a sanity check, I have checked that the pure mass and pure spin perturbations have this asymptotic form at large $r$.
+
+See Appendix \ref{sec:expnot} for an explanation of the notation for expansions off a boundary. We use expansions with the leading terms fixed by the asymptotic flatness condition (see section \ref{sec:infyB}), namely we choose
+\begin{align}
+n_{\bar a}=(0,0,-2,1)
+\end{align}
+We solve the differential equations order by order, showing that it is consistent to impose
+\begin{align}
+&\bar Y_{0}=E,&  \nonumber \\	
+&\bar h_{tt(0)}=-3E,& \nonumber \\
+&\bar h_{\phi\phi(0)}=E\sin^2\theta,& \nonumber \\
+\end{align}
+where E is a constant, which is also necessary for asymptotic flatness.
+
+We substitute this expansion into the four ``evolution equations'', i.e. the $\Delta_G[h]_{tt}$,  $\Delta_G[h]_{t\phi}$,  $\Delta_G[h]_{\phi\phi}$, and $\Delta  \Delta_G[h]_{rr}+ \Delta_G[h]_{\theta\theta}$ equations, obtaining a coupled system of ODE's for the leading coefficients as a functions of $\theta$.
+
+When we use these scalings, the leading part of $\Delta_G[h]_{\mu \nu}$ (for the four evolution equations) goes to zero faster than the effective stress tensor.
+
+The leading part of  $\Delta  \Delta_G[h]_{rr}+ \Delta_G[h]_{\theta\theta}$ (at $\mathcal{O}(1)$) gives a simple differential equation for $\bar Y^{(0)}$
+\begin{align}
+\bar Y^{(0)''}+2\cot\theta \bar Y^{(0)'}=0
+\end{align}
+which has $\cot\theta$ and a constant as it's solutions. We discard the $\cot\theta$ solution since it diverges on the axis in a manner that violates the regularity condition and name the constant $E$.
+
+Using the updated information about the scaling of $\bar Y$,  the leading part of the $\phi\phi$ equation becomes a decoupled equation for $\bar h_{\phi\phi}$, coming in at $\mathcal{O}(1)$
+\begin{align}
+-\frac{h_{\phi\phi(0)}''(\theta )}{2}+2 \cot (\theta ) h_{\phi\phi(0)}'(\theta )+\left(2-3 \csc ^2(\theta )\right) h_{\phi\phi(0)}(\theta )=0
+\end{align}
+which has the solutions  $\sin^2\theta$ and $\theta \sin^2\theta$. The regularity condition on the axis requires that $\bar h_{\phi\phi}\sim \Delta Y \theta^2$ so we take 
+\begin{align}
+h_{\phi\phi(0)}=E\sin^2\theta
+\end{align}
+
+Again updating the expansion, the tt equation becomes  (at  $\mathcal{O}(r^{-2}$))
+\begin{align}
+\bar h_{tt(0)}''(\theta )+\cot (\theta ) \bar h_{tt(0)}'(\theta )=0
+\end{align}
+and the two solutions are a constant and a solution that diverges logarithmically on the axis. We choose this constant to be -3E in accordance with the asymptotic flatness condition.
+
+Again updating the expansion, the $t\phi$ equation becomes  (at  $\mathcal{O}(r^{-3}$))
+\begin{align}
+\bar h_{t\phi(0)}''-\cot\theta\bar h_{t\phi(0)}'+2\bar h_{t\phi(0)}=0.
+\end{align}
+One solution is $\mathcal{O}(1)$ as $\theta \to 0$ and must be discarded due to regularity on the axis. The other solution is simply $\sin^2\theta$. Hence we take
+\begin{align}
+\bar h_{t\phi(0)}=E_{t\phi}\sin^2\theta
+\end{align}
+where $E_{t\phi}$ is a constant.
+
+Proceeding to next order, we re-examine the  $\Delta  \Delta_G[h]_{rr}+ \Delta_G[h]_{\theta\theta}$, giving at next order (which is $\mathcal{O}(r^{-1}$))
+\begin{align}
+\bar Y_{(1)}''+2\cot\theta\bar Y_{(1)}'-\bar Y_{(1)}+2E=0
+\end{align}
+The homogenous solutions are $\csc\theta$ and $\theta \csc\theta$ and regularity on the axis forces us to discard them both leaving the particular solution
+\begin{align}
+\bar Y_{(1)}=+2E.
+\end{align}
+
+Rexamining the $\phi\phi$ equation at next to leading order (which is $\mathcal{O}(r^{-1}$))
+\begin{align}
+2\bar h_{\phi\phi(1)}''-8\cot\theta \bar h_{\phi\phi(1)}'+3(3+\cos(2\theta))\csc^2\theta \bar h_{\phi\phi(1)} =0 
+\label{eq:hpp1next}
+\end{align}
+The regularity requirement on the axis is that $\bar h_{\phi\phi}\sim \Delta Y \theta^2$. Expanding this relation in powers of $1/r$, this implies that (in the $\hat M =1$ units employed in this section) $\bar h_{\phi\phi(1)}=\bar Y_{1}-2E =0$ on the axis. Enforcing this condition gives a unique solution to Eq.~\eqref{eq:hpp1next},
+\begin{align}
+\bar h_{\phi\phi(1)}=0
+\end{align}
+i.e., the correction to $\bar h_{\phi\phi(0)}$ is $\mathcal{O}(1)$.
+
+Considering the tt equation at next to leading order (which is $\mathcal{O}(r^{-3}$) gives
+\begin{align}
+\bar h_{tt(1)}''+\cot\theta \bar h_{tt(1)}'=0
+\end{align}
+and regularity on the axis forces us to discard the logartihmically diverging solutions and hence set
+\begin{align}
+ \bar h_{tt(1)}=F
+\end{align}
+where F is an undetermined constant
+
+Finally, rexamining the $t\phi$ equation gives (at $\mathcal{O}(r^{-4}$)
+\begin{align}
+\bar h_{t\phi(1)}''-\cot\theta \bar h_{tt(1)}' +6\bar h_{tt(1)}+(36aE-6aF)\sin^2\theta=0
+\end{align}
+Imposing the regularity condition on the axis ( $\bar h_{t\phi(1)}\sim \theta^2$), gives the solution
+\begin{align}
+ \bar h_{t\phi(1)}=\left( \frac{3}{2}aF-9aE+F_2 \cos\theta \right)\sin^2\theta
+\end{align}
+where $F_2$ is another undetermined constant.
+
+\subsection{constraint equations}
+Recall that in BL-like coordinates
+\begin{align}
+c1= \Delta \sin\theta Q_{r\theta} \nonumber \\
+c_2=\frac{\sqrt{\Delta}\sin\theta}{2}(\Delta Q_{rr}-Q_{\theta\theta})
+\end{align}
+with $Q_{\mu\nu}=\Delta_G[h]_{\mu\nu}-\frac{1}{2\kappa_G}T_{\mu\nu}^{\rm eff}$. 
+
+Thus the constraints will be satisfied near infinity if $Q_{r\theta} =\mathcal{O}(r^{-3})$ and $(\Delta Q_{rr}-Q_{\theta\theta})=\mathcal{O}(r^{-2})$. I have shown by expanding the field equations off the boundary in mathematica that the BC of asymptotic flatness ensures that these requirements are satisfied. Note that I had to use the field equations to demonstrate this.
+
+Similarly to establish that the constraints are satisfied near the horizon, we must show that $Q_{r\theta} =\mathcal{O}(1)$ and $(\Delta Q_{rr}-Q_{\theta\theta})=\mathcal{O}(1)$. I have shown that the regularity alone condition (and not the field equations) on the horizon implies that $(\Delta Q_{rr}-Q_{\theta\theta})=\mathcal{O}(1)$. This means that if I expand the field equations off the boundary, I should be able to show that $Q_{r\theta} =\mathcal{O}(1)$ as well.
+
+Finally to establish that the constraints are satisfied near the axis, we must show that $Q_{r\theta} =\mathcal{O}(1)$ and $(\Delta Q_{rr}-Q_{\theta\theta})=\mathcal{O}(1)$. I have shown that the regularity alone condition (and not the field equations) near the axis implies that $(\Delta Q_{rr}-Q_{\theta\theta})=\mathcal{O}(1)$. This means that if I expand the field equations off the boundary, I should be able to show that $Q_{r\theta} =\mathcal{O}(1)$ as well.
+
+%We establish that the two field equations that are being ignored (the $r\theta$ eq. and the $\Delta (rr \text{eq.})-(\theta\theta \text{eq.})$ ) are satisfied provided that we satisfy the remaining four field equations (the ij equations and the $\Delta(rr\text{ eq.}) +(\theta\theta \text{eq.})$) and impose the BC's of asymptotic flatness and regularity on the Killing Horizon/axis.
+
+%By studying the field equation in conformal coordinates, we discovered that if we satisfy the $ij$ and $xx+yy$ components of 
+%\begin{align}
+%0=Q^\mu{}_{\nu}\equiv G^{\mu}{}_\nu-8\pi T^{\mu}{}_\nu
+%\end{align}
+%then the bianchi identies implied that $c_1\equiv \sqrt{-g}Q^x{}_y=0$ and $c_2\equiv \frac{1}{2}\sqrt{-g}(Q^x_{x}-Q^y{}_y)=0$, if one of $c_1$ or $c_2$ is zero the boundary and the other is zero at a single point on the boundary. As $Q^x{}_y=\frac{1}{Z_{\rm kerr}\sqrt{\Delta}}Q_{r\theta}$ and $ Q^{x}{}_x-Q^y{}_y=\frac{1}{Z_{\rm kerr} \Delta}(\Delta Q_{rr}-Q_{\theta\theta})$, we see that $c_1=c_2=0$ impies that the constraint equations are satisfied, at the nonlinear level. If we linearize these equations in $\epsilon$, then we see that $c_1=c_2=0$ at the linearized level imply that the linearized constraint equations are satisfied, i.e. $\Delta_G[h]_{\mu\nu}-8\pi T_{\mu\nu}^{\rm eff}=0$.
+
+%\zach{ZM:OLD scalings}
+%
+%%We determine the leading order scaling of $ v^{\bar a} =(\bar h_{tt}, \bar h_{t\phi}, \bar h_{\phi\phi}, Y$. Namely, look for a series solution of the form of
+%%\begin{align}
+%%v^{\bar a}(r,\theta) \sim r^{-n_{\bar a}}\sum_{m=0}^\infty v^{\bar a}_{(m)}(\theta)r^{-m} \label{eq:vexp2}
+%%\end{align}
+%%starting the expansions at  $ v^{\bar a} \sim (\bar h^{(0)}_{tt}(\theta)/r, \bar h^{(0)}_{t\phi}(\theta)/r, \bar h^{(0)}_{\phi\phi}(\theta)r, \bar Y^{(0)}(\theta)/r)$.
+%
+%See Appendix \ref{sec:expnot} for an explanation of the notation for expansions off a boundary
+%
+%We substitute this expansion into the four ``evolution equations'', i.e. the $\Delta_G[h]_{tt}$,  $\Delta_G[h]_{t\phi}$,  $\Delta_G[h]_{\phi\phi}$, and $\Delta  \Delta_G[h]_{rr}+ \Delta_G[h]_{\theta\theta}$ equations, obtaining a coupled system of ODE's for the leading coefficients as a functions of $\theta$.
+%
+%When we use these scalings, the leading part of $\Delta_G[h]_{\mu \nu}$ (for the four evolution equations) goes to zero faster than the effective stress tensor.
+%
+%The leading part of  $\Delta  \Delta_G[h]_{rr}+ \Delta_G[h]_{\theta\theta}$ (at $\mathcal{O}(1/r)$) gives a simple differential equation for $Y^{(0)}$
+%\begin{align}
+%\bar Y''_{(0)}+2\cot\theta \bar Y'_{(0)}-\bar Y_{(0)}=0
+%\end{align}
+%and the solution for $\bar Y_{(0)}$ is a linear combination of $\csc\theta$ and $\theta \csc\theta$. Nether solution satisfies the boundary condition for $Y$ on the axis $\theta =\pi$, where $\bar Y$ must be $\mathcal{O}(1)$. Thus we see that our expansion for $\bar Y$ actually starts at $r^{-2}$. Hence we redefine $\bar Y_{(0)}$ via $\bar Y\sim \bar Y_{(0)}/r^2$.
+%
+%Using the updated information about the scaling of $Y$,  the leading part of the $\phi\phi$ equation becomes a decoupled equation for $\bar h_{\phi\phi}$, coming in at $\mathcal{O}(1/r)$
+%\begin{align}
+%\bar h''_{\phi\phi(0)}-4\cot\theta \bar h'_{\phi\phi(0)}+(6\csc^2\theta-3)\bar h_{\phi\phi(0)}=0
+%\end{align}
+%Mathematica returns the solution in terms of the LegendreP and LegendreQ functions (which I believe correspond to what the DLMF calls Ferrer's function, which is the notation that i use below)
+%\begin{align}
+%\bar h_{\phi\phi} =E_P(\sin\theta)^{-\frac{3}{2}}P^{\sqrt{\frac{33}{2}}}_{-\frac{1}{2}+\sqrt{7}}(\cos\theta)
+%+E_Q(\sin\theta)^{-\frac{3}{2}}Q^{\sqrt{\frac{33}{2}}}_{-\frac{1}{2}+\sqrt{7}}(\cos\theta)
+%\end{align}
+%where the constants $E_P$ and and $E_Q$ are determined by the boundary conditions on the axis. Again, $E_P$ and $E_Q$ must vanish to avoid the solution diverging on the axis, which would violate the regularity condition 
+%$\bar h_{\theta \theta}=\mathcal{O}(\theta^2)$. Thus we see that our expansion for $\bar  h_{\phi\phi}$ actually starts at
+% $r^0$. Hence we redefine $ \bar h_{\phi\phi}^{(0)}$ via $ \bar h_{\phi\phi}\sim  \bar h_{\phi\phi}^{(0)}$.
+% 
+% Using this updated information, the $tt$ equation gives
+% \begin{align}
+% \bar h''_{tt(0)}+\cot\theta  \bar h_{tt(0)}=0
+% \end{align}
+% One of the solutions diverges unacceptably on the axis, and the other solution is a constant; hence
+% \begin{align}
+% \bar h_{tt(0)}=B_{tt}
+% \end{align}
+% where $B_{tt}$ is an undetermined constant.
+% 
+% Again updating our expansion with this information, the $t\phi$ equation gives
+% \begin{align}
+%  \bar h''_{t\phi(0)}-\cot\theta  \bar h'_{t\phi(0)}+2 \bar h_{t\phi(0)}=0
+% \end{align}
+% One solution is inconsistent with the condition that $\bar h_{tphi} =\mathcal{O}(\theta^2)$ near the axis. The other solution is simply a constant times $\sin^2\theta$; hence
+%\begin{align}
+% \bar h_{t\phi(0)}=B_{t\phi} \sin^2\theta
+%\end{align}
+%
+%We now return to the $\Delta rr + \theta\theta$ equation, which comes in at $\mathcal{O}(r^{-2})$, meaning that we now must in principle include terms from the scalar stress tensor. However, for the  $\Delta rr + \theta\theta$, using Eq.~\eqref{eq:Tlarge}, we see these terms conspire to vanish. At leading order,
+%\begin{align}
+%\bar Y''_{(0)}
+%\end{align}
+ 
+\appendix
+
+\section{The Kerr metric}
+\label{sec:Kerr}
+The Kerr-metric in Boyer-Linquist
+coordinates is
+\begin{align}
+&k_{\mu\nu}dx^\mu dx^\nu=-\left(1-\frac{2Mr}{\Sigma}\right)dt^2 
+-\frac{4Mar\sin^2\theta}{\Sigma}dtd\phi
++\frac{\sin^2\theta}{\Sigma}\left[(r^2+a^2)^2-a^2\Delta \sin^2\theta \right]d\phi^2
++\frac{\Sigma}{\Delta}(dr^2+\Delta d\theta^2)
+\nonumber \\
+%the below form sends a  to -a relative to Carroll. The above form comes from Carroll
+%&k_{\mu\nu}dx^\mu dx^\nu=-\frac{\Delta}{\Sigma}\left(dt+a\sin^2\theta d\phi\right)^2+\frac{\sin^2\theta}{\Sigma}\left(adt +[r^2+a^2]d\phi^2\right)^2+\frac{\Sigma}{\Delta}dr^2+\Sigma d\theta^2,& \nonumber \\
+&\Sigma=r^2+a^2\cos^2\theta, \nonumber \\
+ &\Delta =r^2-2Mr+a^2&,
+\end{align}
+
+The upper components of the Kerr metric are
+\begin{align}
+&k^{tt}=\frac{-[(r^2+a^2)^2-a^2\Delta \sin^2\theta]}{\Sigma \Delta} \nonumber \\
+&k^{t\phi}=-\frac{2Mar}{\Sigma \Delta} \nonumber \\
+&k^{\phi\phi}=\frac{\Delta -a^2\sin^2\theta}{\Sigma \Delta \sin^2\theta} \nonumber \\
+&k^{rr}=\frac{\Delta}{\Sigma} \nonumber \\
+&k^{\theta \theta}=\frac{1}{\Sigma}
+\end{align}
+
+\subsection{Convenient Parameterization for the Kerr metric}
+
+For the numerical computations we find it convenient to parameterize the $t-\phi$ submanifold as 
+\begin{align}
+k_{ij}dx^idx^j=e^{\beta}\left[(-\chi+\frac{\omega^2}{\chi})dt^2-\frac{2\omega}{\chi}dtd\phi +\frac{1}{\chi}d\phi^2\right]
+\end{align}
+
+For Kerr we have 
+\begin{align}
+&-e^{2\beta}=|k_{ij}|\to e^\beta =\sin\theta \sqrt{\Delta} \nonumber \\
+&e^\beta\frac{1}{\chi}=k_{\phi\phi}\to \chi =\frac{e^\beta}{k_{\phi\phi}}=\frac{\sqrt{\Delta}\Sigma \csc{\theta}}{(a^2+r^2)^2-a^2\Delta \sin^2\theta} \nonumber \\
+&-e^\beta\frac{\omega}{\chi}=k_{t\phi}\to \omega=-\chi e^{-\beta}k_{t\phi} \to \omega =\frac{2Mar}{(a^2+r^2)^2-a^2\Delta \sin\theta}
+\end{align}
+
+\section{Notation for Expansion off a boundary}
+\label{sec:expnot}
+
+Let $w^{\bar{a}}=(Y,h_{tt},h_{\phi\phi},h_{t\phi})$ be a vector of the four functions parameterizing the metric perturbation. 
+We use barred indices to index these vectors. Let $v^{\bar{a}}=(\bar Y,\bar h_{tt},\bar h_{\phi\phi},\bar h_{t\phi})$ (\zach{ZM:12/15, I fixed a typo here and in w. Namely, I had flipped the order of the $t\phi$ and $\phi$ components. I checked that it didn't propagate, but it is possible that I missed something.}) be a vector of the four functions parameterize the trace-reversed metric perturbation.
+
+Suppose we have a boundary $\mathcal{B}$. For definiteness, consider the boundary at $\infty$, but the notation will apply to the boundaries at $r=r_+$ and $\theta =0,\pi$ if we send $1/r \to (r-r_+)$,  $1/r \to \theta$, and $ 1/r \to (\theta -\pi)$ respectively (and change the functional dependence of the coefficient functions below accoordingly).
+
+When we expand the field equations off of a boundary, we will look for solutions of the form
+\begin{align}
+w^{\bar a}(r,\theta) \sim r^{-N_{\bar a}}\sum_{m=0}^\infty w^{\bar a}_{(m)}(\theta)r^{-m} \label{eq:wexp3}
+\end{align}
+where the $N_{\bar a}$ specify the leading order scaling of each metric function and $w^{\bar a}_{(m)}$ are the coefficient functions in the expansion.
+It will be also convenient to also write
+\begin{align}
+v^{\bar a}(r,\theta) \sim r^{-n_{\bar a}}\sum_{m=0}^\infty v^{\bar a}_{(m)}(\theta)r^{-m} \label{eq:vexp3}
+\end{align}
+with  $n_{\bar a}$ specify the leading order scaling of each metric function and $v^{\bar a}_{(m)}$ are the coefficient functions in the expansion. 
+
+We will use the same notation $N_{\bar a}$, $n_{\bar a}$,  $w^{\bar a}_{(m)}$,  and $v^{\bar a}_{(m)}$ at each boundary, since the context of the discussion should prevent confusion.
+
+We now record the relationship between the expansions near each boundary, using the leading scalings dictated by asymptotic flatness, and regularity.
+
+\subsection{Conversion between expansion for perturbation and trace-reversed perturbation}
+\label{sec:trrel}
+
+\subsubsection{$r=\infty$}
+
+Asymptotic flatness requires
+\begin{align}
+N_{\bar a}=(0,1,-2,1)
+\end{align}
+and also that the leading coefficients satisfy 
+\begin{align}
+Y_{(0)} =D
+h_{\phi\phi(0)}=D\sin^2\theta
+\end{align}
+Given these conditions, the expansions of the metric perturbation and the trace-reversed perturbation are related
+\begin{align}
+n_{\bar a}=(0,0,-2,1)
+\end{align}
+and
+\begin{align}
+&\bar Y_{0}=\frac{-D}{2},& 
+&\bar Y_{1}=\frac{1}{2}h_{tt(0)}-\frac{1}{2\sin^2\theta}h_{\phi\phi(1)}-DM& \nonumber \\
+&\bar h_{tt(0)}=\frac{3}{2}D,& 
+&\bar h_{tt(1)}=\frac{h_{tt(0)}}{2}-5D M+Y_{(1)}+\frac{1}{2\sin^2\theta}h_{\phi\phi(1)}& \nonumber \\
+&\bar h_{\phi\phi(0)}=-\frac{D}{2}\sin^2\theta,& &\bar h_{\phi\phi(1)}=\left[\frac{1}{2}h_{tt(0)}+2DM-Y_{(1)}+\frac{1}{2\sin^2\theta}h_{\phi\phi(1)}\right]\sin^2\theta& \nonumber \\
+&\bar h_{t\phi(0)}= h_{t\phi(0)}+3aD M\sin^2\theta&
+\end{align}
+Alternatively if we suppose
+\begin{align}
+n_{\bar a}=(0,0,-2,1)
+\end{align}
+and
+\begin{align}
+&\bar Y_{0}=E,&  \nonumber \\	
+&\bar h_{tt(0)}=-3E,& \nonumber \\
+&\bar h_{\phi\phi(0)}=E\sin^2\theta,& \nonumber \\
+\end{align}
+Then i.e. $E=-D/2$ and also the expansion for the metric perturbation hs
+with
+\begin{align}
+&Y_{(1)}=\frac{1}{2}\bar h_{tt(1)}-7EM-\frac{2}{\sin^2\theta}\bar h_{\phi\phi(1)} \nonumber \\
+&h_{tt(0)}=\frac{1}{2}\bar h_{tt(1)}-5EM+\bar Y_{(1)}+\frac{1}{2\sin^2\theta} \bar h_{\phi\phi(1)} \nonumber \\
+&h_{\phi\phi(1)}=\frac{1}{2}\left[\bar h_{\phi\phi(1)}+\left(\bar h_{tt(1)}-2EM-2\bar Y_{(1)}\right)\sin^2\theta\right] \nonumber \\
+&h_{t\phi(0)}= \bar h_{t\phi(0)}+6aEM\sin^2\theta&
+\end{align}
+
+\section{Transformation of PDE Coefficients under a field redefinition}
+
+Suppose we have written the linearized field equations in terms of the variables $v^{\bar a}$
+
+\begin{align}
+\Delta_G[h]_{\mu\nu}= A_{\mu \nu \bar a}^{AB}\partial_A\partial_B v^{\bar a} + B_{\mu \nu \bar a}^{A}\partial_A v^{\bar a}+C_{\mu \nu \bar a}v^{\bar a} =\frac{1}{2\kappa_g} T_{\mu\nu}^{\rm eff}
+\end{align}
+
+If we make a linear field redefinition
+\begin{align}
+v^{\bar a}=\Lambda^{\bar a}{}_{\bar b}(r,\theta)z^{\bar b}
+\end{align}
+
+Then the $z^{\bar a}$ variables obey the field eqautions
+
+\begin{align}
+\Delta_G[h]_{\mu\nu}= \hat A_{\mu \nu \bar a}^{AB}\partial_A\partial_B z^{\bar a} + \hat B_{\mu \nu \bar a}^{A}\partial_A z^{\bar a}+\hat C_{\mu \nu \bar a}z^{\bar a} =\frac{1}{2\kappa_g} T_{\mu\nu}^{\rm eff},
+\end{align}
+with 
+\begin{align}
+&\hat A_{\mu \nu \bar a}^{AB}=\Lambda^{\bar b}{}_{\bar a} A_{\mu\nu\bar b}^{AB} \nonumber \\
+&\hat  B_{\mu\nu \bar a}^A=\Lambda^{\bar b}{}_{\bar a}B_{\mu\nu \bar b}^A+2A_{\mu \nu \bar b}^{AB}\partial_B\Lambda^{\bar b}{}_{\bar a} \nonumber \\
+&\hat C_{\mu\nu\bar a}=\Lambda^{\bar b}{}_{\bar a}C_{\mu\nu \bar b}+B^A_{\mu\nu\bar b}\partial_{A}\Lambda^{\bar b}{}_{\bar a} +A_{\mu\nu \bar b}^{AB}\partial_A\partial_B\Lambda^{\bar B}{}_{\bar a}
+\end{align}
+
+
+\bibliography{QNMModelRefs.bib}
+\end{document}
